@@ -1,118 +1,196 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio — Jordana Escalona</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Jordana Elizabeth Escalona Colivoro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="css/portfolio.css">
 </head>
+
 <body>
 
-<nav class="navbar">
-    <a href="index.html" class="navbar-brand">Jordana Escalona</a>
-    <ul class="navbar-links">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="#proyectos">Proyectos</a></li>
-        <li><a href="#certificaciones">Certificaciones</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-    </ul>
-</nav>
+    <h1 class="typed-wrapper">
+        <span id="typed-text"></span>
+    </h1>
 
-<!-- HERO -->
-<section class="hero" id="inicio">
-    <div class="hero-content">
-        <span class="hero-tag">Desarrolladora Fullstack</span>
-        <h1>Hola, soy<br><span>Jordana Escalona</span></h1>
-        <p>Diseño y desarrollo aplicaciones web completas, desde la interfaz hasta el servidor.</p>
-        <div class="hero-buttons">
-            <a href="#proyectos" class="hero-btn">Ver proyectos</a>
-            <a href="#contacto" class="hero-btn hero-btn-outline">Contactame</a>
-        </div>
-    </div>
-</section>
-
-<!-- PROYECTOS -->
-<section id="proyectos">
-    <div class="container">
-        <span class="section-tag">Proyectos</span>
-        <h2 class="section-title">Mi trabajo</h2>
-        <p class="section-subtitle">Proyectos que desarrollé</p>
-        <div class="projects-grid" id="projectsGrid">
-            <div class="loading">Cargando proyectos...</div>
-        </div>
-    </div>
-</section>
-
-<!-- CERTIFICACIONES -->
-<section id="certificaciones">
-    <div class="container">
-        <span class="section-tag">Certificaciones</span>
-        <h2 class="section-title">Mis certificaciones</h2>
-        <p class="section-subtitle">Cursos y certificaciones que completé</p>
-        <div class="certifications-grid" id="certificationsGrid">
-            <div class="loading">Cargando certificaciones...</div>
-        </div>
-    </div>
-</section>
-
-<!-- CONTACTO -->
-<section id="contacto">
-    <div class="container">
-        <div class="contact-wrapper">
-            <div class="contact-info">
-                <span class="section-tag">Contacto</span>
-                <h2 class="section-title">Hablemos juntos</h2>
-                <p>¿Tenés un proyecto en mente? Escribime, respondo a la brevedad.</p>
+    <header>
+        <img src="img/logo_je_3.png" alt="Logo" class="logo-pic">
+        <p><b>Especialista en Python | Técnica Informática | Tutora de Python | Tutora de reparación de PC</b></p>
+        <section class="skills">
+            <div class="tech-icons align-items-center">
+                <span title="HTML5"><i class="fab fa-html5"></i></span>
+                <span title="CSS3"><i class="fab fa-css3-alt"></i></span>
+                <span title="JavaScript"><i class="fab fa-js"></i></span>
+                <span title="ReactJs"><i class="fab fa-react"></i></span>
+                <span title="Python"><i class="fab fa-python"></i></span>
+                <span title="Node.js"><i class="fab fa-node-js"></i></span>
+                <span title="Express"><i class="fas fa-server"></i></span>
+                <span title="Databases"><i class="fas fa-database"></i></span>
             </div>
-            <div class="contact-form">
-                <div class="alert error" id="alertError"></div>
-                <div class="alert success" id="alertSuccess"></div>
-                <div class="form-group">
+        </section>
+    </header>
+
+    <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <nav class="p-navbar" id="pNavbar">
+        <a href="index.html"><i class="fas fa-home"></i></a>
+        <a href="#sobremi">Sobre mí</a>
+        <a href="#capacitacion">Certificaciones</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#game">Juego</a>
+        <a href="#contacto-p">Contacto</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- SOBRE MÍ -->
+        <section id="sobremi" class="section-flex">
+            <div class="texto-flex">
+                <h2 data-aos="fade-down">SOBRE MÍ</h2>
+                <p>Soy <strong>Técnica Universitaria en Programación</strong>, autodidacta y apasionada por la
+                    tecnología. Me motiva estudiar y capacitarme constantemente para aplicar nuevas herramientas que
+                    impulsen la calidad de los proyectos que desarrollo.</p>
+                <p>Actualmente me desempeño como <strong>tutora</strong> de <strong>Reparación y Mantenimiento de
+                        PC</strong> y <strong>Desarrollo en Python</strong>, guiando a estudiantes en su formación
+                    técnica.</p>
+                <p>Mi principal fortaleza es la investigación y la resolución de problemas complejos, habilidades que
+                    aplico tanto en programación como en la reparación de equipos informáticos.</p>
+                <p>Entre mis competencias técnicas se destacan: <strong>HTML5, CSS3, JavaScript, React.js, Python,
+                        Node.js, Express</strong> y manejo de <strong>bases de datos</strong>.</p>
+                <p><em>Estoy abierta a nuevos proyectos, colaboraciones y oportunidades de aprendizaje. ¡No dudes en
+                        contactarme!</em></p>
+            </div>
+            <div class="img-flex">
+                <img src="img/jor.png" alt="Jordana Escalona">
+            </div>
+        </section>
+
+        <!-- CERTIFICACIONES -->
+        <section id="capacitacion">
+            <h2 data-aos="fade-down">CERTIFICACIONES</h2>
+            <div class="cert-grid" id="certGrid">
+                <div class="loading-p">Cargando certificaciones...</div>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <section id="portfolio">
+            <h2 data-aos="fade-down">PORTFOLIO</h2>
+            <div class="projects-grid-p" id="projectsGridP">
+                <div class="loading-p">Cargando proyectos...</div>
+            </div>
+        </section>
+
+        <!-- JUEGO -->
+        <section id="game" class="game-section">
+            <h2 data-aos="fade-down">JUEGO DE LAS 8 REINAS</h2>
+            <p>Colocá ocho reinas en el tablero sin que ninguna pueda atacar a otra.</p>
+            <p>No puede haber dos reinas en la misma fila, columna ni diagonal.</p>
+            <div class="chessboard" id="chessboard"></div>
+        </section>
+
+        <!-- OSO -->
+        <div class="bear">
+            <div class="body"></div>
+            <div class="head">
+                <div class="ear left"></div>
+                <div class="ear right"></div>
+                <div class="eye left">
+                    <div class="pupil"></div>
+                </div>
+                <div class="eye right">
+                    <div class="pupil"></div>
+                </div>
+                <div class="nose"></div>
+                <div class="mouth"></div>
+                <div class="mouth-line"></div>
+            </div>
+        </div>
+
+        <!-- CONTACTO -->
+        <section id="contacto-p">
+            <h2>CONTACTO</h2>
+            <div class="redes-sociales">
+                <a href="https://www.linkedin.com/in/jordanaescalona" target="_blank">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="mailto:jordana.escalona@gmail.com">
+                    <i class="fas fa-envelope"></i> jordana.escalona@gmail.com
+                </a>
+                <a href="https://wa.me/5492964545585" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp directo
+                </a>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <div class="alert-p error" id="alertError"></div>
+                <div class="alert-p success" id="alertSuccess"></div>
+                <div class="form-group-p">
                     <label>Nombre</label>
                     <input type="text" id="contactName" placeholder="Tu nombre">
                 </div>
-                <div class="form-group">
+                <div class="form-group-p">
                     <label>Email</label>
                     <input type="email" id="contactEmail" placeholder="tu@email.com">
                 </div>
-                <div class="form-group">
+                <div class="form-group-p">
                     <label>Mensaje</label>
-                    <textarea id="contactMessage" placeholder="Contame sobre tu proyecto..."></textarea>
+                    <textarea id="contactMessage" placeholder="Escribime..."></textarea>
                 </div>
-                <button class="hero-btn" onclick="sendMessage()">Enviar mensaje</button>
+                <div class="qr-whatsapp">
+                    <p>Escaneá el código QR para hablar por WhatsApp:</p>
+                    <img src="img/jordana-whatsapp-qr.jpg" alt="QR de WhatsApp" width="200">
+                </div>
+                <button class="btn-contact" onclick="sendMessage()">Enviar mensaje</button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Modal certificación -->
+    <div class="cert-modal-overlay-p" id="certModalOverlay">
+        <div class="cert-modal-p">
+            <button class="cert-modal-close-p" onclick="closeCertModal()">✕</button>
+            <img id="certModalImage" src="" alt="" style="display:none">
+            <div class="cert-modal-placeholder-p" id="certModalPlaceholder">🏆</div>
+            <div class="cert-modal-body-p">
+                <div class="cert-issuer-p" id="certModalIssuer"></div>
+                <h2 id="certModalName"></h2>
+                <div class="cert-date-p" id="certModalDate"></div>
+                <a id="certModalLink" href="" target="_blank" class="cert-credential-btn" style="display:none">Ver
+                    credencial</a>
             </div>
         </div>
     </div>
-</section>
 
-<!-- Modal certificación -->
-<div class="cert-modal-overlay" id="certModalOverlay">
-    <div class="cert-modal">
-        <button class="cert-modal-close" onclick="closeCertModal()">✕</button>
-        <img id="certModalImage" src="" alt="" style="display:none">
-        <div class="cert-modal-placeholder" id="certModalPlaceholder">🏆</div>
-        <div class="cert-modal-body">
-            <div class="cert-issuer" id="certModalIssuer"></div>
-            <h2 id="certModalName"></h2>
-            <div class="cert-date" id="certModalDate"></div>
-            <a id="certModalLink" href="" target="_blank" class="hero-btn" style="display:none; margin-top:1.2rem">Ver credencial</a>
-        </div>
+    <!-- Lightbox -->
+    <div class="lightbox-overlay-p" id="lightboxOverlay">
+        <button class="lightbox-close-p" onclick="closeLightbox()">✕</button>
+        <img id="lightboxImg" src="" alt="">
     </div>
-</div>
 
-<!-- Lightbox -->
-<div class="lightbox-overlay" id="lightboxOverlay">
-    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-    <img id="lightboxImg" src="" alt="">
-</div>
+    <footer class="p-footer">
+        &copy; 2026 Jordana Elizabeth Escalona Colivoro
+    </footer>
 
-<footer>
-    <p>© 2026 Jordana Escalona — Desarrolladora Fullstack</p>
-</footer>
-
-<script src="js/main.js"></script>
-<script src="js/portfolio.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+        new Typed('#typed-text', {
+            strings: ["Hola, soy Jordana...", "Técnica Universitaria en Programación.", "Bienvenid@ a mi web!!", " "],
+            typeSpeed: 50, backSpeed: 25, loop: true, smartBackspace: true, showCursor: true, cursorChar: '|'
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>AOS.init();</script>
+    <script src="js/main.js"></script>
+    <script src="js/juego.js"></script>
+    <script src="js/portfolio.js"></script>
 
 </body>
+
 </html>
