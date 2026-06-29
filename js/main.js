@@ -1,4 +1,6 @@
-// Navbar transparente al hacer scroll
+const API = 'https://hub-api.jordana-escalona.workers.dev';
+
+// Navbar scroll
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
