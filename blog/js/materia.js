@@ -76,8 +76,6 @@ function formatDate(dateStr) {
     return date.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-loadSubjectAndPosts();
-
 function openLightbox(src, alt) {
     const overlay = document.getElementById('lightboxOverlay');
     document.getElementById('lightboxImg').src = src;
@@ -91,14 +89,16 @@ function closeLightbox() {
     document.body.style.overflow = '';
 }
 
-// Cerrar al hacer clic fuera de la imagen
-document.getElementById('lightboxOverlay').addEventListener('click', function(e) {
-    if (e.target !== document.getElementById('lightboxImg')) closeLightbox();
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('lightboxOverlay').addEventListener('click', function(e) {
+        if (e.target !== document.getElementById('lightboxImg')) closeLightbox();
+    });
+
+    document.addEventListener('click', function(e) {
+        if (e.target.tagName === 'IMG' && e.target.closest('.post-content')) {
+            openLightbox(e.target.src, e.target.alt);
+        }
+    });
 });
 
-// Hacer clickeables las imágenes del contenido
-document.addEventListener('click', function(e) {
-    if (e.target.tagName === 'IMG' && e.target.closest('.post-content')) {
-        openLightbox(e.target.src, e.target.alt);
-    }
-});
+loadSubjectAndPosts();
