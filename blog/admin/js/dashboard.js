@@ -20,6 +20,7 @@ function initQuillEditor() {
         }
     });
 }
+
 // ── CARGAR MATERIAS ────────────────────────────────────────────
 async function loadSubjects() {
     const res = await fetch(`${API}/api/subjects`);
@@ -42,7 +43,6 @@ async function loadSubjects() {
         `).join('');
     }
 
-    // Llenar el select de entradas
     const select = document.getElementById('postSubject');
     select.innerHTML = allSubjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
 }
@@ -125,22 +125,29 @@ async function loadPosts() {
     }).join('');
 }
 
-let quillEditor = null;
+async function openPostModal(id = null) {
+    editingPostId = id;
+    document.getElementById('postModalTitle').textContent = id ? 'Editar entrada' : 'Nueva entrada';
+    document.getElementById('postModalOverlay').classList.add('show');
 
-function initQuillEditor() {
-    if (quillEditor) return;
-    quillEditor = new Quill('#postContentEditor', {
-        theme: 'snow',
-        modules: {
-            toolbar: [
-                ['bold', 'italic', 'underline'],
-                [{ 'header': [1, 2, 3, false] }],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                ['link', 'blockquote', 'code-block'],
-                ['clean']
-            ]
-        }
-    });
+    initQuillEditor();
+
+    if (id) {
+        const res = await authFetch(`${API}/api/admin/posts/${id}`);
+        const p = await res.json();
+        document.getElementById('postSubject').value = p.subject_id;
+        document.getElementById('postTitle').value = p.title;
+        quillEditor.root.innerHTML = p.content;
+        document.getElementById('postImageUrl').value = p.image_url || '';
+        document.getElementById('postIsPro').checked = !!p.is_pro;
+        document.getElementById('postOrder').value = p.order;
+    } else {
+        document.getElementById('postTitle').value = '';
+        quillEditor.root.innerHTML = '';
+        document.getElementById('postImageUrl').value = '';
+        document.getElementById('postIsPro').checked = false;
+        document.getElementById('postOrder').value = 0;
+    }
 }
 
 function closePostModal() {
