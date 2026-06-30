@@ -116,9 +116,25 @@ function resetZoom(e) {
 
 function applyZoom() {
     const img = document.getElementById('lightboxImg');
+    const overlay = document.getElementById('lightboxOverlay');
     img.style.transform = `scale(${currentZoom})`;
     img.style.cursor = currentZoom > 1 ? 'grab' : 'zoom-in';
+    
+    if (currentZoom > 1) {
+        img.style.maxWidth = 'none';
+        img.style.maxHeight = 'none';
+        overlay.style.alignItems = 'flex-start';
+        overlay.style.justifyContent = 'flex-start';
+        overlay.style.padding = '2rem';
+    } else {
+        img.style.maxWidth = '90vw';
+        img.style.maxHeight = '90vh';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.padding = '0';
+    }
 }
+
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('lightboxOverlay').addEventListener('click', function (e) {
         if (e.target !== document.getElementById('lightboxImg')) closeLightbox();
