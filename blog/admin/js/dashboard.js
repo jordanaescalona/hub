@@ -48,28 +48,6 @@ function pdfHandler() {
         quillEditor.clipboard.dangerouslyPasteHTML(range ? range.index : quillEditor.getLength(), embedHtml);
     }
 }
-function initQuillEditor() {
-    if (quillEditor) return;
-    quillEditor = new Quill('#postContentEditor', {
-        theme: 'snow',
-        modules: {
-            toolbar: {
-                container: [
-                    ['bold', 'italic', 'underline'],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'header': [1, 2, 3, false] }],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    ['link', 'blockquote', 'code-block'],
-                    ['image', 'formula'],
-                    ['clean']
-                ],
-                handlers: {
-                    image: imageHandler
-                }
-            }
-        }
-    });
-}
 
 function initQuillEditor() {
     if (quillEditor) return;
@@ -92,6 +70,9 @@ function initQuillEditor() {
             }
         }
     });
+
+    const toolbar = quillEditor.getModule('toolbar');
+    toolbar.addHandler('image', imageHandler);
 }
 
 // ── CARGAR MATERIAS ────────────────────────────────────────────
