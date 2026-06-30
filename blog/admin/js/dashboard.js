@@ -65,7 +65,7 @@ function pdfHandler() {
 
             const data = await res.json();
             const range = quillEditor.getSelection() || { index: quillEditor.getLength() };
-            const embedHtml = `<iframe src="${data.url}" width="100%" height="500" style="border:1px solid #e2e8f0; border-radius:8px; margin: 1rem 0;"></iframe>`;
+            const embedHtml = `<iframe src="${data.url}#toolbar=0&navpanes=0&scrollbar=1&zoom=100" width="100%" height="500" style="border:1px solid #e2e8f0; border-radius:8px; margin: 1rem 0;"></iframe>`;
             quillEditor.clipboard.dangerouslyPasteHTML(range.index, embedHtml);
 
         } catch (err) {
