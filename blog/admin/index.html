@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Blog — Login</title>
+    <link rel="stylesheet" href="../css/blog.css">
+    <style>
+        body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f8fafc; }
+        .login-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 2.5rem; width: 100%; max-width: 400px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        .login-card h1 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+        .login-card p { color: #64748b; margin-bottom: 2rem; font-size: 0.9rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-size: 0.85rem; color: #64748b; margin-bottom: 0.4rem; }
+        .form-group input { width: 100%; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.7rem 1rem; font-size: 0.95rem; outline: none; }
+        .form-group input:focus { border-color: #2563eb; }
+        .btn-login { width: 100%; background: #2563eb; color: #fff; border: none; padding: 0.75rem; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .btn-login:hover { opacity: 0.9; }
+        .alert { padding: 0.7rem 1rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; display: none; }
+        .alert.error { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+        .alert.show { display: block; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h1>Admin del Blog</h1>
+    <p>Ingresá la contraseña de administración</p>
+    <div class="alert error" id="alert"></div>
+    <div class="form-group">
+        <label>Token de administrador</label>
+        <input type="password" id="adminToken" placeholder="••••••••" autofocus>
+    </div>
+    <button class="btn-login" id="loginBtn">Ingresar</button>
+</div>
+
+<script src="js/auth.js"></script>
+<script>
+    if (getToken()) window.location.href = 'dashboard.html';
+
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const token = document.getElementById('adminToken').value.trim();
+        if (!token) { showAlert('alert', 'Ingresá el token'); return; }
+
+        // Verificamos el token intentando acceder a un endpoint protegido
+        try {
+            const res = await fetch(`${API}/api/admin/posts/1`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (res.status === 401) {
+                showAlert('alert', 'Token incorrecto');
+                return;
+            }
+
+            saveToken(token);
+            window.location.href = 'dashboard.html';
+
+        } catch (err) {
+            showAlert('alert', 'Error al conectar con el servidor');
+        }
+    });
+
+    document.getElementById('adminToken').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+</script>
+
+</body>
+</html>

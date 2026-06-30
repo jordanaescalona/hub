@@ -1,0 +1,63 @@
+const API = 'https://hub-api.jordana-escalona.workers.dev';
+
+function getSlugFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('slug');
+}
+
+async function loadSubjectAndPosts() {
+    const slug = getSlugFromUrl();
+    if (!slug) {
+        document.getElementById('subjectName').textContent = 'Materia no encontrada';
+        return;
+    }
+
+    try {
+        const subjectRes = await fetch(`${API}/api/subjects/${slug}`);
+        if (!subjectRes.ok) {
+            document.getElementById('subjectName').textContent = 'Materia no encontrada';
+            return;
+        }
+        const subject = await subjectRes.json();
+
+        document.title = `${subject.name} — Blog Tecnicatura`;
+        document.getElementById('subjectName').textContent = subject.name;
+        document.getElementById('subjectDescription').textContent = subject.description || '';
+
+        const postsRes = await fetch(`${API}/api/posts?subject_id=${subject.id}`);
+        const posts = await postsRes.json();
+
+        const list = document.getElementById('postsList');
+
+        if (posts.length === 0) {
+            list.innerHTML = `<div class="empty-state-blog">Todavía no hay entradas en esta materia.</div>`;
+            return;
+        }
+
+        list.innerHTML = posts.map(p => `
+            <div class="post-item">
+                ${p.is_pro ? '<span class="pro-badge">⭐ PRO</span>' : ''}
+                <h3>${p.title}</h3>
+                <div class="post-date">${formatDate(p.created_at)}</div>
+                ${p.locked
+                    ? `<div class="pro-locked">
+                         <div class="icon">🔒</div>
+                         <p>Este contenido es exclusivo para usuarios PRO</p>
+                       </div>`
+                    : `${p.image_url ? `<img src="${p.image_url}" alt="${p.title}">` : ''}
+                       <div class="post-content">${p.content}</div>`
+                }
+            </div>
+        `).join('');
+
+    } catch (err) {
+        document.getElementById('postsList').innerHTML = `<div class="empty-state-blog">Error al cargar las entradas.</div>`;
+    }
+}
+
+function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+loadSubjectAndPosts();
