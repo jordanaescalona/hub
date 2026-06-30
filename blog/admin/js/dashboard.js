@@ -41,12 +41,38 @@ function imageHandler() {
 }
 
 function pdfHandler() {
-    const url = prompt('Pegá la URL del PDF:');
-    if (url) {
-        const range = quillEditor.getSelection();
-        const embedHtml = `<iframe src="${url}" width="100%" height="500" style="border:1px solid #e2e8f0; border-radius:8px; margin: 1rem 0;"></iframe>`;
-        quillEditor.clipboard.dangerouslyPasteHTML(range ? range.index : quillEditor.getLength(), embedHtml);
-    }
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/pdf';
+    input.onchange = async () => {
+        const file = input.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fetch(`${API}/api/upload`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${getToken()}` },
+                body: formData
+            });
+
+            if (!res.ok) {
+                alert('Error al subir el PDF');
+                return;
+            }
+
+            const data = await res.json();
+            const range = quillEditor.getSelection() || { index: quillEditor.getLength() };
+            const embedHtml = `<iframe src="${data.url}" width="100%" height="500" style="border:1px solid #e2e8f0; border-radius:8px; margin: 1rem 0;"></iframe>`;
+            quillEditor.clipboard.dangerouslyPasteHTML(range.index, embedHtml);
+
+        } catch (err) {
+            alert('Error al conectar con el servidor');
+        }
+    };
+    input.click();
 }
 
 function initQuillEditor() {
