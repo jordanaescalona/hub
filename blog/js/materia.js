@@ -46,13 +46,13 @@ async function loadSubjectAndPosts() {
                 </button>
                 <div class="post-accordion-body" id="body-${p.id}" style="display:none">
                     ${p.locked
-                        ? `<div class="pro-locked">
+                ? `<div class="pro-locked">
                              <div class="icon">🔒</div>
                              <p>Este contenido es exclusivo para usuarios PRO</p>
                            </div>`
-                        : `${p.image_url ? `<img src="${p.image_url}" alt="${p.title}">` : ''}
+                : `${p.image_url ? `<img src="${p.image_url}" alt="${p.title}">` : ''}
                            <div class="post-content">${p.content}</div>`
-                    }
+            }
                 </div>
             </div>
         `).join('');
@@ -76,10 +76,16 @@ function formatDate(dateStr) {
     return date.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
+let currentZoom = 1;
+
 function openLightbox(src, alt) {
     const overlay = document.getElementById('lightboxOverlay');
-    document.getElementById('lightboxImg').src = src;
-    document.getElementById('lightboxImg').alt = alt;
+    const img = document.getElementById('lightboxImg');
+    img.src = src;
+    img.alt = alt;
+    img.style.transform = 'scale(1)';
+    img.style.cursor = 'zoom-in';
+    currentZoom = 1;
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 }
@@ -87,14 +93,35 @@ function openLightbox(src, alt) {
 function closeLightbox() {
     document.getElementById('lightboxOverlay').style.display = 'none';
     document.body.style.overflow = '';
+    currentZoom = 1;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('lightboxOverlay').addEventListener('click', function(e) {
+function zoomIn() {
+    currentZoom = Math.min(currentZoom + 0.5, 4);
+    applyZoom();
+}
+
+function zoomOut() {
+    currentZoom = Math.max(currentZoom - 0.5, 0.5);
+    applyZoom();
+}
+
+function resetZoom() {
+    currentZoom = 1;
+    applyZoom();
+}
+
+function applyZoom() {
+    const img = document.getElementById('lightboxImg');
+    img.style.transform = `scale(${currentZoom})`;
+    img.style.cursor = currentZoom > 1 ? 'grab' : 'zoom-in';
+}
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('lightboxOverlay').addEventListener('click', function (e) {
         if (e.target !== document.getElementById('lightboxImg')) closeLightbox();
     });
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (e.target.tagName === 'IMG' && e.target.closest('.post-content')) {
             openLightbox(e.target.src, e.target.alt);
         }
