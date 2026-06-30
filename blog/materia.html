@@ -40,11 +40,11 @@
             style="position:fixed; top:1rem; right:1rem; background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:1.2rem; width:36px; height:36px; border-radius:50%; cursor:pointer; z-index:301;">✕</button>
         <div
             style="display:flex; gap:0.5rem; position:fixed; bottom:1rem; left:50%; transform:translateX(-50%); z-index:301;">
-            <button onclick="zoomIn()"
+            <button onclick="zoomIn(event)"
                 style="background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:1.2rem; width:36px; height:36px; border-radius:50%; cursor:pointer;">+</button>
-            <button onclick="zoomOut()"
+            <button onclick="zoomOut(event)"
                 style="background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:1.2rem; width:36px; height:36px; border-radius:50%; cursor:pointer;">−</button>
-            <button onclick="resetZoom()"
+            <button onclick="resetZoom(event)"
                 style="background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:0.75rem; width:36px; height:36px; border-radius:50%; cursor:pointer;">↺</button>
         </div>
         <img id="lightboxImg" src="" alt=""

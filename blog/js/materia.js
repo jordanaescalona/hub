@@ -96,17 +96,20 @@ function closeLightbox() {
     currentZoom = 1;
 }
 
-function zoomIn() {
+function zoomIn(e) {
+    e.stopPropagation();
     currentZoom = Math.min(currentZoom + 0.5, 4);
     applyZoom();
 }
 
-function zoomOut() {
+function zoomOut(e) {
+    e.stopPropagation();
     currentZoom = Math.max(currentZoom - 0.5, 0.5);
     applyZoom();
 }
 
-function resetZoom() {
+function resetZoom(e) {
+    e.stopPropagation();
     currentZoom = 1;
     applyZoom();
 }
