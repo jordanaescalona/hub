@@ -1,36 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Materia — Blog Tecnicatura</title>
     <link rel="stylesheet" href="css/blog.css">
 </head>
+
 <body>
 
-<nav class="navbar">
-    <a href="../index.html" class="navbar-brand">Jordana Escalona</a>
-    <ul class="navbar-links">
-        <li><a href="index.html">← Volver al blog</a></li>
-    </ul>
-</nav>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand">Jordana Escalona</a>
+        <ul class="navbar-links">
+            <li><a href="index.html">← Volver al blog</a></li>
+        </ul>
+    </nav>
 
-<section class="hero">
-    <h1 id="subjectName">Cargando...</h1>
-    <p id="subjectDescription"></p>
-</section>
+    <section class="hero">
+        <h1 id="subjectName">Cargando...</h1>
+        <p id="subjectDescription"></p>
+    </section>
 
-<div class="container">
-    <div class="posts-list" id="postsList">
-        <div class="loading-blog">Cargando entradas...</div>
+    <div class="container">
+        <div class="posts-list" id="postsList">
+            <div class="loading-blog">Cargando entradas...</div>
+        </div>
     </div>
-</div>
 
-<footer>
-    <p>© 2026 Jordana Escalona — Blog Tecnicatura en Ciencias de Datos e IA</p>
-</footer>
+    <footer>
+        <p>© 2026 Jordana Escalona — Blog Tecnicatura en Ciencias de Datos e IA</p>
+    </footer>
 
-<script src="js/materia.js"></script>
-
+    <script src="js/materia.js"></script>
+    <!-- Lightbox -->
+    <div id="lightboxOverlay"
+        style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:300; align-items:center; justify-content:center; cursor:zoom-out;">
+        <button onclick="closeLightbox()"
+            style="position:absolute; top:1rem; right:1rem; background:rgba(255,255,255,0.1); border:none; color:#fff; font-size:1.2rem; width:36px; height:36px; border-radius:50%; cursor:pointer;">✕</button>
+        <img id="lightboxImg" src="" alt=""
+            style="max-width:90vw; max-height:90vh; object-fit:contain; border-radius:8px;">
+    </div>
 </body>
+
 </html>

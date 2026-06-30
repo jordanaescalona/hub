@@ -77,3 +77,28 @@ function formatDate(dateStr) {
 }
 
 loadSubjectAndPosts();
+
+function openLightbox(src, alt) {
+    const overlay = document.getElementById('lightboxOverlay');
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightboxImg').alt = alt;
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightboxOverlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+// Cerrar al hacer clic fuera de la imagen
+document.getElementById('lightboxOverlay').addEventListener('click', function(e) {
+    if (e.target !== document.getElementById('lightboxImg')) closeLightbox();
+});
+
+// Hacer clickeables las imágenes del contenido
+document.addEventListener('click', function(e) {
+    if (e.target.tagName === 'IMG' && e.target.closest('.post-content')) {
+        openLightbox(e.target.src, e.target.alt);
+    }
+});
