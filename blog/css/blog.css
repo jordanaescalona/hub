@@ -160,12 +160,14 @@ footer {
 
 .post-accordion-body {
     padding: 0 1.5rem 1.5rem;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 .post-accordion-body img {
     width: 100%;
-    max-height: 300px;
-    object-fit: cover;
+    max-height: 400px;
+    object-fit: contain;
     border-radius: 8px;
     margin-bottom: 1rem;
 }
@@ -173,6 +175,14 @@ footer {
 .post-content { color: var(--text); font-size: 0.95rem; line-height: 1.7; }
 .post-content p { margin-bottom: 1rem; }
 .post-content p:last-child { margin-bottom: 0; }
+
+.post-content img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin: 0.5rem 0;
+}
 
 .post-date { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.3rem; }
 
