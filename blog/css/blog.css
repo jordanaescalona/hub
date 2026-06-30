@@ -171,6 +171,8 @@ footer {
 }
 
 .post-content { color: var(--text); font-size: 0.95rem; line-height: 1.7; }
+.post-content p { margin-bottom: 1rem; }
+.post-content p:last-child { margin-bottom: 0; }
 
 .post-date { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.3rem; }
 
