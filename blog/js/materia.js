@@ -35,24 +35,40 @@ async function loadSubjectAndPosts() {
         }
 
         list.innerHTML = posts.map(p => `
-            <div class="post-item">
-                ${p.is_pro ? '<span class="pro-badge">⭐ PRO</span>' : ''}
-                <h3>${p.title}</h3>
-                <div class="post-date">${formatDate(p.created_at)}</div>
-                ${p.locked
-                    ? `<div class="pro-locked">
-                         <div class="icon">🔒</div>
-                         <p>Este contenido es exclusivo para usuarios PRO</p>
-                       </div>`
-                    : `${p.image_url ? `<img src="${p.image_url}" alt="${p.title}">` : ''}
-                       <div class="post-content">${p.content}</div>`
-                }
+            <div class="post-accordion">
+                <button class="post-accordion-header" onclick="toggleAccordion(${p.id})">
+                    <div>
+                        ${p.is_pro ? '<span class="pro-badge">⭐ PRO</span>' : ''}
+                        <span class="post-accordion-title">${p.title}</span>
+                        <div class="post-date">${formatDate(p.created_at)}</div>
+                    </div>
+                    <span class="accordion-arrow" id="arrow-${p.id}">▼</span>
+                </button>
+                <div class="post-accordion-body" id="body-${p.id}" style="display:none">
+                    ${p.locked
+                        ? `<div class="pro-locked">
+                             <div class="icon">🔒</div>
+                             <p>Este contenido es exclusivo para usuarios PRO</p>
+                           </div>`
+                        : `${p.image_url ? `<img src="${p.image_url}" alt="${p.title}">` : ''}
+                           <div class="post-content">${p.content}</div>`
+                    }
+                </div>
             </div>
         `).join('');
 
     } catch (err) {
         document.getElementById('postsList').innerHTML = `<div class="empty-state-blog">Error al cargar las entradas.</div>`;
     }
+}
+
+function toggleAccordion(id) {
+    const body = document.getElementById(`body-${id}`);
+    const arrow = document.getElementById(`arrow-${id}`);
+    const isOpen = body.style.display === 'block';
+
+    body.style.display = isOpen ? 'none' : 'block';
+    arrow.textContent = isOpen ? '▼' : '▲';
 }
 
 function formatDate(dateStr) {
