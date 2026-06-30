@@ -119,6 +119,16 @@
             overflow-y: auto;
         }
 
+        .modal-large {
+            max-width: 95vw;
+            width: 95vw;
+            height: 90vh;
+        }
+
+        .modal-large #postContentEditor {
+            min-height: 400px;
+        }
+
         .form-group {
             margin-bottom: 1rem;
         }
@@ -188,6 +198,7 @@
             font-size: 0.9rem;
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 </head>
 
 <body>
@@ -277,7 +288,7 @@
 
     <!-- Modal Entrada -->
     <div class="modal-overlay" id="postModalOverlay">
-        <div class="modal">
+        <div class="modal modal-large">
             <h3 id="postModalTitle">Nueva entrada</h3>
             <div class="form-group">
                 <label>Materia *</label>
@@ -289,6 +300,10 @@
             </div>
             <div class="form-group">
                 <label>Contenido *</label>
+                <div style="margin-bottom: 0.5rem;">
+                    <button type="button" class="btn btn-secondary" onclick="pdfHandler()" style="font-size: 0.8rem;">📄
+                        Insertar PDF</button>
+                </div>
                 <div id="postContentEditor"></div>
             </div>
             <div class="form-group">
@@ -311,6 +326,7 @@
     </div>
 
     <script src="js/auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script src="js/dashboard.js"></script>
 

@@ -5,19 +5,91 @@ let editingPostId = null;
 let allSubjects = [];
 let quillEditor = null;
 
+function imageHandler() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async () => {
+        const file = input.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const range = quillEditor.getSelection() || { index: quillEditor.getLength() };
+
+        try {
+            const res = await fetch(`${API}/api/upload`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${getToken()}` },
+                body: formData
+            });
+
+            if (!res.ok) {
+                alert('Error al subir la imagen');
+                return;
+            }
+
+            const data = await res.json();
+            quillEditor.insertEmbed(range.index, 'image', data.url);
+
+        } catch (err) {
+            alert('Error al conectar con el servidor');
+        }
+    };
+    input.click();
+}
+
+function pdfHandler() {
+    const url = prompt('Pegá la URL del PDF:');
+    if (url) {
+        const range = quillEditor.getSelection();
+        const embedHtml = `<iframe src="${url}" width="100%" height="500" style="border:1px solid #e2e8f0; border-radius:8px; margin: 1rem 0;"></iframe>`;
+        quillEditor.clipboard.dangerouslyPasteHTML(range ? range.index : quillEditor.getLength(), embedHtml);
+    }
+}
 function initQuillEditor() {
     if (quillEditor) return;
     quillEditor = new Quill('#postContentEditor', {
         theme: 'snow',
         modules: {
-            toolbar: [
-                ['bold', 'italic', 'underline'],
-                [{ 'color': [] }, { 'background': [] }],
-                [{ 'header': [1, 2, 3, false] }],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                ['link', 'blockquote', 'code-block'],
-                ['clean']
-            ]
+            toolbar: {
+                container: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'header': [1, 2, 3, false] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['link', 'blockquote', 'code-block'],
+                    ['image', 'formula'],
+                    ['clean']
+                ],
+                handlers: {
+                    image: imageHandler
+                }
+            }
+        }
+    });
+}
+
+function initQuillEditor() {
+    if (quillEditor) return;
+    quillEditor = new Quill('#postContentEditor', {
+        theme: 'snow',
+        modules: {
+            toolbar: {
+                container: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'header': [1, 2, 3, false] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['link', 'blockquote', 'code-block'],
+                    ['image', 'formula'],
+                    ['clean']
+                ],
+                handlers: {
+                    image: imageHandler
+                }
+            }
         }
     });
 }
