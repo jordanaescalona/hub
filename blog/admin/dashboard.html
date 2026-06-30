@@ -1,147 +1,319 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Blog — Dashboard</title>
     <link rel="stylesheet" href="../css/blog.css">
     <style>
-        body { background: #f8fafc; }
-        .admin-navbar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-        .admin-container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
-        .panel { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
-        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
-        .panel-header h2 { font-size: 1.1rem; }
-        .btn { padding: 0.6rem 1.2rem; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
-        .btn-primary { background: #2563eb; color: #fff; }
-        .btn-secondary { background: #f1f5f9; color: #334155; }
-        .btn-danger { background: #fee2e2; color: #dc2626; }
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; font-size: 0.78rem; color: #64748b; text-transform: uppercase; padding: 0.6rem; border-bottom: 2px solid #e2e8f0; }
-        td { padding: 0.7rem 0.6rem; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; }
-        .actions { display: flex; gap: 0.4rem; }
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 200; padding: 1rem; }
-        .modal-overlay.show { display: flex; }
-        .modal { background: #fff; border-radius: 12px; padding: 2rem; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-size: 0.85rem; color: #64748b; margin-bottom: 0.4rem; }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.6rem 0.9rem; font-size: 0.9rem; font-family: inherit;
+        body {
+            background: #f8fafc;
         }
-        .form-group textarea { min-height: 150px; resize: vertical; }
-        .checkbox-group { display: flex; align-items: center; gap: 0.5rem; }
-        .checkbox-group input { width: auto; }
-        .modal-footer { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 1.2rem; }
-        .pro-tag { background: #fef3c7; color: #92400e; padding: 0.15rem 0.5rem; border-radius: 12px; font-size: 0.72rem; font-weight: 700; }
+
+        .admin-navbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .panel {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .panel-header h2 {
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            font-size: 0.78rem;
+            color: #64748b;
+            text-transform: uppercase;
+            padding: 0.6rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 0.7rem 0.6rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.88rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 1rem;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.6rem 0.9rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.6rem;
+            margin-top: 1.2rem;
+        }
+
+        .pro-tag {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <style>
+        #postContentEditor {
+            min-height: 200px;
+            background: #fff;
+        }
+
+        .ql-toolbar {
+            border-radius: 6px 6px 0 0;
+        }
+
+        .ql-container {
+            border-radius: 0 0 6px 6px;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
+
 <body>
 
-<nav class="admin-navbar">
-    <strong>Admin Blog</strong>
-    <button class="btn btn-secondary" onclick="logout()">Salir</button>
-</nav>
+    <nav class="admin-navbar">
+        <strong>Admin Blog</strong>
+        <button class="btn btn-secondary" onclick="logout()">Salir</button>
+    </nav>
 
-<div class="admin-container">
+    <div class="admin-container">
 
-    <!-- MATERIAS -->
-    <div class="panel">
-        <div class="panel-header">
-            <h2>Materias</h2>
-            <button class="btn btn-primary" onclick="openSubjectModal()">+ Nueva materia</button>
+        <!-- MATERIAS -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Materias</h2>
+                <button class="btn btn-primary" onclick="openSubjectModal()">+ Nueva materia</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Slug</th>
+                        <th>Orden</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="subjectsTable">
+                    <tr>
+                        <td colspan="4">Cargando...</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <table>
-            <thead>
-                <tr><th>Nombre</th><th>Slug</th><th>Orden</th><th>Acciones</th></tr>
-            </thead>
-            <tbody id="subjectsTable">
-                <tr><td colspan="4">Cargando...</td></tr>
-            </tbody>
-        </table>
+
+        <!-- ENTRADAS -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Entradas</h2>
+                <button class="btn btn-primary" onclick="openPostModal()">+ Nueva entrada</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Materia</th>
+                        <th>Tipo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="postsTable">
+                    <tr>
+                        <td colspan="4">Cargando...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
-    <!-- ENTRADAS -->
-    <div class="panel">
-        <div class="panel-header">
-            <h2>Entradas</h2>
-            <button class="btn btn-primary" onclick="openPostModal()">+ Nueva entrada</button>
-        </div>
-        <table>
-            <thead>
-                <tr><th>Título</th><th>Materia</th><th>Tipo</th><th>Acciones</th></tr>
-            </thead>
-            <tbody id="postsTable">
-                <tr><td colspan="4">Cargando...</td></tr>
-            </tbody>
-        </table>
-    </div>
-
-</div>
-
-<!-- Modal Materia -->
-<div class="modal-overlay" id="subjectModalOverlay">
-    <div class="modal">
-        <h3 id="subjectModalTitle">Nueva materia</h3>
-        <div class="form-group">
-            <label>Nombre *</label>
-            <input type="text" id="subjectName" placeholder="Ej: Estadística">
-        </div>
-        <div class="form-group">
-            <label>Slug (URL) *</label>
-            <input type="text" id="subjectSlug" placeholder="estadistica">
-        </div>
-        <div class="form-group">
-            <label>Descripción</label>
-            <textarea id="subjectDescription" placeholder="Breve descripción de la materia" style="min-height:80px"></textarea>
-        </div>
-        <div class="form-group">
-            <label>Orden</label>
-            <input type="number" id="subjectOrder" value="0">
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeSubjectModal()">Cancelar</button>
-            <button class="btn btn-primary" onclick="saveSubject()">Guardar</button>
+    <!-- Modal Materia -->
+    <div class="modal-overlay" id="subjectModalOverlay">
+        <div class="modal">
+            <h3 id="subjectModalTitle">Nueva materia</h3>
+            <div class="form-group">
+                <label>Nombre *</label>
+                <input type="text" id="subjectName" placeholder="Ej: Estadística">
+            </div>
+            <div class="form-group">
+                <label>Slug (URL) *</label>
+                <input type="text" id="subjectSlug" placeholder="estadistica">
+            </div>
+            <div class="form-group">
+                <label>Descripción</label>
+                <textarea id="subjectDescription" placeholder="Breve descripción de la materia"
+                    style="min-height:80px"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Orden</label>
+                <input type="number" id="subjectOrder" value="0">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeSubjectModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveSubject()">Guardar</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Modal Entrada -->
-<div class="modal-overlay" id="postModalOverlay">
-    <div class="modal">
-        <h3 id="postModalTitle">Nueva entrada</h3>
-        <div class="form-group">
-            <label>Materia *</label>
-            <select id="postSubject"></select>
-        </div>
-        <div class="form-group">
-            <label>Título *</label>
-            <input type="text" id="postTitle" placeholder="Título de la entrada">
-        </div>
-        <div class="form-group">
-            <label>Contenido *</label>
-            <textarea id="postContent" placeholder="Escribí el contenido acá..."></textarea>
-        </div>
-        <div class="form-group">
-            <label>URL de imagen (opcional)</label>
-            <input type="url" id="postImageUrl" placeholder="https://...">
-        </div>
-        <div class="form-group checkbox-group">
-            <input type="checkbox" id="postIsPro">
-            <label for="postIsPro" style="margin:0">Contenido PRO (de pago)</label>
-        </div>
-        <div class="form-group">
-            <label>Orden</label>
-            <input type="number" id="postOrder" value="0">
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closePostModal()">Cancelar</button>
-            <button class="btn btn-primary" onclick="savePost()">Guardar</button>
+    <!-- Modal Entrada -->
+    <div class="modal-overlay" id="postModalOverlay">
+        <div class="modal">
+            <h3 id="postModalTitle">Nueva entrada</h3>
+            <div class="form-group">
+                <label>Materia *</label>
+                <select id="postSubject"></select>
+            </div>
+            <div class="form-group">
+                <label>Título *</label>
+                <input type="text" id="postTitle" placeholder="Título de la entrada">
+            </div>
+            <div class="form-group">
+                <label>Contenido *</label>
+                <div id="postContentEditor"></div>
+            </div>
+            <div class="form-group">
+                <label>URL de imagen (opcional)</label>
+                <input type="url" id="postImageUrl" placeholder="https://...">
+            </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="postIsPro">
+                <label for="postIsPro" style="margin:0">Contenido PRO (de pago)</label>
+            </div>
+            <div class="form-group">
+                <label>Orden</label>
+                <input type="number" id="postOrder" value="0">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePostModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="savePost()">Guardar</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="js/auth.js"></script>
-<script src="js/dashboard.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script src="js/dashboard.js"></script>
 
 </body>
+
 </html>

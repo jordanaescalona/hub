@@ -3,7 +3,23 @@ requireAuth();
 let editingSubjectId = null;
 let editingPostId = null;
 let allSubjects = [];
+let quillEditor = null;
 
+function initQuillEditor() {
+    if (quillEditor) return;
+    quillEditor = new Quill('#postContentEditor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ 'header': [1, 2, 3, false] }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['link', 'blockquote', 'code-block'],
+                ['clean']
+            ]
+        }
+    });
+}
 // ── CARGAR MATERIAS ────────────────────────────────────────────
 async function loadSubjects() {
     const res = await fetch(`${API}/api/subjects`);
@@ -109,27 +125,22 @@ async function loadPosts() {
     }).join('');
 }
 
-async function openPostModal(id = null) {
-    editingPostId = id;
-    document.getElementById('postModalTitle').textContent = id ? 'Editar entrada' : 'Nueva entrada';
-    document.getElementById('postModalOverlay').classList.add('show');
+let quillEditor = null;
 
-    if (id) {
-        const res = await authFetch(`${API}/api/admin/posts/${id}`);
-        const p = await res.json();
-        document.getElementById('postSubject').value = p.subject_id;
-        document.getElementById('postTitle').value = p.title;
-        document.getElementById('postContent').value = p.content;
-        document.getElementById('postImageUrl').value = p.image_url || '';
-        document.getElementById('postIsPro').checked = !!p.is_pro;
-        document.getElementById('postOrder').value = p.order;
-    } else {
-        document.getElementById('postTitle').value = '';
-        document.getElementById('postContent').value = '';
-        document.getElementById('postImageUrl').value = '';
-        document.getElementById('postIsPro').checked = false;
-        document.getElementById('postOrder').value = 0;
-    }
+function initQuillEditor() {
+    if (quillEditor) return;
+    quillEditor = new Quill('#postContentEditor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ 'header': [1, 2, 3, false] }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['link', 'blockquote', 'code-block'],
+                ['clean']
+            ]
+        }
+    });
 }
 
 function closePostModal() {
@@ -140,7 +151,7 @@ function closePostModal() {
 async function savePost() {
     const subject_id = document.getElementById('postSubject').value;
     const title = document.getElementById('postTitle').value.trim();
-    const content = document.getElementById('postContent').value.trim();
+    const content = quillEditor.root.innerHTML.trim();
     const image_url = document.getElementById('postImageUrl').value.trim();
     const is_pro = document.getElementById('postIsPro').checked;
     const order = document.getElementById('postOrder').value || 0;
