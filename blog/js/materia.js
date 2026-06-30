@@ -1,5 +1,9 @@
 const API = 'https://hub-api.jordana-escalona.workers.dev';
 
+let currentZoom = 1;
+let isDragging = false;
+let startX, startY, scrollLeft, scrollTop;
+
 function getSlugFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return params.get('slug');
@@ -46,13 +50,13 @@ async function loadSubjectAndPosts() {
                 </button>
                 <div class="post-accordion-body" id="body-${p.id}" style="display:none">
                     ${p.locked
-                ? `<div class="pro-locked">
+                        ? `<div class="pro-locked">
                              <div class="icon">🔒</div>
                              <p>Este contenido es exclusivo para usuarios PRO</p>
                            </div>`
-                : `${p.image_url ? `<img src="${p.image_url}" alt="${p.title}">` : ''}
+                        : `${p.image_url ? `<img src="${p.image_url}" alt="${p.title}">` : ''}
                            <div class="post-content">${p.content}</div>`
-            }
+                    }
                 </div>
             </div>
         `).join('');
@@ -76,17 +80,23 @@ function formatDate(dateStr) {
     return date.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-let currentZoom = 1;
-
+// ── LIGHTBOX ──────────────────────────────────────────────────
 function openLightbox(src, alt) {
     const overlay = document.getElementById('lightboxOverlay');
     const img = document.getElementById('lightboxImg');
     img.src = src;
     img.alt = alt;
     img.style.transform = 'scale(1)';
+    img.style.maxWidth = '90vw';
+    img.style.maxHeight = '90vh';
+    img.style.width = 'auto';
     img.style.cursor = 'zoom-in';
     currentZoom = 1;
+    overlay.scrollTop = 0;
+    overlay.scrollLeft = 0;
     overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
     document.body.style.overflow = 'hidden';
 }
 
@@ -117,30 +127,72 @@ function resetZoom(e) {
 function applyZoom() {
     const img = document.getElementById('lightboxImg');
     const overlay = document.getElementById('lightboxOverlay');
-    img.style.transform = `scale(${currentZoom})`;
-    img.style.cursor = currentZoom > 1 ? 'grab' : 'zoom-in';
-    
+
     if (currentZoom > 1) {
         img.style.maxWidth = 'none';
         img.style.maxHeight = 'none';
+        img.style.width = `${90 * currentZoom}vw`;
+        img.style.cursor = 'grab';
         overlay.style.alignItems = 'flex-start';
         overlay.style.justifyContent = 'flex-start';
-        overlay.style.padding = '2rem';
+        overlay.style.padding = '4rem 2rem 5rem';
     } else {
         img.style.maxWidth = '90vw';
         img.style.maxHeight = '90vh';
+        img.style.width = 'auto';
+        img.style.cursor = 'zoom-in';
         overlay.style.alignItems = 'center';
         overlay.style.justifyContent = 'center';
         overlay.style.padding = '0';
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('lightboxOverlay').addEventListener('click', function (e) {
-        if (e.target !== document.getElementById('lightboxImg')) closeLightbox();
+function initDrag() {
+    const overlay = document.getElementById('lightboxOverlay');
+
+    overlay.addEventListener('mousedown', (e) => {
+        if (currentZoom <= 1) return;
+        if (e.target.tagName === 'BUTTON') return;
+        isDragging = true;
+        startX = e.pageX - overlay.offsetLeft;
+        startY = e.pageY - overlay.offsetTop;
+        scrollLeft = overlay.scrollLeft;
+        scrollTop = overlay.scrollTop;
+        overlay.style.cursor = 'grabbing';
     });
 
-    document.addEventListener('click', function (e) {
+    overlay.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - overlay.offsetLeft;
+        const y = e.pageY - overlay.offsetTop;
+        overlay.scrollLeft = scrollLeft - (x - startX);
+        overlay.scrollTop = scrollTop - (y - startY);
+    });
+
+    overlay.addEventListener('mouseup', () => {
+        isDragging = false;
+        overlay.style.cursor = currentZoom > 1 ? 'grab' : 'zoom-out';
+    });
+
+    overlay.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+    initDrag();
+
+    document.getElementById('lightboxOverlay').addEventListener('click', function(e) {
+        if (e.target !== document.getElementById('lightboxImg') &&
+            e.target.tagName !== 'BUTTON' &&
+            !isDragging) {
+            closeLightbox();
+        }
+    });
+
+    document.addEventListener('click', function(e) {
         if (e.target.tagName === 'IMG' && e.target.closest('.post-content')) {
             openLightbox(e.target.src, e.target.alt);
         }
