@@ -12,6 +12,7 @@ function initQuillEditor() {
         modules: {
             toolbar: [
                 ['bold', 'italic', 'underline'],
+                [{ 'color': [] }, { 'background': [] }],
                 [{ 'header': [1, 2, 3, false] }],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ['link', 'blockquote', 'code-block'],
