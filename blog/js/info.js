@@ -10,8 +10,10 @@ async function loadCategories() {
     infoCategories = await res.json();
 
     const filterSelect = document.getElementById('filterCategory');
-    filterSelect.innerHTML = `<option value="">Todo</option>` +
-        infoCategories.map(cat => `<option value="${cat.slug}">${cat.icon} ${cat.name}</option>`).join('');
+    if (filterSelect) {
+        filterSelect.innerHTML = `<option value="">Todo</option>` +
+            infoCategories.map(cat => `<option value="${cat.slug}">${cat.icon} ${cat.name}</option>`).join('');
+    }
 }
 
 function getCategoryLabel(slug) {
