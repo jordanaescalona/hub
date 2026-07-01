@@ -75,6 +75,35 @@ function pdfHandler() {
     input.click();
 }
 
+function extractMediaUrls(content) {
+    const urls = [];
+    const r2Base = 'https://pub-3d2cc48609dd4a85af4cf97d354db460.r2.dev/';
+    
+    // Extraer URLs de imágenes
+    const imgRegex = /src="(https:\/\/pub-3d2cc48609dd4a85af4cf97d354db460\.r2\.dev\/[^"]+)"/g;
+    let match;
+    while ((match = imgRegex.exec(content)) !== null) {
+        urls.push(match[1]);
+    }
+    
+    // Extraer URLs de iframes (PDFs)
+    const iframeRegex = /src="(https:\/\/pub-3d2cc48609dd4a85af4cf97d354db460\.r2\.dev\/[^"]+)"/g;
+    while ((match = iframeRegex.exec(content)) !== null) {
+        if (!urls.includes(match[1])) urls.push(match[1]);
+    }
+    
+    return urls;
+}
+
+async function deleteMediaFiles(urls) {
+    for (const url of urls) {
+        await authFetch(`${API}/api/media`, {
+            method: 'DELETE',
+            body: JSON.stringify({ url })
+        });
+    }
+}
+
 function initQuillEditor() {
     if (quillEditor) return;
     quillEditor = new Quill('#postContentEditor', {
@@ -258,7 +287,23 @@ async function savePost() {
 }
 
 async function deletePost(id) {
-    if (!confirm('¿Eliminar esta entrada?')) return;
+    if (!confirm('¿Eliminar esta entrada? También se eliminarán las imágenes y PDFs adjuntos.')) return;
+    
+    // Obtener el post completo para extraer URLs de archivos
+    const res = await authFetch(`${API}/api/admin/posts/${id}`);
+    const post = await res.json();
+    
+    // Eliminar archivos de R2
+    const mediaUrls = extractMediaUrls(post.content || '');
+    if (post.image_url && post.image_url.includes('r2.dev')) {
+        mediaUrls.push(post.image_url);
+    }
+    
+    if (mediaUrls.length > 0) {
+        await deleteMediaFiles(mediaUrls);
+    }
+    
+    // Eliminar el post
     await authFetch(`${API}/api/posts/${id}`, { method: 'DELETE' });
     loadPosts();
 }
