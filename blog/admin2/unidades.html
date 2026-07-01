@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Unidades</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <h2>Admin Blog</h2>
+        <p>Tecnicatura CS Datos e IA</p>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="materias.html"><span class="nav-icon">📚</span> Materias</a>
+        <a href="unidades.html" class="active"><span class="nav-icon">📂</span> Unidades</a>
+        <a href="entradas.html"><span class="nav-icon">📝</span> Entradas</a>
+        <a href="informacion.html"><span class="nav-icon">ℹ️</span> Información</a>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="#" onclick="logout()">🚪 Cerrar sesión</a>
+    </div>
+</aside>
+
+<div class="main">
+    <div class="topbar">
+        <h1>Unidades</h1>
+        <button class="btn-logout" onclick="logout()">Salir</button>
+    </div>
+    <div class="content">
+
+        <div class="card">
+            <div class="card-header">
+                <div style="display:flex; gap:1rem; align-items:center;">
+                    <h2>Unidades</h2>
+                    <select id="filterMateria" onchange="loadUnidades()" style="border:1px solid #e2e8f0; border-radius:6px; padding:0.4rem 0.8rem; font-size:0.85rem;">
+                        <option value="">Todas las materias</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="openModal()">+ Nueva unidad</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Materia</th>
+                        <th>Descripción</th>
+                        <th>Orden</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="unidadesTable">
+                    <tr><td colspan="5" class="empty-state">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <h3 id="modalTitle">Nueva unidad</h3>
+        <div class="form-group">
+            <label>Materia *</label>
+            <select id="fieldMateria"></select>
+        </div>
+        <div class="form-group">
+            <label>Nombre *</label>
+            <input type="text" id="fieldName" placeholder="Ej: Unidad 1 - Introducción">
+        </div>
+        <div class="form-group">
+            <label>Descripción</label>
+            <textarea id="fieldDescription" placeholder="Descripción de la unidad" style="min-height:80px"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Orden</label>
+            <input type="number" id="fieldOrder" value="0" min="0">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            <button class="btn btn-primary" onclick="save()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal eliminar -->
+<div class="modal-overlay" id="deleteOverlay">
+    <div class="modal" style="max-width:380px">
+        <h3>Eliminar unidad</h3>
+        <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>? También se eliminarán sus entradas.</p>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
+            <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/unidades.js"></script>
+</body>
+</html>

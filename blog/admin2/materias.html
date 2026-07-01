@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Materias</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <h2>Admin Blog</h2>
+        <p>Tecnicatura CS Datos e IA</p>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="materias.html" class="active"><span class="nav-icon">📚</span> Materias</a>
+        <a href="unidades.html"><span class="nav-icon">📂</span> Unidades</a>
+        <a href="entradas.html"><span class="nav-icon">📝</span> Entradas</a>
+        <a href="informacion.html"><span class="nav-icon">ℹ️</span> Información</a>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="#" onclick="logout()">🚪 Cerrar sesión</a>
+    </div>
+</aside>
+
+<div class="main">
+    <div class="topbar">
+        <h1>Materias</h1>
+        <button class="btn-logout" onclick="logout()">Salir</button>
+    </div>
+    <div class="content">
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Todas las materias</h2>
+                <button class="btn btn-primary" onclick="openModal()">+ Nueva materia</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Color</th>
+                        <th>Nombre</th>
+                        <th>Período</th>
+                        <th>Slug</th>
+                        <th>Orden</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="materiasTable">
+                    <tr><td colspan="6" class="empty-state">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <h3 id="modalTitle">Nueva materia</h3>
+        <div class="form-group">
+            <label>Nombre *</label>
+            <input type="text" id="fieldName" placeholder="Ej: Probabilidad y Estadística">
+        </div>
+        <div class="form-group">
+            <label>Slug (URL) *</label>
+            <input type="text" id="fieldSlug" placeholder="probabilidad-estadistica">
+        </div>
+        <div class="form-group">
+            <label>Período *</label>
+            <select id="fieldPeriod">
+                <option value="1c1">1° Año - 1° Cuatrimestre</option>
+                <option value="1c2">1° Año - 2° Cuatrimestre</option>
+                <option value="2c1">2° Año - 1° Cuatrimestre</option>
+                <option value="2c2">2° Año - 2° Cuatrimestre</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Descripción</label>
+            <textarea id="fieldDescription" placeholder="Descripción de la materia" style="min-height:80px"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Color</label>
+            <div style="display:flex; align-items:center; gap:0.8rem;">
+                <input type="color" id="fieldColor" value="#7dd3fc" style="width:50px; height:36px; border:1px solid #e2e8f0; border-radius:6px; cursor:pointer; padding:2px;">
+                <span style="font-size:0.82rem; color:#64748b;">Color para identificar la materia</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Orden</label>
+            <input type="number" id="fieldOrder" value="0" min="0">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            <button class="btn btn-primary" onclick="save()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal eliminar -->
+<div class="modal-overlay" id="deleteOverlay">
+    <div class="modal" style="max-width:380px">
+        <h3>Eliminar materia</h3>
+        <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>? Se eliminarán también sus unidades y entradas.</p>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
+            <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/materias.js"></script>
+</body>
+</html>

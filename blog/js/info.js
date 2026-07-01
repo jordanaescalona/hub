@@ -28,7 +28,7 @@ async function loadInfo(category = 'all') {
                         <span class="info-category-badge badge-${item.category}">${categoryLabel(item.category)}</span>
                         ${item.is_pinned ? '<span class="pinned-badge">📌 Destacado</span>' : ''}
                         <span class="post-accordion-title">${item.title}</span>
-                        <div class="post-date">${formatInfoDate(item.created_at)}</div>
+                        <div class="post-date">${formatInfoDate(item)}</div>
                     </div>
                     <span class="accordion-arrow" id="arrow-${item.id}">▼</span>
                 </button>
@@ -67,7 +67,8 @@ function filterInfo(category, btn) {
     loadInfo(category);
 }
 
-function formatInfoDate(dateStr) {
+function formatInfoDate(item) {
+    const dateStr = item.custom_date || item.created_at;
     const date = new Date(dateStr);
     return date.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
 }

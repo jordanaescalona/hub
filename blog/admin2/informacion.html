@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Información</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <h2>Admin Blog</h2>
+            <p>Tecnicatura CS Datos e IA</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="materias.html"><span class="nav-icon">📚</span> Materias</a>
+            <a href="unidades.html"><span class="nav-icon">📂</span> Unidades</a>
+            <a href="entradas.html"><span class="nav-icon">📝</span> Entradas</a>
+            <a href="informacion.html" class="active"><span class="nav-icon">ℹ️</span> Información</a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" onclick="logout()">🚪 Cerrar sesión</a>
+        </div>
+    </aside>
+
+    <div class="main">
+        <div class="topbar">
+            <h1>Información</h1>
+            <button class="btn-logout" onclick="logout()">Salir</button>
+        </div>
+        <div class="content">
+
+            <div class="card">
+                <div class="card-header">
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <h2>Información</h2>
+                        <select id="filterCategory" onchange="loadInfo()"
+                            style="border:1px solid #e2e8f0; border-radius:6px; padding:0.4rem 0.8rem; font-size:0.85rem;">
+                            <option value="">Todas las categorías</option>
+                            <option value="noticia">📢 Noticias</option>
+                            <option value="examen">📅 Exámenes</option>
+                            <option value="faq">❓ Preguntas frecuentes</option>
+                            <option value="documento">📄 Documentos</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="openModal()">+ Nueva información</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Categoría</th>
+                            <th>Destacado</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="infoTable">
+                        <tr>
+                            <td colspan="5" class="empty-state">Cargando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal modal-large">
+            <h3 id="modalTitle">Nueva información</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                <div class="form-group">
+                    <label>Categoría *</label>
+                    <select id="fieldCategory">
+                        <option value="noticia">📢 Noticia</option>
+                        <option value="examen">📅 Examen</option>
+                        <option value="faq">❓ Pregunta frecuente</option>
+                        <option value="documento">📄 Documento</option>
+                    </select>
+                </div>
+                <div class="form-group checkbox-group" style="align-self:end; padding-bottom:0.5rem;">
+                    <input type="checkbox" id="fieldIsPinned">
+                    <label for="fieldIsPinned" style="margin:0">📌 Destacar en inicio</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Título *</label>
+                <input type="text" id="fieldTitle" placeholder="Título">
+            </div>
+            <div class="form-group">
+                <label>Fecha (opcional — por defecto es la fecha actual)</label>
+                <input type="date" id="fieldDate">
+                <small style="color:#64748b; font-size:0.78rem; margin-top:0.3rem; display:block;">Dejá vacío para usar
+                    la fecha de hoy</small>
+            </div>
+            <div class="form-group">
+                <label>Contenido *</label>
+                <div style="margin-bottom:0.5rem; display:flex; gap:0.5rem;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="pdfHandler()">📄 Insertar
+                        PDF</button>
+                </div>
+                <div id="editorContainer"></div>
+            </div>
+            <div class="form-group">
+                <label>Orden</label>
+                <input type="number" id="fieldOrder" value="0" min="0" style="width:100px;">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="save()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal eliminar -->
+    <div class="modal-overlay" id="deleteOverlay">
+        <div class="modal" style="max-width:380px">
+            <h3>Eliminar información</h3>
+            <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>?</p>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script src="js/informacion.js"></script>
+</body>
+
+</html>
