@@ -44,7 +44,6 @@ async function loadSubjectAndPosts() {
                     <div>
                         ${p.is_pro ? '<span class="pro-badge">⭐ PRO</span>' : ''}
                         <span class="post-accordion-title">${p.title}</span>
-                        <div class="post-date">${formatDate(p.created_at)}</div>
                     </div>
                     <span class="accordion-arrow" id="arrow-${p.id}">▼</span>
                 </button>
