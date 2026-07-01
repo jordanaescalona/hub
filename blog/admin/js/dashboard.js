@@ -78,20 +78,20 @@ function pdfHandler() {
 function extractMediaUrls(content) {
     const urls = [];
     const r2Base = 'https://pub-3d2cc48609dd4a85af4cf97d354db460.r2.dev/';
-    
+
     // Extraer URLs de imágenes
     const imgRegex = /src="(https:\/\/pub-3d2cc48609dd4a85af4cf97d354db460\.r2\.dev\/[^"]+)"/g;
     let match;
     while ((match = imgRegex.exec(content)) !== null) {
         urls.push(match[1]);
     }
-    
+
     // Extraer URLs de iframes (PDFs)
     const iframeRegex = /src="(https:\/\/pub-3d2cc48609dd4a85af4cf97d354db460\.r2\.dev\/[^"]+)"/g;
     while ((match = iframeRegex.exec(content)) !== null) {
         if (!urls.includes(match[1])) urls.push(match[1]);
     }
-    
+
     return urls;
 }
 
@@ -167,11 +167,13 @@ function openSubjectModal(id = null) {
         document.getElementById('subjectSlug').value = s.slug;
         document.getElementById('subjectDescription').value = s.description || '';
         document.getElementById('subjectOrder').value = s.order;
+        document.getElementById('subjectColor').value = s.color || '#7dd3fc';
     } else {
         document.getElementById('subjectName').value = '';
         document.getElementById('subjectSlug').value = '';
         document.getElementById('subjectDescription').value = '';
         document.getElementById('subjectOrder').value = 0;
+        document.getElementById('subjectColor').value = '#7dd3fc';
     }
 }
 
@@ -185,6 +187,7 @@ async function saveSubject() {
     const slug = document.getElementById('subjectSlug').value.trim();
     const description = document.getElementById('subjectDescription').value.trim();
     const order = document.getElementById('subjectOrder').value || 0;
+    const color = document.getElementById('subjectColor').value;
 
     if (!name || !slug) { alert('Nombre y slug son obligatorios'); return; }
 
@@ -193,7 +196,7 @@ async function saveSubject() {
 
     await authFetch(url, {
         method,
-        body: JSON.stringify({ name, slug, description, order })
+        body: JSON.stringify({ name, slug, description, order, color })
     });
 
     closeSubjectModal();
@@ -288,21 +291,21 @@ async function savePost() {
 
 async function deletePost(id) {
     if (!confirm('¿Eliminar esta entrada? También se eliminarán las imágenes y PDFs adjuntos.')) return;
-    
+
     // Obtener el post completo para extraer URLs de archivos
     const res = await authFetch(`${API}/api/admin/posts/${id}`);
     const post = await res.json();
-    
+
     // Eliminar archivos de R2
     const mediaUrls = extractMediaUrls(post.content || '');
     if (post.image_url && post.image_url.includes('r2.dev')) {
         mediaUrls.push(post.image_url);
     }
-    
+
     if (mediaUrls.length > 0) {
         await deleteMediaFiles(mediaUrls);
     }
-    
+
     // Eliminar el post
     await authFetch(`${API}/api/posts/${id}`, { method: 'DELETE' });
     loadPosts();

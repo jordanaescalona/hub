@@ -12,11 +12,11 @@ async function loadSubjects() {
         }
 
         grid.innerHTML = subjects.map(s => `
-            <a href="materia.html?slug=${s.slug}" class="subject-card">
-                <div class="icon">📘</div>
+            <a href="materia.html?slug=${s.slug}" class="subject-card" style="border-top: 4px solid ${s.color || '#7dd3fc'};">
+                <div class="icon" style="color:${s.color || '#7dd3fc'}">📘</div>
                 <h3>${s.name}</h3>
                 <p>${s.description || 'Ver entradas de esta materia'}</p>
-                <span class="subject-link">Ver entradas</span>
+                <span class="subject-link" style="color:${s.color || '#7dd3fc'}">Ver entradas →</span>
             </a>
         `).join('');
 
