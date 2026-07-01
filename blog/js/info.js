@@ -3,15 +3,32 @@ let allInfoItems = [];
 let currentZoom = 1;
 let isDragging = false;
 let startX, startY, scrollLeft, scrollTop;
+let infoCategories = [];
 
-async function loadInfo(category = 'all') {
+async function loadCategories() {
+    const res = await fetch(`${API}/api/info-categories`);
+    infoCategories = await res.json();
+
+    const filterSelect = document.getElementById('filterCategory');
+    filterSelect.innerHTML = `<option value="">Todo</option>` +
+        infoCategories.map(cat => `<option value="${cat.slug}">${cat.icon} ${cat.name}</option>`).join('');
+}
+
+function getCategoryLabel(slug) {
+    const cat = infoCategories.find(c => c.slug === slug);
+    return cat ? `${cat.icon} ${cat.name}` : slug;
+}
+
+async function loadInfo() {
     const list = document.getElementById('infoList');
     list.innerHTML = '<div class="loading-blog">Cargando...</div>';
 
+    const category = document.getElementById('filterCategory').value;
+
     try {
-        const url = category === 'all'
-            ? `${API}/api/info`
-            : `${API}/api/info?category=${category}`;
+        const url = category
+            ? `${API}/api/info?category=${category}`
+            : `${API}/api/info`;
 
         const res = await fetch(url);
         allInfoItems = await res.json();
@@ -25,10 +42,10 @@ async function loadInfo(category = 'all') {
             <div class="post-accordion" data-category="${item.category}">
                 <button class="post-accordion-header" onclick="toggleAccordion(${item.id})">
                     <div>
-                        <span class="info-category-badge badge-${item.category}">${categoryLabel(item.category)}</span>
+                        <span class="info-category-badge" style="background:#e0f2fe; color:#0369a1; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.75rem; font-weight:600;">${getCategoryLabel(item.category)}</span>
                         ${item.is_pinned ? '<span class="pinned-badge">📌 Destacado</span>' : ''}
                         <span class="post-accordion-title">${item.title}</span>
-                        <div class="post-date">${formatInfoDate(item)}</div>
+                        ${item.show_date !== 0 ? `<div class="post-date">${formatInfoDate(item)}</div>` : ''}
                     </div>
                     <span class="accordion-arrow" id="arrow-${item.id}">▼</span>
                 </button>
@@ -43,28 +60,12 @@ async function loadInfo(category = 'all') {
     }
 }
 
-function categoryLabel(category) {
-    const labels = {
-        examen: '📅 Examen',
-        faq: '❓ FAQ',
-        documento: '📄 Documento',
-        noticia: '📢 Noticia'
-    };
-    return labels[category] || category;
-}
-
 function toggleAccordion(id) {
     const body = document.getElementById(`body-${id}`);
     const arrow = document.getElementById(`arrow-${id}`);
     const isOpen = body.style.display === 'block';
     body.style.display = isOpen ? 'none' : 'block';
     arrow.textContent = isOpen ? '▼' : '▲';
-}
-
-function filterInfo(category, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    loadInfo(category);
 }
 
 function formatInfoDate(item) {
@@ -130,8 +131,11 @@ function applyZoom() {
 }
 
 // ── INIT ──────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+    await loadCategories();
     loadInfo();
+
+    document.getElementById('filterCategory').addEventListener('change', loadInfo);
 
     document.getElementById('lightboxOverlay').addEventListener('click', function (e) {
         if (e.target !== document.getElementById('lightboxImg') &&
