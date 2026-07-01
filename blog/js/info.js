@@ -21,11 +21,9 @@ function getCategoryLabel(slug) {
     return cat ? `${cat.icon} ${cat.name}` : slug;
 }
 
-async function loadInfo() {
+async function loadInfo(category = '') {
     const list = document.getElementById('infoList');
     list.innerHTML = '<div class="loading-blog">Cargando...</div>';
-
-    const category = document.getElementById('filterCategory').value;
 
     try {
         const url = category
@@ -44,7 +42,7 @@ async function loadInfo() {
             <div class="post-accordion" data-category="${item.category}">
                 <button class="post-accordion-header" onclick="toggleAccordion(${item.id})">
                     <div>
-                        <span class="info-category-badge" style="background:#e0f2fe; color:#0369a1; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.75rem; font-weight:600;">${getCategoryLabel(item.category)}</span>
+                        <span style="background:#e0f2fe; color:#0369a1; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.75rem; font-weight:600;">${getCategoryLabel(item.category)}</span>
                         ${item.is_pinned ? '<span class="pinned-badge">📌 Destacado</span>' : ''}
                         <span class="post-accordion-title">${item.title}</span>
                         ${item.show_date !== 0 ? `<div class="post-date">${formatInfoDate(item)}</div>` : ''}
@@ -60,6 +58,12 @@ async function loadInfo() {
     } catch (err) {
         list.innerHTML = `<div class="empty-state-blog">Error al cargar la información.</div>`;
     }
+}
+
+function filterInfo(category, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadInfo(category);
 }
 
 function toggleAccordion(id) {
@@ -137,18 +141,19 @@ document.addEventListener('DOMContentLoaded', async function () {
     await loadCategories();
     loadInfo();
 
-    document.getElementById('filterCategory').addEventListener('change', loadInfo);
-
-    document.getElementById('lightboxOverlay').addEventListener('click', function (e) {
-        if (e.target !== document.getElementById('lightboxImg') &&
-            e.target.tagName !== 'BUTTON' && !isDragging) {
-            closeLightbox(e);
-        }
-    });
-
     document.addEventListener('click', function (e) {
         if (e.target.tagName === 'IMG' && e.target.closest('.post-content')) {
             openLightbox(e.target.src, e.target.alt);
         }
     });
+
+    const lightboxOverlay = document.getElementById('lightboxOverlay');
+    if (lightboxOverlay) {
+        lightboxOverlay.addEventListener('click', function (e) {
+            if (e.target !== document.getElementById('lightboxImg') &&
+                e.target.tagName !== 'BUTTON' && !isDragging) {
+                closeLightbox(e);
+            }
+        });
+    }
 });
