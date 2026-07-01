@@ -141,7 +141,10 @@ async function loadSubjects() {
     } else {
         tbody.innerHTML = allSubjects.map(s => `
             <tr>
-                <td>${s.name}</td>
+                <td style="display:flex; align-items:center; gap:0.6rem;">
+                    <span style="display:inline-block; width:16px; height:16px; border-radius:50%; background:${s.color || '#7dd3fc'};"></span>
+                    ${s.name}
+                </td>
                 <td>${s.slug}</td>
                 <td>${s.order}</td>
                 <td class="actions">
