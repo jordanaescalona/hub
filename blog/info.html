@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información — Blog Tecnicatura</title>
+    <link rel="stylesheet" href="css/blog.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="navbar-brand">Jordana Escalona</a>
+    <ul class="navbar-links">
+        <li><a href="index.html">Blog</a></li>
+        <li><a href="info.html" style="color:var(--accent)">Información</a></li>
+        <li><a href="index.html#contacto-institucional">Contacto</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <h1>Información de la <span>Carrera</span></h1>
+    <p>Fechas de exámenes, preguntas frecuentes y documentos útiles</p>
+</section>
+
+<div class="container">
+
+    <!-- FILTROS -->
+    <div class="info-filters">
+        <button class="filter-btn active" onclick="filterInfo('all', this)">Todo</button>
+        <button class="filter-btn" onclick="filterInfo('examen', this)">📅 Exámenes</button>
+        <button class="filter-btn" onclick="filterInfo('faq', this)">❓ Preguntas frecuentes</button>
+        <button class="filter-btn" onclick="filterInfo('documento', this)">📄 Documentos</button>
+    </div>
+
+    <div class="posts-list" id="infoList">
+        <div class="loading-blog">Cargando información...</div>
+    </div>
+
+</div>
+
+<footer>
+    <p>© 2026 Jordana Escalona — Blog Tecnicatura en Ciencias de Datos e IA</p>
+</footer>
+
+<!-- Lightbox -->
+<div id="lightboxOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:300; align-items:center; justify-content:center; cursor:zoom-out; overflow:auto;">
+    <button onclick="closeLightbox(event)" style="position:fixed; top:1rem; right:1rem; background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:1.2rem; width:36px; height:36px; border-radius:50%; cursor:pointer; z-index:301;">✕</button>
+    <div style="display:flex; gap:0.5rem; position:fixed; bottom:1rem; left:50%; transform:translateX(-50%); z-index:301;">
+        <button onclick="zoomIn(event)" style="background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:1.2rem; width:36px; height:36px; border-radius:50%; cursor:pointer;">+</button>
+        <button onclick="zoomOut(event)" style="background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:1.2rem; width:36px; height:36px; border-radius:50%; cursor:pointer;">−</button>
+        <button onclick="resetZoom(event)" style="background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:0.75rem; width:36px; height:36px; border-radius:50%; cursor:pointer;">↺</button>
+    </div>
+    <img id="lightboxImg" src="" alt="" style="max-width:90vw; max-height:90vh; object-fit:contain; border-radius:8px; transition: transform 0.2s; cursor:zoom-in;">
+</div>
+
+<script src="js/info.js"></script>
+
+</body>
+</html>

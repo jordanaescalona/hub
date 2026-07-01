@@ -12,6 +12,7 @@
     <a href="../index.html" class="navbar-brand">Jordana Escalona</a>
     <ul class="navbar-links">
         <li><a href="../index.html">Inicio</a></li>
+        <li><a href="info.html">Información</a></li>
         <li><a href="#materias">Materias</a></li>
         <li><a href="#contacto-institucional">Contacto</a></li>
     </ul>
@@ -21,13 +22,28 @@
     <h1>Blog de la <span>Tecnicatura</span></h1>
     <p>Apuntes, resúmenes y artículos de Ciencias de Datos e Inteligencia Artificial</p>
 </section>
-
+<!-- NOVEDADES -->
+<section id="novedades" style="background: var(--bg-card); border-top: 1px solid var(--border);">
+    <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+            <div>
+                <span class="section-tag">Novedades</span>
+                <h2 class="section-title">Últimas novedades</h2>
+            </div>
+            <a href="info.html" style="color:var(--accent); font-size:0.9rem; font-weight:600; text-decoration:none;">Ver todo →</a>
+        </div>
+        <div id="novedadesList" class="posts-list">
+            <div class="loading-blog">Cargando novedades...</div>
+        </div>
+    </div>
+</section>
+<!-- MATERIAS -->
 <div class="container" id="materias">
     <div class="subjects-grid" id="subjectsGrid">
         <div class="loading-blog">Cargando materias...</div>
     </div>
 </div>
-
+<!-- Contacto institucional -->
 <section class="contact-institutional" id="contacto-institucional">
     <h2>Contacto Institucional</h2>
     <p>Para consultas académicas o institucionales, escribinos a:</p>
