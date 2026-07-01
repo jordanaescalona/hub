@@ -314,8 +314,187 @@ async function deletePost(id) {
     loadPosts();
 }
 
+
+// ── INFORMACIÓN ────────────────────────────────────────────────
+let editingInfoId = null;
+let quillInfoEditor = null;
+
+function initQuillInfoEditor() {
+    if (quillInfoEditor) return;
+    quillInfoEditor = new Quill('#infoContentEditor', {
+        theme: 'snow',
+        modules: {
+            toolbar: {
+                container: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'header': [1, 2, 3, false] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['link', 'blockquote', 'code-block'],
+                    ['image', 'formula'],
+                    ['clean']
+                ],
+                handlers: {
+                    image: infoImageHandler
+                }
+            }
+        }
+    });
+}
+
+function infoImageHandler() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async () => {
+        const file = input.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const range = quillInfoEditor.getSelection() || { index: quillInfoEditor.getLength() };
+
+        try {
+            const res = await fetch(`${API}/api/upload`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${getToken()}` },
+                body: formData
+            });
+
+            if (!res.ok) { alert('Error al subir la imagen'); return; }
+
+            const data = await res.json();
+            quillInfoEditor.insertEmbed(range.index, 'image', data.url);
+
+        } catch (err) {
+            alert('Error al conectar con el servidor');
+        }
+    };
+    input.click();
+}
+
+function infoPdfHandler() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/pdf';
+    input.onchange = async () => {
+        const file = input.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fetch(`${API}/api/upload`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${getToken()}` },
+                body: formData
+            });
+
+            if (!res.ok) { alert('Error al subir el PDF'); return; }
+
+            const data = await res.json();
+            const range = quillInfoEditor.getSelection() || { index: quillInfoEditor.getLength() };
+            const embedHtml = `<iframe src="${data.url}#toolbar=0&navpanes=0&scrollbar=1&zoom=100" width="100%" height="500" style="border:1px solid #e2e8f0; border-radius:8px; margin: 1rem 0;"></iframe>`;
+            quillInfoEditor.clipboard.dangerouslyPasteHTML(range.index, embedHtml);
+
+        } catch (err) {
+            alert('Error al conectar con el servidor');
+        }
+    };
+    input.click();
+}
+
+async function loadInfoItems() {
+    const res = await fetch(`${API}/api/info`);
+    const items = await res.json();
+
+    const tbody = document.getElementById('infoTable');
+    if (items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4">No hay información todavía</td></tr>`;
+        return;
+    }
+
+    const categoryLabel = {
+        examen: '📅 Examen',
+        faq: '❓ FAQ',
+        documento: '📄 Documento',
+        noticia: '📢 Noticia'
+    };
+
+    tbody.innerHTML = items.map(item => `
+        <tr>
+            <td>${item.title}</td>
+            <td>${categoryLabel[item.category] || item.category}</td>
+            <td>${item.is_pinned ? '📌 Sí' : 'No'}</td>
+            <td class="actions">
+                <button class="btn btn-secondary" onclick="openInfoModal(${item.id})">Editar</button>
+                <button class="btn btn-danger" onclick="deleteInfo(${item.id})">Eliminar</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function openInfoModal(id = null) {
+    editingInfoId = id;
+    document.getElementById('infoModalTitle').textContent = id ? 'Editar información' : 'Nueva información';
+    document.getElementById('infoModalOverlay').classList.add('show');
+
+    initQuillInfoEditor();
+
+    if (id) {
+        const res = await authFetch(`${API}/api/info/${id}`);
+        const item = await res.json();
+        document.getElementById('infoCategory').value = item.category;
+        document.getElementById('infoTitle').value = item.title;
+        quillInfoEditor.root.innerHTML = item.content;
+        document.getElementById('infoIsPinned').checked = !!item.is_pinned;
+        document.getElementById('infoOrder').value = item.order;
+    } else {
+        document.getElementById('infoCategory').value = 'noticia';
+        document.getElementById('infoTitle').value = '';
+        if (quillInfoEditor) quillInfoEditor.root.innerHTML = '';
+        document.getElementById('infoIsPinned').checked = false;
+        document.getElementById('infoOrder').value = 0;
+    }
+}
+
+function closeInfoModal() {
+    document.getElementById('infoModalOverlay').classList.remove('show');
+    editingInfoId = null;
+}
+
+async function saveInfo() {
+    const category = document.getElementById('infoCategory').value;
+    const title = document.getElementById('infoTitle').value.trim();
+    const content = quillInfoEditor.root.innerHTML.trim();
+    const is_pinned = document.getElementById('infoIsPinned').checked;
+    const order = document.getElementById('infoOrder').value || 0;
+
+    if (!title || !content) { alert('Título y contenido son obligatorios'); return; }
+
+    const url = editingInfoId ? `${API}/api/info/${editingInfoId}` : `${API}/api/info`;
+    const method = editingInfoId ? 'PUT' : 'POST';
+
+    await authFetch(url, {
+        method,
+        body: JSON.stringify({ category, title, content, is_pinned, order })
+    });
+
+    closeInfoModal();
+    loadInfoItems();
+}
+
+async function deleteInfo(id) {
+    if (!confirm('¿Eliminar esta información?')) return;
+    await authFetch(`${API}/api/info/${id}`, { method: 'DELETE' });
+    loadInfoItems();
+}
+
 // ── INIT ──────────────────────────────────────────────────────
 (async () => {
     await loadSubjects();
     await loadPosts();
+    await loadInfoItems();
 })();
