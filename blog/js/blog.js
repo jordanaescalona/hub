@@ -1,4 +1,15 @@
 const API = 'https://hub-api.jordana-escalona.workers.dev';
+let blogInfoCategories = [];
+
+async function loadInfoCategories() {
+    const res = await fetch(`${API}/api/info-categories`);
+    blogInfoCategories = await res.json();
+}
+
+function getBlogCategoryLabel(slug) {
+    const cat = blogInfoCategories.find(c => c.slug === slug);
+    return cat ? `${cat.icon} ${cat.name}` : slug;
+}
 
 async function loadSubjects() {
     const grid = document.getElementById('subjectsGrid');
@@ -38,21 +49,14 @@ async function loadNovedades() {
             return;
         }
 
-        const categoryLabel = {
-            examen: '📅 Examen',
-            faq: '❓ FAQ',
-            documento: '📄 Documento',
-            noticia: '📢 Noticia'
-        };
-
         list.innerHTML = latest.map(item => `
             <div class="post-accordion">
                 <button class="post-accordion-header" onclick="toggleNovedadAccordion(${item.id})">
                     <div>
-                        <span class="info-category-badge badge-${item.category}">${categoryLabel[item.category] || item.category}</span>
+                        <span style="background:#e0f2fe; color:#0369a1; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.75rem; font-weight:600;">${getBlogCategoryLabel(item.category)}</span>
                         ${item.is_pinned ? '<span class="pinned-badge">📌 Destacado</span>' : ''}
                         <span class="post-accordion-title">${item.title}</span>
-                        <div class="post-date">${formatInfoDate(item)}</div>
+                        ${item.show_date !== 0 ? `<div class="post-date">${formatInfoDate(item)}</div>` : ''}
                     </div>
                     <span class="accordion-arrow" id="nav-arrow-${item.id}">▼</span>
                 </button>
@@ -81,5 +85,10 @@ function formatInfoDate(item) {
     return date.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-loadSubjects();
-loadNovedades();
+async function init() {
+    await loadInfoCategories();
+    loadSubjects();
+    loadNovedades();
+}
+
+init();
