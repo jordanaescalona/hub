@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portfolio — Certificaciones</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <h2>Admin Portfolio</h2>
+        <p>Jordana Escalona</p>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="proyectos.html"><span class="nav-icon">💻</span> Proyectos</a>
+        <a href="certificaciones.html" class="active"><span class="nav-icon">🏆</span> Certificaciones</a>
+        <a href="tecnologias.html"><span class="nav-icon">⚙️</span> Tecnologías</a>
+        <a href="mensajes.html"><span class="nav-icon">✉️</span> Mensajes</a>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="#" onclick="logout()">🚪 Cerrar sesión</a>
+    </div>
+</aside>
+
+<div class="main">
+    <div class="topbar">
+        <h1>Certificaciones</h1>
+        <button class="btn-logout" onclick="logout()">Salir</button>
+    </div>
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>Todas las certificaciones</h2>
+                <button class="btn btn-primary" onclick="openModal()">+ Nueva certificación</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Emisor</th>
+                        <th>Fecha</th>
+                        <th>Orden</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="certificacionesTable">
+                    <tr><td colspan="5" class="empty-state">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal certificación -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <h3 id="modalTitle">Nueva certificación</h3>
+        <div class="form-group">
+            <label>Nombre *</label>
+            <input type="text" id="fieldName" placeholder="Ej: Python Professional Certificate">
+        </div>
+        <div class="form-group">
+            <label>Emisor *</label>
+            <input type="text" id="fieldIssuer" placeholder="Coursera, Udemy, Google...">
+        </div>
+        <div class="form-group">
+            <label>Fecha *</label>
+            <input type="date" id="fieldDate">
+        </div>
+        <div class="form-group">
+            <label>URL de la credencial</label>
+            <input type="url" id="fieldCredentialUrl" placeholder="https://...">
+        </div>
+        <div class="form-group">
+            <label>URL de imagen</label>
+            <input type="url" id="fieldImageUrl" placeholder="https://...">
+            <button type="button" class="btn btn-secondary btn-sm" style="margin-top:0.5rem" onclick="uploadImage()">📁 Subir imagen</button>
+            <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+        </div>
+        <div class="form-group">
+            <label>Tecnologías relacionadas</label>
+            <div id="techSelector" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.5rem;"></div>
+        </div>
+        <div class="form-group" style="display:flex; align-items:center; gap:0.5rem;">
+            <label style="margin:0">Orden</label>
+            <input type="number" id="fieldOrder" value="0" min="0" style="width:80px;">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            <button class="btn btn-primary" onclick="save()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal eliminar -->
+<div class="modal-overlay" id="deleteOverlay">
+    <div class="modal" style="max-width:380px">
+        <h3>Eliminar certificación</h3>
+        <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>?</p>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
+            <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/certificaciones.js"></script>
+</body>
+</html>

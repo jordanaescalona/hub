@@ -1,118 +1,340 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jordana Escalona</title>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordana Elizabeth Escalona Colivoro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #020c1b;
+    --bg2:       #0a1628;
+    --card-bg:   #081020;
+    --cyan:      #00e5ff;
+    --purple:    #a855f7;
+    --green:     #00ffb3;
+    --blue:      #3b82f6;
+    --text:      #cde4ff;
+    --muted:     #7a9bbf;
+    --white:     #ffffff;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── CIRCUIT BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(0,229,255,.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(168,85,247,.05) 0%, transparent 50%),
+      radial-gradient(circle at 60% 80%, rgba(0,255,179,.03) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 48px 24px 60px; }
+
+  /* ── HEADER ── */
+  .hero { text-align: center; margin-bottom: 40px; }
+
+  .code-icon {
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -2px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 900;
+    line-height: 1.08;
+    color: var(--white);
+    letter-spacing: -1px;
+  }
+
+  .hero h1 .last {
+    background: linear-gradient(90deg, var(--purple) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .divider-line {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    margin: 18px auto;
+    border-radius: 2px;
+  }
+
+  .tagline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 20px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .tagline span { display: flex; align-items: center; gap: 6px; }
+
+  .tagline .tag-icon {
+    font-size: 1rem;
+    filter: grayscale(0);
+  }
+
+  /* ── CARDS ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  @media (max-width: 700px) { .cards { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: 18px;
+    padding: 36px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+
+  .card:hover { transform: translateY(-5px); }
+
+  .card-1 { border: 1.5px solid var(--cyan); box-shadow: 0 0 28px rgba(0,229,255,.10); }
+  .card-2 { border: 1.5px solid var(--green); box-shadow: 0 0 28px rgba(0,255,179,.12); }
+  .card-3 { border: 1.5px solid var(--purple); box-shadow: 0 0 28px rgba(168,85,247,.12); }
+
+  .card:hover.card-1 { box-shadow: 0 8px 40px rgba(0,229,255,.22); }
+  .card:hover.card-2 { box-shadow: 0 8px 40px rgba(0,255,179,.22); }
+  .card:hover.card-3 { box-shadow: 0 8px 40px rgba(168,85,247,.22); }
+
+  /* icon circle */
+  .icon-circle {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 2.2rem;
+  }
+
+  .card-1 .icon-circle { background: rgba(0,229,255,.08); border: 1.5px solid var(--cyan); }
+  .card-2 .icon-circle { background: rgba(0,255,179,.08); border: 1.5px solid var(--green); }
+  .card-3 .icon-circle { background: rgba(168,85,247,.08); border: 1.5px solid var(--purple); }
+
+  .card h2 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .card-num {
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .card-1 .card-num { color: var(--cyan); }
+  .card-2 .card-num { color: var(--green); }
+  .card-3 .card-num { color: var(--purple); }
+
+  .card-sep {
+    width: 36px;
+    height: 2px;
+    border-radius: 2px;
+    margin: 10px auto 14px;
+  }
+
+  .card-1 .card-sep { background: var(--cyan); }
+  .card-2 .card-sep { background: var(--green); }
+  .card-3 .card-sep { background: var(--purple); }
+
+  .card p {
+    font-size: .87rem;
+    color: var(--muted);
+    line-height: 1.65;
+    flex: 1;
+    margin-bottom: 28px;
+  }
+
+  .arrow-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: transform .2s;
+    text-decoration: none;
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  .card-1 .arrow-btn { background: var(--cyan); }
+  .card-2 .arrow-btn { background: var(--green); }
+  .card-3 .arrow-btn { background: var(--purple); }
+
+  .arrow-btn:hover { transform: scale(1.12); }
+
+  /* ── SKILL BAR ── */
+  .skills-bar {
+    background: var(--bg2);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 14px;
+    padding: 18px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 16px 8px;
+  }
+
+  .skill-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: .78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--muted);
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,.06);
+    transition: color .2s, border-color .2s;
+    cursor: default;
+  }
+
+  .skill-item:hover { color: var(--white); border-color: rgba(255,255,255,.18); }
+
+  .skill-icon {
+    font-size: 1.1rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .si-code  { background: rgba(0,229,255,.1);    color: var(--cyan);   }
+  .si-web   { background: rgba(59,130,246,.1);   color: var(--blue);   }
+  .si-pc    { background: rgba(255,165,0,.1);    color: #ffa500;       }
+  .si-py    { background: rgba(255,222,0,.1);    color: #ffde00;       }
+  .si-ai    { background: rgba(168,85,247,.1);   color: var(--purple); }
+
+  /* decorative floaters */
+  .floater {
+    position: fixed;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    opacity: .55;
+    pointer-events: none;
+  }
+
+  .float-code { width:62px;height:62px; top:34%; left:2%; background:rgba(168,85,247,.12); border:1.5px solid rgba(168,85,247,.3); color:var(--purple); font-size:.95rem; font-weight:800; }
+  .float-py   { width:58px;height:58px; top:33%; right:2%; background:rgba(255,222,0,.08);  border:1.5px solid rgba(255,222,0,.25); }
+  .float-db   { width:52px;height:52px; top:52%; right:2%; background:rgba(0,229,255,.08);  border:1.5px solid rgba(0,229,255,.25); font-size:1.3rem; }
+</style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-    <span class="navbar-brand">Jordana Escalona</span>
-    <ul class="navbar-links">
-        <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#proyectos">Mis espacios</a></li>
-        <li><a href="#sobre-mi">Sobre mí</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-    </ul>
-</nav>
+<!-- decorative floaters -->
+<div class="floater float-code">&lt;/&gt;</div>
+<div class="floater float-py">🐍</div>
+<div class="floater float-db">🗄️</div>
 
-<!-- HERO -->
-<section class="hero" id="inicio">
-    <div class="hero-content">
-        <span class="hero-tag">Desarrolladora Fullstack & Docente</span>
-        <h1>Hola, soy<br><span>Jordana Escalona</span></h1>
-        <p>Desarrolladora fullstack, técnica en reparación de PC y estudiante de Ciencias de Datos e IA. Bienvenida a mi espacio digital.</p>
-        <a href="#proyectos" class="hero-btn">Explorá mis proyectos</a>
+<div class="wrapper">
+
+  <!-- HERO -->
+  <header class="hero">
+    <span class="code-icon">&lt;/&gt;</span>
+    <h1>Jordana Elizabeth<br><span class="last">Escalona Colivoro</span></h1>
+    <div class="divider-line"></div>
+    <div class="tagline">
+      <span><span class="tag-icon">🎓</span> Técnica Universitaria en Programación</span>
+      <span><span class="tag-icon">&lt;/&gt;</span> Desarrolladora Full Stack</span>
+      <span><span class="tag-icon">🔧</span> Técnica en reparación de PC</span>
+      <span><span class="tag-icon">👩‍🏫</span> Tutora en Reparación de PC y programación en Python</span>
     </div>
-</section>
+  </header>
 
-<!-- MIS ESPACIOS -->
-<section id="proyectos">
-    <div class="container">
-        <span class="section-tag">Mis espacios</span>
-        <h2 class="section-title">Todo lo que hago</h2>
-        <p class="section-subtitle">Explorá cada una de mis áreas de trabajo y aprendizaje</p>
+  <!-- CARDS -->
+  <section class="cards">
 
-        <div class="cards-grid">
-            <a href="https://portfolio.jordanaescalona.com.ar" class="card">
-                <div class="card-icon">💻</div>
-                <h3>Mi Portfolio</h3>
-                <p>Proyectos de desarrollo web fullstack, certificaciones y experiencia profesional.</p>
-                <span class="card-link">Ver portfolio</span>
-            </a>
-
-            <a href="https://seteirio3.jordanaescalona.com.ar" class="card">
-                <div class="card-icon">🔧</div>
-                <h3>Setei Río3</h3>
-                <p>Servicio técnico y reparación de PC en Río Grande, Tierra del Fuego. Diagnóstico, mantenimiento y más.</p>
-                <span class="card-link">Ver servicios</span>
-            </a>
-
-            <a href="https://tutorias.jordanaescalona.com.ar" class="card">
-                <div class="card-icon">📚</div>
-                <h3>Tutorías</h3>
-                <p>Clases y tutorías personalizadas en programación, tecnología y materias relacionadas.</p>
-                <span class="card-link">Ver tutorías</span>
-            </a>
-
-            <a href="https://blog.jordanaescalona.com.ar" class="card">
-                <div class="card-icon">✍️</div>
-                <h3>Blog</h3>
-                <p>Artículos y apuntes sobre mi recorrido en la Tecnicatura de Ciencias de Datos e IA.</p>
-                <span class="card-link">Leer blog</span>
-            </a>
-        </div>
+    <div class="card card-1">
+      <div class="icon-circle">💻</div>
+      <span class="card-num">1.</span>
+      <h2>Portfolio</h2>
+      <div class="card-sep"></div>
+      <p>Conocé mis proyectos, habilidades y experiencia en desarrollo de software.</p>
+      <a href="#" class="arrow-btn">→</a>
     </div>
-</section>
 
-<!-- SOBRE MÍ -->
-<section id="sobre-mi">
-    <div class="container">
-        <div class="about-wrapper">
-            <div class="about-text">
-                <span class="section-tag">Sobre mí</span>
-                <h2>¿Quién soy?</h2>
-                <p>Soy Jordana Escalona, desarrolladora fullstack de Río Grande, Tierra del Fuego. Me apasiona la tecnología en todas sus formas — desde desarrollar aplicaciones web hasta reparar computadoras.</p>
-                <p>Actualmente estoy cursando la Tecnicatura en Ciencias de Datos e Inteligencia Artificial, combinando mi experiencia práctica con el aprendizaje continuo.</p>
-                <div class="about-tags">
-                    <span class="about-tag">Python</span>
-                    <span class="about-tag">Django</span>
-                    <span class="about-tag">JavaScript</span>
-                    <span class="about-tag">React</span>
-                    <span class="about-tag">Ciencias de Datos</span>
-                    <span class="about-tag">Reparación de PC</span>
-                </div>
-            </div>
-            <div class="about-image">💻</div>
-        </div>
+    <div class="card card-2">
+      <div class="icon-circle">🖥️</div>
+      <span class="card-num">2.</span>
+      <h2>Servicio Técnico</h2>
+      <div class="card-sep"></div>
+      <p>Soluciones tecnológicas, reparación, mantenimiento y optimización de equipos.</p>
+      <a href="#" class="arrow-btn">→</a>
     </div>
-</section>
 
-<!-- CONTACTO -->
-<section class="contact-section" id="contacto">
-    <div class="container">
-        <h2>¿Hablamos?</h2>
-        <p>Ya sea para un proyecto, una tutoría o una consulta técnica, estoy disponible para ayudarte.</p>
-        <div class="contact-links">
-            <a href="mailto:jordana.escalona@gmail.com" class="contact-link contact-link-primary">
-                ✉️ Escribime un email
-            </a>
-            <a href="https://portfolio.jordanaescalona.com.ar#contacto" class="contact-link contact-link-secondary">
-                📝 Formulario de contacto
-            </a>
-        </div>
+    <div class="card card-3">
+      <div class="icon-circle">📝</div>
+      <span class="card-num">3.</span>
+      <h2>Blog Tecnicatura en CS de Datos e IA</h2>
+      <div class="card-sep"></div>
+      <p>Artículos, recursos y novedades sobre Ciencia de Datos e Inteligencia Artificial.</p>
+      <a href="#" class="arrow-btn">→</a>
     </div>
-</section>
 
-<!-- FOOTER -->
-<footer>
-    <p>© 2026 Jordana Escalona — Río Grande, Tierra del Fuego</p>
-</footer>
+  </section>
 
-<script src="js/main.js"></script>
+  <!-- SKILL BAR -->
+  <footer class="skills-bar">
+    <div class="skill-item"><span class="skill-icon si-code">&lt;/&gt;</span> Desarrollo de Software</div>
+    <div class="skill-item"><span class="skill-icon si-web">🌐</span> Desarrollo Web Full Stack</div>
+    <div class="skill-item"><span class="skill-icon si-pc">🔧</span> Reparación y Mantenimiento de PC</div>
+    <div class="skill-item"><span class="skill-icon si-py">🐍</span> Programación en Python</div>
+    <div class="skill-item"><span class="skill-icon si-ai">🧠</span> Datos e Inteligencia Artificial</div>
+  </footer>
 
+</div>
 </body>
 </html>

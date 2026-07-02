@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portfolio — Proyectos</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <h2>Admin Portfolio</h2>
+            <p>Jordana Escalona</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="proyectos.html" class="active"><span class="nav-icon">💻</span> Proyectos</a>
+            <a href="certificaciones.html"><span class="nav-icon">🏆</span> Certificaciones</a>
+            <a href="tecnologias.html"><span class="nav-icon">⚙️</span> Tecnologías</a>
+            <a href="mensajes.html"><span class="nav-icon">✉️</span> Mensajes</a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" onclick="logout()">🚪 Cerrar sesión</a>
+        </div>
+    </aside>
+
+    <div class="main">
+        <div class="topbar">
+            <h1>Proyectos</h1>
+            <button class="btn-logout" onclick="logout()">Salir</button>
+        </div>
+        <div class="content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Todos los proyectos</h2>
+                    <button class="btn btn-primary" onclick="openModal()">+ Nuevo proyecto</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Tecnologías</th>
+                            <th>Destacado</th>
+                            <th>Orden</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="proyectosTable">
+                        <tr>
+                            <td colspan="5" class="empty-state">Cargando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal proyecto -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal modal-large">
+            <h3 id="modalTitle">Nuevo proyecto</h3>
+            <div class="form-group">
+                <label>Título *</label>
+                <input type="text" id="fieldTitle" placeholder="Nombre del proyecto">
+            </div>
+            <div class="form-group">
+                <label>Descripción *</label>
+                <textarea id="fieldDescription" placeholder="Descripción del proyecto"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Tecnologías</label>
+                <div id="techSelector"
+                    style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.5rem; padding:0.5rem; border:1px solid #e2e8f0; border-radius:6px; min-height:50px;">
+                </div>
+                <small style="color:#64748b; font-size:0.78rem; margin-top:0.3rem; display:block;">Seleccioná las
+                    tecnologías usadas</small>
+            </div>
+            <div class="form-group">
+                <label>URL del repositorio</label>
+                <input type="url" id="fieldRepoUrl" placeholder="https://github.com/...">
+            </div>
+            <div class="form-group">
+                <label>URL de la demo</label>
+                <input type="url" id="fieldDemoUrl" placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label>URL de imagen</label>
+                <input type="url" id="fieldImageUrl" placeholder="https://...">
+                <button type="button" class="btn btn-secondary btn-sm" style="margin-top:0.5rem"
+                    onclick="uploadImage()">📁 Subir imagen</button>
+                <input type="file" id="fileInput" accept="image/*" style="display:none"
+                    onchange="handleImageUpload(event)">
+            </div>
+            <div style="display:flex; gap:2rem; align-items:center;">
+                <div class="form-group checkbox-group" style="margin:0">
+                    <input type="checkbox" id="fieldFeatured">
+                    <label for="fieldFeatured" style="margin:0">Destacado</label>
+                </div>
+                <div class="form-group" style="margin:0; display:flex; align-items:center; gap:0.5rem;">
+                    <label style="margin:0">Orden</label>
+                    <input type="number" id="fieldOrder" value="0" min="0" style="width:80px;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="save()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal eliminar -->
+    <div class="modal-overlay" id="deleteOverlay">
+        <div class="modal" style="max-width:380px">
+            <h3>Eliminar proyecto</h3>
+            <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>?</p>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/proyectos.js"></script>
+</body>
+
+</html>

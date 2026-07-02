@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portfolio — Mensajes</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <h2>Admin Portfolio</h2>
+        <p>Jordana Escalona</p>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="proyectos.html"><span class="nav-icon">💻</span> Proyectos</a>
+        <a href="certificaciones.html"><span class="nav-icon">🏆</span> Certificaciones</a>
+        <a href="tecnologias.html"><span class="nav-icon">⚙️</span> Tecnologías</a>
+        <a href="mensajes.html" class="active"><span class="nav-icon">✉️</span> Mensajes</a>        
+    </nav>
+    <div class="sidebar-footer">
+        <a href="#" onclick="logout()">🚪 Cerrar sesión</a>
+    </div>
+</aside>
+
+<div class="main">
+    <div class="topbar">
+        <h1>Mensajes</h1>
+        <button class="btn-logout" onclick="logout()">Salir</button>
+    </div>
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>Mensajes recibidos</h2>
+                <span id="unreadBadge" style="background:#dbeafe; color:#1d4ed8; padding:0.2rem 0.8rem; border-radius:20px; font-size:0.82rem; font-weight:600;"></span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Mensaje</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="mensajesTable">
+                    <tr><td colspan="6" class="empty-state">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ver mensaje -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <h3 id="modalName"></h3>
+        <p style="color:#64748b; font-size:0.82rem; margin-bottom:1rem" id="modalEmail"></p>
+        <p style="line-height:1.7" id="modalMessage"></p>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
+            <button class="btn btn-primary" id="markReadBtn">Marcar como leído</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/mensajes.js"></script>
+</body>
+</html>
