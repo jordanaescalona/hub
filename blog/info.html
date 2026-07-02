@@ -30,11 +30,8 @@
     <div class="container">
 
         <!-- FILTROS -->
-        <div class="info-filters">
-            <button class="filter-btn active" onclick="filterInfo('all', this)">Todo</button>
-            <button class="filter-btn" onclick="filterInfo('examen', this)">📅 Exámenes</button>
-            <button class="filter-btn" onclick="filterInfo('faq', this)">❓ Preguntas frecuentes</button>
-            <button class="filter-btn" onclick="filterInfo('documento', this)">📄 Documentos</button>
+        <div class="info-filters" id="filterButtons">
+            <button class="filter-btn active" onclick="filterInfo('', this)">Todo</button>
         </div>
 
         <div class="posts-list" id="infoList">

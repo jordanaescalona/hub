@@ -9,10 +9,14 @@ async function loadCategories() {
     const res = await fetch(`${API}/api/info-categories`);
     infoCategories = await res.json();
 
-    const filterSelect = document.getElementById('filterCategory');
-    if (filterSelect) {
-        filterSelect.innerHTML = `<option value="">Todo</option>` +
-            infoCategories.map(cat => `<option value="${cat.slug}">${cat.icon} ${cat.name}</option>`).join('');
+    const filterButtons = document.getElementById('filterButtons');
+    if (filterButtons) {
+        filterButtons.innerHTML = `<button class="filter-btn active" onclick="filterInfo('', this)">Todo</button>` +
+            infoCategories.map(cat => `
+                <button class="filter-btn" onclick="filterInfo('${cat.slug}', this)">
+                    ${cat.icon} ${cat.name}
+                </button>
+            `).join('');
     }
 }
 
