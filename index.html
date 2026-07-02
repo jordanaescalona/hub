@@ -1,340 +1,475 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jordana Elizabeth Escalona Colivoro</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jordana Elizabeth Escalona Colivoro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/acda845b13.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  :root {
-    --bg:        #020c1b;
-    --bg2:       #0a1628;
-    --card-bg:   #081020;
-    --cyan:      #00e5ff;
-    --purple:    #a855f7;
-    --green:     #00ffb3;
-    --blue:      #3b82f6;
-    --text:      #cde4ff;
-    --muted:     #7a9bbf;
-    --white:     #ffffff;
-  }
+        :root {
+            --bg: #020c1b;
+            --bg2: #0a1628;
+            --card-bg: #081020;
+            --cyan: #00e5ff;
+            --purple: #a855f7;
+            --green: #00ffb3;
+            --blue: #3b82f6;
+            --text: #cde4ff;
+            --muted: #7a9bbf;
+            --white: #ffffff;
+        }
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-  /* ── CIRCUIT BACKGROUND ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 20% 50%, rgba(0,229,255,.04) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(168,85,247,.05) 0%, transparent 50%),
-      radial-gradient(circle at 60% 80%, rgba(0,255,179,.03) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 0;
-  }
+        /* ── CIRCUIT BACKGROUND ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(0, 229, 255, .04) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(168, 85, 247, .05) 0%, transparent 50%),
+                radial-gradient(circle at 60% 80%, rgba(0, 255, 179, .03) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-  .wrapper { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 48px 24px 60px; }
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 48px 24px 60px;
+        }
 
-  /* ── HEADER ── */
-  .hero { text-align: center; margin-bottom: 40px; }
+        /* ── HEADER ── */
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
-  .code-icon {
-    font-size: 2rem;
-    background: linear-gradient(135deg, var(--cyan), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -2px;
-    margin-bottom: 12px;
-    display: block;
-  }
+        .code-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+            margin-bottom: 12px;
+            display: block;
+        }
 
-  .hero h1 {
-    font-size: clamp(2.4rem, 6vw, 4rem);
-    font-weight: 900;
-    line-height: 1.08;
-    color: var(--white);
-    letter-spacing: -1px;
-  }
+        .hero h1 {
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            font-weight: 900;
+            line-height: 1.08;
+            color: var(--white);
+            letter-spacing: -1px;
+        }
 
-  .hero h1 .last {
-    background: linear-gradient(90deg, var(--purple) 0%, var(--cyan) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+        .hero h1 .last {
+            background: linear-gradient(90deg, var(--purple) 0%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-  .divider-line {
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(90deg, var(--cyan), var(--purple));
-    margin: 18px auto;
-    border-radius: 2px;
-  }
+        .divider-line {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+            margin: 18px auto;
+            border-radius: 2px;
+        }
 
-  .tagline {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px 20px;
-    font-size: 0.85rem;
-    color: var(--muted);
-  }
+        .tagline {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 20px;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
 
-  .tagline span { display: flex; align-items: center; gap: 6px; }
+        .tagline span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-  .tagline .tag-icon {
-    font-size: 1rem;
-    filter: grayscale(0);
-  }
+        .tagline .tag-icon {
+            font-size: 1rem;
+            filter: grayscale(0);
+        }
 
-  /* ── CARDS ── */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-bottom: 36px;
-  }
+        /* ── CARDS ── */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 36px;
+        }
 
-  @media (max-width: 700px) { .cards { grid-template-columns: 1fr; } }
+        @media (max-width: 700px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
 
-  .card {
-    background: var(--card-bg);
-    border-radius: 18px;
-    padding: 36px 28px 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    position: relative;
-    transition: transform .25s ease, box-shadow .25s ease;
-  }
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 36px 28px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
 
-  .card:hover { transform: translateY(-5px); }
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-  .card-1 { border: 1.5px solid var(--cyan); box-shadow: 0 0 28px rgba(0,229,255,.10); }
-  .card-2 { border: 1.5px solid var(--green); box-shadow: 0 0 28px rgba(0,255,179,.12); }
-  .card-3 { border: 1.5px solid var(--purple); box-shadow: 0 0 28px rgba(168,85,247,.12); }
+        .card-1 {
+            border: 1.5px solid var(--cyan);
+            box-shadow: 0 0 28px rgba(0, 229, 255, .10);
+        }
 
-  .card:hover.card-1 { box-shadow: 0 8px 40px rgba(0,229,255,.22); }
-  .card:hover.card-2 { box-shadow: 0 8px 40px rgba(0,255,179,.22); }
-  .card:hover.card-3 { box-shadow: 0 8px 40px rgba(168,85,247,.22); }
+        .card-2 {
+            border: 1.5px solid var(--green);
+            box-shadow: 0 0 28px rgba(0, 255, 179, .12);
+        }
 
-  /* icon circle */
-  .icon-circle {
-    width: 88px;
-    height: 88px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    font-size: 2.2rem;
-  }
+        .card-3 {
+            border: 1.5px solid var(--purple);
+            box-shadow: 0 0 28px rgba(168, 85, 247, .12);
+        }
 
-  .card-1 .icon-circle { background: rgba(0,229,255,.08); border: 1.5px solid var(--cyan); }
-  .card-2 .icon-circle { background: rgba(0,255,179,.08); border: 1.5px solid var(--green); }
-  .card-3 .icon-circle { background: rgba(168,85,247,.08); border: 1.5px solid var(--purple); }
+        .card:hover.card-1 {
+            box-shadow: 0 8px 40px rgba(0, 229, 255, .22);
+        }
 
-  .card h2 {
-    font-size: 1.05rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: .5px;
-    color: var(--white);
-    margin-bottom: 10px;
-    line-height: 1.3;
-  }
+        .card:hover.card-2 {
+            box-shadow: 0 8px 40px rgba(0, 255, 179, .22);
+        }
 
-  .card-num {
-    font-size: .78rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-    display: block;
-  }
+        .card:hover.card-3 {
+            box-shadow: 0 8px 40px rgba(168, 85, 247, .22);
+        }
 
-  .card-1 .card-num { color: var(--cyan); }
-  .card-2 .card-num { color: var(--green); }
-  .card-3 .card-num { color: var(--purple); }
+        /* icon circle */
+        .icon-circle {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
 
-  .card-sep {
-    width: 36px;
-    height: 2px;
-    border-radius: 2px;
-    margin: 10px auto 14px;
-  }
+        .card-1 .icon-circle {
+            background: rgba(0, 229, 255, .08);
+            border: 1.5px solid var(--cyan);
+        }
 
-  .card-1 .card-sep { background: var(--cyan); }
-  .card-2 .card-sep { background: var(--green); }
-  .card-3 .card-sep { background: var(--purple); }
+        .card-2 .icon-circle {
+            background: rgba(0, 255, 179, .08);
+            border: 1.5px solid var(--green);
+        }
 
-  .card p {
-    font-size: .87rem;
-    color: var(--muted);
-    line-height: 1.65;
-    flex: 1;
-    margin-bottom: 28px;
-  }
+        .card-3 .icon-circle {
+            background: rgba(168, 85, 247, .08);
+            border: 1.5px solid var(--purple);
+        }
 
-  .arrow-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    transition: transform .2s;
-    text-decoration: none;
-    color: var(--bg);
-    font-weight: 700;
-  }
+        .card h2 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: var(--white);
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
 
-  .card-1 .arrow-btn { background: var(--cyan); }
-  .card-2 .arrow-btn { background: var(--green); }
-  .card-3 .arrow-btn { background: var(--purple); }
+        .card-num {
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            display: block;
+        }
 
-  .arrow-btn:hover { transform: scale(1.12); }
+        .card-1 .card-num {
+            color: var(--cyan);
+        }
 
-  /* ── SKILL BAR ── */
-  .skills-bar {
-    background: var(--bg2);
-    border: 1px solid rgba(255,255,255,.07);
-    border-radius: 14px;
-    padding: 18px 28px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 16px 8px;
-  }
+        .card-2 .card-num {
+            color: var(--green);
+        }
 
-  .skill-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: .78rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .6px;
-    color: var(--muted);
-    padding: 6px 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,.06);
-    transition: color .2s, border-color .2s;
-    cursor: default;
-  }
+        .card-3 .card-num {
+            color: var(--purple);
+        }
 
-  .skill-item:hover { color: var(--white); border-color: rgba(255,255,255,.18); }
+        .card-sep {
+            width: 36px;
+            height: 2px;
+            border-radius: 2px;
+            margin: 10px auto 14px;
+        }
 
-  .skill-icon {
-    font-size: 1.1rem;
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
+        .card-1 .card-sep {
+            background: var(--cyan);
+        }
 
-  .si-code  { background: rgba(0,229,255,.1);    color: var(--cyan);   }
-  .si-web   { background: rgba(59,130,246,.1);   color: var(--blue);   }
-  .si-pc    { background: rgba(255,165,0,.1);    color: #ffa500;       }
-  .si-py    { background: rgba(255,222,0,.1);    color: #ffde00;       }
-  .si-ai    { background: rgba(168,85,247,.1);   color: var(--purple); }
+        .card-2 .card-sep {
+            background: var(--green);
+        }
 
-  /* decorative floaters */
-  .floater {
-    position: fixed;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.6rem;
-    opacity: .55;
-    pointer-events: none;
-  }
+        .card-3 .card-sep {
+            background: var(--purple);
+        }
 
-  .float-code { width:62px;height:62px; top:34%; left:2%; background:rgba(168,85,247,.12); border:1.5px solid rgba(168,85,247,.3); color:var(--purple); font-size:.95rem; font-weight:800; }
-  .float-py   { width:58px;height:58px; top:33%; right:2%; background:rgba(255,222,0,.08);  border:1.5px solid rgba(255,222,0,.25); }
-  .float-db   { width:52px;height:52px; top:52%; right:2%; background:rgba(0,229,255,.08);  border:1.5px solid rgba(0,229,255,.25); font-size:1.3rem; }
-</style>
+        .card p {
+            font-size: .87rem;
+            color: var(--muted);
+            line-height: 1.65;
+            flex: 1;
+            margin-bottom: 28px;
+        }
+
+        .arrow-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: transform .2s;
+            text-decoration: none;
+            color: var(--bg);
+            font-weight: 700;
+        }
+
+        .card-1 .arrow-btn {
+            background: var(--cyan);
+        }
+
+        .card-2 .arrow-btn {
+            background: var(--green);
+        }
+
+        .card-3 .arrow-btn {
+            background: var(--purple);
+        }
+
+        .arrow-btn:hover {
+            transform: scale(1.12);
+        }
+
+        /* ── SKILL BAR ── */
+        .skills-bar {
+            background: var(--bg2);
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 14px;
+            padding: 18px 28px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 16px 8px;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            color: var(--muted);
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, .06);
+            transition: color .2s, border-color .2s;
+            cursor: default;
+        }
+
+        .skill-item:hover {
+            color: var(--white);
+            border-color: rgba(255, 255, 255, .18);
+        }
+
+        .skill-icon {
+            font-size: 1.1rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .si-code {
+            background: rgba(0, 229, 255, .1);
+            color: var(--cyan);
+        }
+
+        .si-web {
+            background: rgba(59, 130, 246, .1);
+            color: var(--blue);
+        }
+
+        .si-pc {
+            background: rgba(255, 165, 0, .1);
+            color: #ffa500;
+        }
+
+        .si-py {
+            background: rgba(255, 222, 0, .1);
+            color: #ffde00;
+        }
+
+        .si-ai {
+            background: rgba(168, 85, 247, .1);
+            color: var(--purple);
+        }
+
+        /* decorative floaters */
+        .floater {
+            position: fixed;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            opacity: .55;
+            pointer-events: none;
+        }
+
+        .float-code {
+            width: 62px;
+            height: 62px;
+            top: 34%;
+            left: 2%;
+            background: rgba(168, 85, 247, .12);
+            border: 1.5px solid rgba(168, 85, 247, .3);
+            color: var(--purple);
+            font-size: .95rem;
+            font-weight: 800;
+        }
+
+        .float-py {
+            width: 58px;
+            height: 58px;
+            top: 33%;
+            right: 2%;
+            background: rgba(255, 222, 0, .08);
+            border: 1.5px solid rgba(255, 222, 0, .25);
+        }
+
+        .float-db {
+            width: 52px;
+            height: 52px;
+            top: 52%;
+            right: 2%;
+            background: rgba(0, 229, 255, .08);
+            border: 1.5px solid rgba(0, 229, 255, .25);
+            font-size: 1.3rem;
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- decorative floaters -->
-<div class="floater float-code">&lt;/&gt;</div>
-<div class="floater float-py">🐍</div>
-<div class="floater float-db">🗄️</div>
+    <!-- decorative floaters -->
+    <div class="floater float-code">&lt;/&gt;</div>
+    <div class="floater float-py">🐍</div>
+    <div class="floater float-db">🗄️</div>
 
-<div class="wrapper">
+    <div class="wrapper">
 
-  <!-- HERO -->
-  <header class="hero">
-    <span class="code-icon">&lt;/&gt;</span>
-    <h1>Jordana Elizabeth<br><span class="last">Escalona Colivoro</span></h1>
-    <div class="divider-line"></div>
-    <div class="tagline">
-      <span><span class="tag-icon">🎓</span> Técnica Universitaria en Programación</span>
-      <span><span class="tag-icon">&lt;/&gt;</span> Desarrolladora Full Stack</span>
-      <span><span class="tag-icon">🔧</span> Técnica en reparación de PC</span>
-      <span><span class="tag-icon">👩‍🏫</span> Tutora en Reparación de PC y programación en Python</span>
+        <!-- HERO -->
+        <header class="hero">
+            <span class="code-icon">&lt;/&gt;</span>
+            <h1>Jordana Elizabeth<br><span class="last">Escalona Colivoro</span></h1>
+            <div class="divider-line"></div>
+            <div class="tagline">
+                <span><span class="tag-icon">🎓</span> Técnica Universitaria en Programación</span>
+                <span><span class="tag-icon">&lt;/&gt;</span> Desarrolladora Full Stack</span>
+                <span><span class="tag-icon">🔧</span> Técnica en reparación de PC</span>
+                <span><span class="tag-icon">👩‍🏫</span> Tutora en Reparación de PC y programación en Python</span>
+            </div>
+        </header>
+
+        <!-- CARDS -->
+        <section class="cards">
+
+            <div class="card card-1">
+                <div class="icon-circle">💻</div>
+                <span class="card-num">1.</span>
+                <h2>Portfolio</h2>
+                <div class="card-sep"></div>
+                <p>Conocé mis proyectos, habilidades y experiencia en desarrollo de software.</p>
+                <a href="#" class="arrow-btn">→</a>
+            </div>
+
+            <div class="card card-2">
+                <div class="icon-circle">🖥️</div>
+                <span class="card-num">2.</span>
+                <h2>Servicio Técnico</h2>
+                <div class="card-sep"></div>
+                <p>Soluciones tecnológicas, reparación, mantenimiento y optimización de equipos.</p>
+                <a href="#" class="arrow-btn">→</a>
+            </div>
+
+            <div class="card card-3">
+                <div class="icon-circle">📝</div>
+                <span class="card-num">3.</span>
+                <h2>Blog Tecnicatura en CS de Datos e IA</h2>
+                <div class="card-sep"></div>
+                <p>Artículos, recursos y novedades sobre Ciencia de Datos e Inteligencia Artificial.</p>
+                <a href="#" class="arrow-btn">→</a>
+            </div>
+
+        </section>
+
+        <!-- SKILL BAR -->
+        <footer class="skills-bar">
+            <div class="skill-item"><span class="skill-icon si-code">&lt;/&gt;</span> Desarrollo de Software</div>
+            <div class="skill-item"><span class="skill-icon si-web">🌐</span> Desarrollo Web Full Stack</div>
+            <div class="skill-item"><span class="skill-icon si-pc">🔧</span> Reparación y Mantenimiento de PC</div>
+            <div class="skill-item"><span class="skill-icon si-py">🐍</span> Programación en Python</div>
+            <div class="skill-item"><span class="skill-icon si-ai">🧠</span> Datos e Inteligencia Artificial</div>
+        </footer>
+
     </div>
-  </header>
-
-  <!-- CARDS -->
-  <section class="cards">
-
-    <div class="card card-1">
-      <div class="icon-circle">💻</div>
-      <span class="card-num">1.</span>
-      <h2>Portfolio</h2>
-      <div class="card-sep"></div>
-      <p>Conocé mis proyectos, habilidades y experiencia en desarrollo de software.</p>
-      <a href="#" class="arrow-btn">→</a>
-    </div>
-
-    <div class="card card-2">
-      <div class="icon-circle">🖥️</div>
-      <span class="card-num">2.</span>
-      <h2>Servicio Técnico</h2>
-      <div class="card-sep"></div>
-      <p>Soluciones tecnológicas, reparación, mantenimiento y optimización de equipos.</p>
-      <a href="#" class="arrow-btn">→</a>
-    </div>
-
-    <div class="card card-3">
-      <div class="icon-circle">📝</div>
-      <span class="card-num">3.</span>
-      <h2>Blog Tecnicatura en CS de Datos e IA</h2>
-      <div class="card-sep"></div>
-      <p>Artículos, recursos y novedades sobre Ciencia de Datos e Inteligencia Artificial.</p>
-      <a href="#" class="arrow-btn">→</a>
-    </div>
-
-  </section>
-
-  <!-- SKILL BAR -->
-  <footer class="skills-bar">
-    <div class="skill-item"><span class="skill-icon si-code">&lt;/&gt;</span> Desarrollo de Software</div>
-    <div class="skill-item"><span class="skill-icon si-web">🌐</span> Desarrollo Web Full Stack</div>
-    <div class="skill-item"><span class="skill-icon si-pc">🔧</span> Reparación y Mantenimiento de PC</div>
-    <div class="skill-item"><span class="skill-icon si-py">🐍</span> Programación en Python</div>
-    <div class="skill-item"><span class="skill-icon si-ai">🧠</span> Datos e Inteligencia Artificial</div>
-  </footer>
-
-</div>
 </body>
+
 </html>
