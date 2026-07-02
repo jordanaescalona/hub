@@ -12,9 +12,10 @@ async function loadTecnologias() {
 }
 
 function renderTechIcon(t) {
-    return t.icon && t.icon.startsWith('fa')
-        ? `<i class="${t.icon}"></i>`
-        : t.icon || '';
+    if (!t.icon) return '';
+    if (t.icon.startsWith('fa')) return `<i class="${t.icon}"></i>`;
+    if (t.icon.startsWith('devicon')) return `<i class="${t.icon} colored"></i>`;
+    return t.icon;
 }
 
 function renderTechSelector(selected = []) {
