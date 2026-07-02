@@ -76,6 +76,7 @@ function toggleAccordion(id) {
     const isOpen = body.style.display === 'block';
     body.style.display = isOpen ? 'none' : 'block';
     arrow.textContent = isOpen ? '▼' : '▲';
+    if (!isOpen) addPdfDownloadButtons();
 }
 
 function formatInfoDate(item) {
@@ -161,3 +162,18 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 });
+
+function addPdfDownloadButtons() {
+    document.querySelectorAll('.post-content iframe').forEach(iframe => {
+        if (iframe.nextElementSibling?.classList.contains('pdf-download-btn')) return;
+        const url = iframe.src.split('#')[0];
+        const btn = document.createElement('a');
+        btn.href = url;
+        btn.target = '_blank';
+        btn.download = '';
+        btn.className = 'pdf-download-btn';
+        btn.innerHTML = '⬇️ Descargar PDF';
+        btn.style.cssText = 'display:inline-block; margin-top:0.5rem; padding:0.5rem 1.2rem; background:#2563eb; color:#fff; border-radius:6px; text-decoration:none; font-size:0.85rem; font-weight:600;';
+        iframe.insertAdjacentElement('afterend', btn);
+    });
+}
