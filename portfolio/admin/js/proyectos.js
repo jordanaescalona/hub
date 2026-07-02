@@ -11,13 +11,19 @@ async function loadTecnologias() {
     allTecnologias = await res.json();
 }
 
+function renderTechIcon(t) {
+    return t.icon && t.icon.startsWith('fa')
+        ? `<i class="${t.icon}"></i>`
+        : t.icon || '';
+}
+
 function renderTechSelector(selected = []) {
     selectedTechs = selected;
     const container = document.getElementById('techSelector');
     container.innerHTML = allTecnologias.map(t => `
-        <label style="display:flex; align-items:center; gap:0.3rem; padding:0.3rem 0.7rem; border:1px solid #e2e8f0; border-radius:20px; cursor:pointer; font-size:0.82rem; ${selectedTechs.includes(t.name) ? 'background:#dbeafe; border-color:#2563eb;' : ''}">
+        <label style="display:flex; align-items:center; gap:0.4rem; padding:0.3rem 0.7rem; border:1px solid #e2e8f0; border-radius:20px; cursor:pointer; font-size:0.82rem; ${selectedTechs.includes(t.name) ? 'background:#dbeafe; border-color:#2563eb;' : ''}">
             <input type="checkbox" value="${t.name}" ${selectedTechs.includes(t.name) ? 'checked' : ''} style="display:none" onchange="toggleTech('${t.name}', this)">
-            ${t.icon} ${t.name}
+            ${renderTechIcon(t)} ${t.name}
         </label>
     `).join('');
 }

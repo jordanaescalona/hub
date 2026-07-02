@@ -17,7 +17,11 @@ async function loadTecnologias() {
 
         tbody.innerHTML = allTecnologias.map(t => `
             <tr>
-                <td style="font-size:1.3rem">${t.icon || '—'}</td>
+                <td style="font-size:1.5rem">
+                    ${t.icon && t.icon.startsWith('fa') 
+                        ? `<i class="${t.icon}"></i>` 
+                        : t.icon || '—'}
+                </td>
                 <td><strong>${t.name}</strong></td>
                 <td>${t.order}</td>
                 <td class="actions">
