@@ -122,6 +122,7 @@ async function handleImageUpload(event) {
     if (!file) return;
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('folder', 'portfolio');
     try {
         const res = await fetch(`${API}/api/upload`, {
             method: 'POST',
