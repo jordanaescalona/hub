@@ -73,7 +73,8 @@ async function openModal(id = null) {
     document.getElementById('modalOverlay').classList.add('show');
 
     if (id) {
-        const c = allCertificaciones.find(c => c.id === id);
+        const res = await fetch(`${API}/api/certifications/${id}`);
+        const c = await res.json();
         document.getElementById('fieldName').value = c.name;
         document.getElementById('fieldIssuer').value = c.issuer;
         document.getElementById('fieldDate').value = c.date;
