@@ -51,6 +51,11 @@ async function loadCertificaciones() {
 
         tbody.innerHTML = allCertificaciones.map(c => `
             <tr>
+                <td>
+                    ${c.image_url
+                        ? `<img src="${c.image_url}" style="width:50px; height:50px; object-fit:cover; border-radius:6px;">`
+                        : '<span style="color:#64748b">—</span>'}
+                </td>
                 <td><strong>${c.name}</strong></td>
                 <td style="color:#64748b">${c.issuer}</td>
                 <td style="font-size:0.82rem">${formatDate(c.date)}</td>
@@ -183,7 +188,7 @@ async function confirmDelete() {
 
 function formatDate(dateStr) {
     const [year, month] = dateStr.split('-');
-    const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
     return `${months[parseInt(month) - 1]} ${year}`;
 }
 
