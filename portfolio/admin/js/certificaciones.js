@@ -80,6 +80,7 @@ async function openModal(id = null) {
         document.getElementById('fieldCredentialUrl').value = c.credential_url || '';
         document.getElementById('fieldImageUrl').value = c.image_url || '';
         document.getElementById('fieldOrder').value = c.order;
+        previewImage(c.image_url || '');
         const techs = c.technologies ? c.technologies.split(',').map(t => t.trim()) : [];
         renderTechSelector(techs);
     } else {
@@ -89,13 +90,26 @@ async function openModal(id = null) {
         document.getElementById('fieldCredentialUrl').value = '';
         document.getElementById('fieldImageUrl').value = '';
         document.getElementById('fieldOrder').value = 0;
+        previewImage('');
         renderTechSelector([]);
     }
 }
 
 function closeModal() {
     document.getElementById('modalOverlay').classList.remove('show');
+    document.getElementById('imagePreview').style.display = 'none';
     editingId = null;
+}
+
+function previewImage(url) {
+    const preview = document.getElementById('imagePreview');
+    const img = document.getElementById('previewImg');
+    if (url) {
+        img.src = url;
+        preview.style.display = 'block';
+    } else {
+        preview.style.display = 'none';
+    }
 }
 
 function uploadImage() {
@@ -116,6 +130,7 @@ async function handleImageUpload(event) {
         if (!res.ok) { alert('Error al subir la imagen'); return; }
         const data = await res.json();
         document.getElementById('fieldImageUrl').value = data.url;
+        previewImage(data.url);
     } catch (err) {
         alert('Error al conectar con el servidor');
     }
