@@ -1,6 +1,5 @@
 const API = 'https://hub-api.jordana-escalona.workers.dev';
 
-// Navbar scroll — solo si existe
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.p-navbar');
     if (!navbar) return;
