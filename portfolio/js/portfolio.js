@@ -1,5 +1,3 @@
-const API = 'https://hub-api.jordana-escalona.workers.dev';
-
 // ── PROYECTOS ─────────────────────────────────────────────────
 async function loadProjects() {
     const grid = document.getElementById('projectsGrid');
