@@ -154,8 +154,8 @@ strong { color: var(--color-5); }
 .cert-date-p { color: #64748b; font-size: 0.78rem; }
 
 /* ── PROYECTOS ── */
-#portfolio { padding: 2rem; }
-#portfolio h2 { color: var(--color-2); margin-bottom: 2rem; text-align: center; }
+#proyectos { padding: 2rem; }
+#proyectos h2 { color: var(--color-2); margin-bottom: 2rem; text-align: center; }
 
 .projects-grid-p {
     display: grid;
