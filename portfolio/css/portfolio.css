@@ -157,6 +157,20 @@ strong { color: var(--color-5); }
 #proyectos { padding: 2rem; }
 #proyectos h2 { color: var(--color-2); margin-bottom: 2rem; text-align: center; }
 
+@media (max-width: 768px) {
+    #proyectos {
+        padding: 1rem;
+    }
+    
+    .projects-grid-p {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .project-card-p {
+        margin: 0;
+    }
+}
 .projects-grid-p {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
