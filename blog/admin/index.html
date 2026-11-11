@@ -30,10 +30,7 @@
         if (!token) { showAlert('alert', 'Ingresá el token'); return; }
 
         try {
-            const res = await fetch(`${API}/api/subjects`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if (res.status === 401) { showAlert('alert', 'Token incorrecto'); return; }
+            if (!await checkToken(token)) { showAlert('alert', 'Token incorrecto'); return; }
             saveToken(token);
             window.location.href = 'materias.html';
         } catch (err) {

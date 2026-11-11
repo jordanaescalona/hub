@@ -1,42 +1,7 @@
 requireAuth();
 
 let editingId = null;
-let deletingId = null;
 let allCertificaciones = [];
-let allTecnologias = [];
-let selectedTechs = [];
-
-async function loadTecnologias() {
-    const res = await fetch(`${API}/api/technologies`);
-    allTecnologias = await res.json();
-}
-
-function renderTechIcon(t) {
-    if (!t.icon) return '';
-    if (t.icon.startsWith('fa')) return `<i class="${t.icon}"></i>`;
-    if (t.icon.startsWith('devicon')) return `<i class="${t.icon} colored"></i>`;
-    return t.icon;
-}
-
-function renderTechSelector(selected = []) {
-    selectedTechs = selected;
-    const container = document.getElementById('techSelector');
-    container.innerHTML = allTecnologias.map(t => `
-        <label style="display:flex; align-items:center; gap:0.4rem; padding:0.3rem 0.7rem; border:1px solid #e2e8f0; border-radius:20px; cursor:pointer; font-size:0.82rem; ${selectedTechs.includes(t.name) ? 'background:#dbeafe; border-color:#2563eb;' : ''}">
-            <input type="checkbox" value="${t.name}" ${selectedTechs.includes(t.name) ? 'checked' : ''} style="display:none" onchange="toggleTech('${t.name}', this)">
-            ${renderTechIcon(t)} ${t.name}
-        </label>
-    `).join('');
-}
-
-function toggleTech(name, checkbox) {
-    if (checkbox.checked) {
-        if (!selectedTechs.includes(name)) selectedTechs.push(name);
-    } else {
-        selectedTechs = selectedTechs.filter(t => t !== name);
-    }
-    renderTechSelector(selectedTechs);
-}
 
 async function loadCertificaciones() {
     const tbody = document.getElementById('certificacionesTable');
@@ -45,151 +10,76 @@ async function loadCertificaciones() {
         allCertificaciones = await res.json();
 
         if (allCertificaciones.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No hay certificaciones todavía</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No hay certificaciones todavía</td></tr>`;
             return;
         }
 
         tbody.innerHTML = allCertificaciones.map(c => `
             <tr>
-                <td>
-                    ${c.image_url
-                        ? `<img src="${c.image_url}" style="width:50px; height:50px; object-fit:cover; border-radius:6px;">`
-                        : '<span style="color:#64748b">—</span>'}
-                </td>
+                <td>${c.image_url ? `<img src="${c.image_url}" class="thumb" alt="">` : '<span class="muted">—</span>'}</td>
                 <td><strong>${c.name}</strong></td>
-                <td style="color:#64748b">${c.issuer}</td>
-                <td style="font-size:0.82rem">${formatDate(c.date)}</td>
+                <td class="muted">${c.issuer}</td>
+                <td class="muted">${formatMonthYear(c.date)}</td>
                 <td>${c.order}</td>
                 <td class="actions">
                     <button class="btn btn-secondary btn-sm" onclick="openModal(${c.id})">Editar</button>
-                    <button class="btn btn-danger btn-sm" onclick="openDelete(${c.id}, '${c.name.replace(/'/g, "\\'")}')">Eliminar</button>
+                    <button class="btn btn-danger btn-sm" onclick="openDelete(${c.id})">Eliminar</button>
                 </td>
             </tr>
         `).join('');
 
     } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">Error al cargar</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Error al cargar</td></tr>`;
     }
 }
 
-async function openModal(id = null) {
+function openModal(id = null) {
     editingId = id;
+    const c = allCertificaciones.find(c => c.id === id) || {};
     document.getElementById('modalTitle').textContent = id ? 'Editar certificación' : 'Nueva certificación';
-    document.getElementById('modalOverlay').classList.add('show');
-
-    if (id) {
-        const res = await fetch(`${API}/api/certifications/${id}`);
-        const c = await res.json();
-        document.getElementById('fieldName').value = c.name;
-        document.getElementById('fieldIssuer').value = c.issuer;
-        document.getElementById('fieldDate').value = c.date;
-        document.getElementById('fieldCredentialUrl').value = c.credential_url || '';
-        document.getElementById('fieldImageUrl').value = c.image_url || '';
-        document.getElementById('fieldOrder').value = c.order;
-        previewImage(c.image_url || '');
-        const techs = c.technologies ? c.technologies.split(',').map(t => t.trim()) : [];
-        renderTechSelector(techs);
-    } else {
-        document.getElementById('fieldName').value = '';
-        document.getElementById('fieldIssuer').value = '';
-        document.getElementById('fieldDate').value = '';
-        document.getElementById('fieldCredentialUrl').value = '';
-        document.getElementById('fieldImageUrl').value = '';
-        document.getElementById('fieldOrder').value = 0;
-        previewImage('');
-        renderTechSelector([]);
-    }
+    document.getElementById('fieldName').value = c.name || '';
+    document.getElementById('fieldIssuer').value = c.issuer || '';
+    document.getElementById('fieldDate').value = c.date || '';
+    document.getElementById('fieldCredentialUrl').value = c.credential_url || '';
+    document.getElementById('fieldImageUrl').value = c.image_url || '';
+    document.getElementById('fieldOrder').value = c.order || 0;
+    previewImage(c.image_url);
+    renderTechSelector(parseTechs(c.technologies));
+    openOverlay('modalOverlay');
 }
 
 function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('show');
-    document.getElementById('imagePreview').style.display = 'none';
+    closeOverlay('modalOverlay');
     editingId = null;
 }
 
 function previewImage(url) {
-    const preview = document.getElementById('imagePreview');
-    const img = document.getElementById('previewImg');
-    if (url) {
-        img.src = url;
-        preview.style.display = 'block';
-    } else {
-        preview.style.display = 'none';
-    }
-}
-
-function uploadImage() {
-    document.getElementById('fileInput').click();
-}
-
-async function handleImageUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('folder', 'portfolio');
-    try {
-        const res = await fetch(`${API}/api/upload`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${getToken()}` },
-            body: formData
-        });
-        if (!res.ok) { alert('Error al subir la imagen'); return; }
-        const data = await res.json();
-        document.getElementById('fieldImageUrl').value = data.url;
-        previewImage(data.url);
-    } catch (err) {
-        alert('Error al conectar con el servidor');
-    }
+    document.getElementById('previewImg').src = url || '';
+    document.getElementById('imagePreview').style.display = url ? 'block' : 'none';
 }
 
 async function save() {
-    const name = document.getElementById('fieldName').value.trim();
-    const issuer = document.getElementById('fieldIssuer').value.trim();
-    const date = document.getElementById('fieldDate').value;
-    const credential_url = document.getElementById('fieldCredentialUrl').value.trim();
-    const image_url = document.getElementById('fieldImageUrl').value.trim();
-    const order = document.getElementById('fieldOrder').value || 0;
-    const technologies = selectedTechs.join(', ');
+    const data = {
+        name: document.getElementById('fieldName').value.trim(),
+        issuer: document.getElementById('fieldIssuer').value.trim(),
+        date: document.getElementById('fieldDate').value,
+        credential_url: document.getElementById('fieldCredentialUrl').value.trim(),
+        image_url: document.getElementById('fieldImageUrl').value.trim(),
+        order: document.getElementById('fieldOrder').value || 0,
+        technologies: selectedTechs.join(', ')
+    };
 
-    if (!name || !issuer || !date) {
-        alert('Nombre, emisor y fecha son obligatorios');
-        return;
+    if (!data.name || !data.issuer || !data.date) { alert('Nombre, emisor y fecha son obligatorios'); return; }
+
+    if (await saveResource('/api/certifications', editingId, data)) {
+        closeModal();
+        loadCertificaciones();
     }
-
-    const url = editingId ? `${API}/api/certifications/${editingId}` : `${API}/api/certifications`;
-    const method = editingId ? 'PUT' : 'POST';
-
-    await authFetch(url, {
-        method,
-        body: JSON.stringify({ name, issuer, date, credential_url, image_url, order, technologies })
-    });
-
-    closeModal();
-    loadCertificaciones();
 }
 
-function openDelete(id, name) {
-    deletingId = id;
-    document.getElementById('deleteName').textContent = name;
-    document.getElementById('deleteOverlay').classList.add('show');
-}
-
-function closeDelete() {
-    document.getElementById('deleteOverlay').classList.remove('show');
-    deletingId = null;
-}
-
-async function confirmDelete() {
-    await authFetch(`${API}/api/certifications/${deletingId}`, { method: 'DELETE' });
-    closeDelete();
-    loadCertificaciones();
-}
-
-function formatDate(dateStr) {
-    const [year, month] = dateStr.split('-');
-    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    return `${months[parseInt(month) - 1]} ${year}`;
+function openDelete(id) {
+    const c = allCertificaciones.find(c => c.id === id);
+    askDelete(c.name, `/api/certifications/${id}`, loadCertificaciones);
 }
 
 (async () => {

@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog — Tecnicatura en Ciencias de Datos e IA</title>
     <link rel="stylesheet" href="css/blog.css">
-    
+    <link rel="stylesheet" href="games/css/games.css">
 </head>
 <body>
 
 <nav class="navbar">
     <a href="https://jordanaescalona.com.ar/" class="navbar-brand">Jordana Escalona</a>
     <ul class="navbar-links">
-        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="index.html">Inicio</a></li>
         <li><a href="info.html">Información</a></li>
         <li><a href="#juegos">Juegos</a></li>
         <li><a href="#materias">Materias</a></li>
@@ -24,46 +24,50 @@
     <h1>Blog de la <span>Tecnicatura</span></h1>
     <p>Apuntes, resúmenes y artículos de Ciencias de Datos e Inteligencia Artificial</p>
 </section>
+
 <!-- NOVEDADES -->
-<section id="novedades" style="background: var(--bg-card); border-top: 1px solid var(--border);">
+<section id="novedades" class="section section-alt">
     <div class="container">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+        <div class="section-header">
             <div>
                 <span class="section-tag">Novedades</span>
                 <h2 class="section-title">Últimas novedades</h2>
             </div>
-            <a href="info.html" style="color:var(--accent); font-size:0.9rem; font-weight:600; text-decoration:none;">Ver todo →</a>
+            <a href="info.html" class="section-more">Ver todo →</a>
         </div>
         <div id="novedadesList" class="posts-list">
             <div class="loading-blog">Cargando novedades...</div>
         </div>
     </div>
 </section>
+
 <!-- JUEGOS -->
-<section id="juegos" style="padding: 4rem 0;">
+<section id="juegos" class="section">
     <div class="container">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+        <div class="section-header">
             <div>
                 <span class="section-tag">Juegos</span>
                 <h2 class="section-title">Aprender jugando</h2>
             </div>
-            <a href="games/" style="color:var(--accent); font-size:0.9rem; font-weight:600; text-decoration:none;">Ver todos →</a>
+            <a href="games/" class="section-more">Ver todos →</a>
         </div>
-        <div class="games-grid" data-base="games/" data-max="3"></div>
+        <div class="games-grid" data-base="games/" data-blog="" data-max="3"></div>
     </div>
 </section>
+
 <!-- MATERIAS -->
 <div class="container" id="materias">
     <div class="subjects-grid" id="subjectsGrid">
         <div class="loading-blog">Cargando materias...</div>
     </div>
 </div>
-<!-- Contacto institucional -->
+
+<!-- CONTACTO INSTITUCIONAL -->
 <section class="contact-institutional" id="contacto-institucional">
     <h2>Contacto Institucional</h2>
     <p>Para consultas académicas o institucionales, escribí a:</p>
     <div class="contact-emails">
-        <span>Bedelia: </span> <a href="mailto:tecnicaturadatos@tdf.edu.ar">tecnicaturadatos@tdf.edu.ar</a>
+        <span>Bedelía: <a href="mailto:tecnicaturadatos@tdf.edu.ar">tecnicaturadatos@tdf.edu.ar</a></span>
     </div>
 </section>
 
@@ -71,8 +75,10 @@
     <p>© 2026 Jordana Escalona — Blog Tecnicatura en Ciencias de Datos e IA</p>
 </footer>
 
+<script src="js/comun.js"></script>
 <script src="js/blog.js"></script>
 <script src="games/js/juegos-data.js"></script>
+<script src="games/js/games.js"></script>
 
 </body>
 </html>

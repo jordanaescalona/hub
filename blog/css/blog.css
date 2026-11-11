@@ -40,7 +40,8 @@ body {
 
 .navbar-links { display: flex; gap: 1.5rem; list-style: none; }
 .navbar-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
-.navbar-links a:hover { color: var(--accent); }
+.navbar-links a:hover,
+.navbar-links a.active { color: var(--accent); }
 
 .hero {
     text-align: center;
@@ -54,6 +55,34 @@ body {
 
 .container { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
 
+/* ── SECCIONES DE LA PORTADA ── */
+.section { padding: 1rem 0; }
+.section-alt { background: var(--bg-card); border-top: 1px solid var(--border); }
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.section-tag {
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.section-title { font-size: 1.6rem; font-weight: 800; }
+
+.section-more {
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
 .subjects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -63,6 +92,7 @@ body {
 .subject-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
+    border-top: 4px solid #7dd3fc;
     border-radius: var(--radius);
     padding: 2rem;
     text-decoration: none;
@@ -81,7 +111,6 @@ body {
 .subject-card p { color: var(--text-muted); font-size: 0.88rem; }
 
 .subject-link { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-top: 1rem; display: inline-block; }
-.subject-link::after { content: ' →'; }
 
 .loading-blog { text-align: center; padding: 3rem; color: var(--text-muted); grid-column: 1/-1; }
 
@@ -159,10 +188,13 @@ footer {
 }
 
 .post-accordion-body {
+    display: none;
     padding: 0 1.5rem 1.5rem;
     max-height: 600px;
     overflow-y: auto;
 }
+
+.post-accordion-body.open { display: block; }
 
 .post-accordion-body img {
     width: 100%;
@@ -182,6 +214,19 @@ footer {
     object-fit: contain;
     border-radius: 8px;
     margin: 0.5rem 0;
+    cursor: zoom-in;
+}
+
+.pdf-download-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
 .post-date { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.3rem; }
@@ -195,7 +240,6 @@ footer {
     font-size: 0.75rem;
     font-weight: 700;
     margin-right: 0.5rem;
-    cursor: zoom-in;
 }
 
 .pro-locked {
@@ -245,13 +289,9 @@ footer {
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
-    margin-bottom: 0.4rem;
+    background: #e0f2fe;
+    color: #0369a1;
 }
-
-.badge-examen { background: #dbeafe; color: #1d4ed8; }
-.badge-faq { background: #dcfce7; color: #166534; }
-.badge-documento { background: #fef3c7; color: #92400e; }
-.badge-noticia { background: #fce7f3; color: #9d174d; }
 
 .pinned-badge {
     display: inline-block;
@@ -262,4 +302,65 @@ footer {
     background: #fef3c7;
     color: #92400e;
     margin-left: 0.5rem;
+}
+
+/* ── LIGHTBOX ── */
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    background: rgba(0,0,0,0.9);
+    cursor: zoom-out;
+}
+
+.lightbox-overlay.show { display: flex; }
+
+.lightbox-overlay.zoomed {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 4rem 2rem 5rem;
+    cursor: grab;
+}
+
+.lightbox-overlay.dragging { cursor: grabbing; }
+
+#lightboxImg {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    cursor: zoom-in;
+}
+
+.lightbox-overlay.zoomed #lightboxImg {
+    max-width: none;
+    max-height: none;
+    cursor: inherit;
+}
+
+.lightbox-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.lightbox-close { position: fixed; top: 1rem; right: 1rem; z-index: 301; }
+
+.lightbox-controls {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 301;
+    display: flex;
+    gap: 0.5rem;
 }

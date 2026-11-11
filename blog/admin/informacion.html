@@ -36,9 +36,9 @@
         <!-- PANEL INFORMACIÓN -->
         <div class="card">
             <div class="card-header">
-                <div style="display:flex; gap:1rem; align-items:center;">
+                <div class="card-filters">
                     <h2>Información</h2>
-                    <select id="filterCategory" onchange="loadInfo()" style="border:1px solid #e2e8f0; border-radius:6px; padding:0.4rem 0.8rem; font-size:0.85rem;">
+                    <select id="filterCategory" onchange="loadInfo()" class="filter-select">
                         <option value="">Todas las categorías</option>
                     </select>
                 </div>
@@ -131,11 +131,11 @@
     </div>
 </div>
 
-<!-- Modal eliminar información -->
+<!-- Modal eliminar (información o categoría) -->
 <div class="modal-overlay" id="deleteOverlay">
-    <div class="modal" style="max-width:380px">
-        <h3>Eliminar información</h3>
-        <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>?</p>
+    <div class="modal modal-small">
+        <h3 id="deleteTitle">Eliminar información</h3>
+        <p class="muted">¿Eliminar <strong id="deleteName"></strong>?</p>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
             <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
@@ -170,21 +170,11 @@
     </div>
 </div>
 
-<!-- Modal eliminar categoría -->
-<div class="modal-overlay" id="deleteCatOverlay">
-    <div class="modal" style="max-width:380px">
-        <h3>Eliminar categoría</h3>
-        <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteCatName"></strong>?</p>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeDeleteCat()">Cancelar</button>
-            <button class="btn btn-danger" onclick="confirmDeleteCat()">Eliminar</button>
-        </div>
-    </div>
-</div>
-
 <script src="js/auth.js"></script>
+<script src="js/comun.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="js/editor.js"></script>
 <script src="js/informacion.js"></script>
 </body>
 </html>

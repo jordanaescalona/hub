@@ -35,12 +35,12 @@
 
         <div class="card">
             <div class="card-header">
-                <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+                <div class="card-filters">
                     <h2>Entradas</h2>
-                    <select id="filterMateria" onchange="onMateriaFilter()" style="border:1px solid #e2e8f0; border-radius:6px; padding:0.4rem 0.8rem; font-size:0.85rem;">
+                    <select id="filterMateria" onchange="onMateriaFilter()" class="filter-select">
                         <option value="">Todas las materias</option>
                     </select>
-                    <select id="filterUnidad" onchange="loadEntradas()" style="border:1px solid #e2e8f0; border-radius:6px; padding:0.4rem 0.8rem; font-size:0.85rem;">
+                    <select id="filterUnidad" onchange="loadEntradas()" class="filter-select">
                         <option value="">Todas las unidades</option>
                     </select>
                 </div>
@@ -116,9 +116,9 @@
 
 <!-- Modal eliminar -->
 <div class="modal-overlay" id="deleteOverlay">
-    <div class="modal" style="max-width:380px">
+    <div class="modal modal-small">
         <h3>Eliminar entrada</h3>
-        <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>?</p>
+        <p class="muted">¿Eliminar <strong id="deleteName"></strong>?</p>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
             <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
@@ -127,8 +127,10 @@
 </div>
 
 <script src="js/auth.js"></script>
+<script src="js/comun.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="js/editor.js"></script>
 <script src="js/entradas.js"></script>
 </body>
 </html>

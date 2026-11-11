@@ -79,9 +79,9 @@
 
 <!-- Modal eliminar -->
 <div class="modal-overlay" id="deleteOverlay">
-    <div class="modal" style="max-width:380px">
+    <div class="modal modal-small">
         <h3>Eliminar tecnología</h3>
-        <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>?</p>
+        <p class="muted">¿Eliminar <strong id="deleteName"></strong>?</p>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
             <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
@@ -90,6 +90,7 @@
 </div>
 
 <script src="js/auth.js"></script>
+<script src="js/comun.js"></script>
 <script src="js/tecnologias.js"></script>
 </body>
 </html>

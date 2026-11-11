@@ -18,13 +18,12 @@
     border-radius: 12px;
     background: var(--bg-card, #1a1d24);
     border: 1px solid var(--border, #2a2f3a);
-    color: inherit;
-    text-decoration: none;
+    position: relative;
     transition: transform .15s, border-color .15s;
 }
 
-a.game-card:hover,
-a.game-card:focus-visible {
+.game-card:not(.game-card--soon):hover,
+.game-card:focus-within {
     transform: translateY(-4px);
     border-color: var(--accent, #6ea8fe);
 }
@@ -32,8 +31,27 @@ a.game-card:focus-visible {
 .game-emoji { font-size: 2rem; line-height: 1; }
 .game-title { margin: 0; font-size: 1.2rem; }
 .game-desc  { margin: 0; opacity: .8; line-height: 1.5; }
-.game-meta  { font-size: .85rem; opacity: .65; margin-top: auto; }
-.game-play  { color: var(--accent, #6ea8fe); font-weight: 600; }
+.game-play  { color: var(--accent, #6ea8fe); font-weight: 600; margin-top: auto; text-decoration: none; }
+
+/* El enlace "Jugar" se estira para que toda la tarjeta sea clickeable */
+a.game-play::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+a.game-play:focus-visible { outline: none; }
+
+/* Materia con la que se relaciona el juego */
+.game-materia {
+    align-self: flex-start;
+    padding: .2rem .7rem;
+    border-radius: 20px;
+    background: var(--accent-light, #dbeafe);
+    color: var(--accent, #2563eb);
+    font-size: .78rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Queda por encima del enlace "Jugar" para poder abrir la materia */
+a.game-materia { position: relative; z-index: 1; }
+a.game-materia:hover { text-decoration: underline; }
 
 .game-card--soon { opacity: .5; }
 

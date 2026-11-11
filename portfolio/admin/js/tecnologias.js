@@ -1,14 +1,11 @@
 requireAuth();
 
 let editingId = null;
-let deletingId = null;
-let allTecnologias = [];
 
-async function loadTecnologias() {
+async function loadTabla() {
     const tbody = document.getElementById('tecnologiasTable');
     try {
-        const res = await fetch(`${API}/api/technologies`);
-        allTecnologias = await res.json();
+        await loadTecnologias();
 
         if (allTecnologias.length === 0) {
             tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No hay tecnologías todavía</td></tr>`;
@@ -17,20 +14,12 @@ async function loadTecnologias() {
 
         tbody.innerHTML = allTecnologias.map(t => `
             <tr>
-                <td style="font-size:1.5rem">
-                    ${t.icon
-                        ? t.icon.startsWith('fa')
-                            ? `<i class="${t.icon}"></i>`
-                            : t.icon.startsWith('devicon')
-                                ? `<i class="${t.icon} colored" style="font-size:1.5rem"></i>`
-                                : t.icon
-                        : '—'}
-                </td>
+                <td class="tech-icon-cell">${renderTechIcon(t) || '—'}</td>
                 <td><strong>${t.name}</strong></td>
                 <td>${t.order}</td>
                 <td class="actions">
                     <button class="btn btn-secondary btn-sm" onclick="openModal(${t.id})">Editar</button>
-                    <button class="btn btn-danger btn-sm" onclick="openDelete(${t.id}, '${t.name.replace(/'/g, "\\'")}')">Eliminar</button>
+                    <button class="btn btn-danger btn-sm" onclick="openDelete(${t.id})">Eliminar</button>
                 </td>
             </tr>
         `).join('');
@@ -42,60 +31,37 @@ async function loadTecnologias() {
 
 function openModal(id = null) {
     editingId = id;
+    const t = allTecnologias.find(t => t.id === id) || {};
     document.getElementById('modalTitle').textContent = id ? 'Editar tecnología' : 'Nueva tecnología';
-    document.getElementById('modalOverlay').classList.add('show');
-
-    if (id) {
-        const t = allTecnologias.find(t => t.id === id);
-        document.getElementById('fieldName').value = t.name;
-        document.getElementById('fieldIcon').value = t.icon || '';
-        document.getElementById('fieldOrder').value = t.order;
-    } else {
-        document.getElementById('fieldName').value = '';
-        document.getElementById('fieldIcon').value = '';
-        document.getElementById('fieldOrder').value = 0;
-    }
+    document.getElementById('fieldName').value = t.name || '';
+    document.getElementById('fieldIcon').value = t.icon || '';
+    document.getElementById('fieldOrder').value = t.order || 0;
+    openOverlay('modalOverlay');
 }
 
 function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('show');
+    closeOverlay('modalOverlay');
     editingId = null;
 }
 
 async function save() {
-    const name = document.getElementById('fieldName').value.trim();
-    const icon = document.getElementById('fieldIcon').value.trim();
-    const order = document.getElementById('fieldOrder').value || 0;
+    const data = {
+        name: document.getElementById('fieldName').value.trim(),
+        icon: document.getElementById('fieldIcon').value.trim(),
+        order: document.getElementById('fieldOrder').value || 0
+    };
 
-    if (!name) { alert('El nombre es obligatorio'); return; }
+    if (!data.name) { alert('El nombre es obligatorio'); return; }
 
-    const url = editingId ? `${API}/api/technologies/${editingId}` : `${API}/api/technologies`;
-    const method = editingId ? 'PUT' : 'POST';
-
-    await authFetch(url, {
-        method,
-        body: JSON.stringify({ name, icon, order })
-    });
-
-    closeModal();
-    loadTecnologias();
+    if (await saveResource('/api/technologies', editingId, data)) {
+        closeModal();
+        loadTabla();
+    }
 }
 
-function openDelete(id, name) {
-    deletingId = id;
-    document.getElementById('deleteName').textContent = name;
-    document.getElementById('deleteOverlay').classList.add('show');
+function openDelete(id) {
+    const t = allTecnologias.find(t => t.id === id);
+    askDelete(t.name, `/api/technologies/${id}`, loadTabla);
 }
 
-function closeDelete() {
-    document.getElementById('deleteOverlay').classList.remove('show');
-    deletingId = null;
-}
-
-async function confirmDelete() {
-    await authFetch(`${API}/api/technologies/${deletingId}`, { method: 'DELETE' });
-    closeDelete();
-    loadTecnologias();
-}
-
-loadTecnologias();
+loadTabla();

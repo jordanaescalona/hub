@@ -33,9 +33,9 @@
 
         <div class="card">
             <div class="card-header">
-                <div style="display:flex; gap:1rem; align-items:center;">
+                <div class="card-filters">
                     <h2>Unidades</h2>
-                    <select id="filterMateria" onchange="loadUnidades()" style="border:1px solid #e2e8f0; border-radius:6px; padding:0.4rem 0.8rem; font-size:0.85rem;">
+                    <select id="filterMateria" onchange="loadUnidades()" class="filter-select">
                         <option value="">Todas las materias</option>
                     </select>
                 </div>
@@ -74,7 +74,7 @@
         </div>
         <div class="form-group">
             <label>Descripción</label>
-            <textarea id="fieldDescription" placeholder="Descripción de la unidad" style="min-height:80px"></textarea>
+            <textarea id="fieldDescription" placeholder="Descripción de la unidad"></textarea>
         </div>
         <div class="form-group">
             <label>Orden</label>
@@ -89,9 +89,9 @@
 
 <!-- Modal eliminar -->
 <div class="modal-overlay" id="deleteOverlay">
-    <div class="modal" style="max-width:380px">
+    <div class="modal modal-small">
         <h3>Eliminar unidad</h3>
-        <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>? También se eliminarán sus entradas.</p>
+        <p class="muted">¿Eliminar <strong id="deleteName"></strong>? También se eliminarán sus entradas.</p>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
             <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
@@ -100,6 +100,7 @@
 </div>
 
 <script src="js/auth.js"></script>
+<script src="js/comun.js"></script>
 <script src="js/unidades.js"></script>
 </body>
 </html>

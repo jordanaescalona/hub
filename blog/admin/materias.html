@@ -79,13 +79,13 @@
         </div>
         <div class="form-group">
             <label>Descripción</label>
-            <textarea id="fieldDescription" placeholder="Descripción de la materia" style="min-height:80px"></textarea>
+            <textarea id="fieldDescription" placeholder="Descripción de la materia"></textarea>
         </div>
         <div class="form-group">
             <label>Color</label>
-            <div style="display:flex; align-items:center; gap:0.8rem;">
-                <input type="color" id="fieldColor" value="#7dd3fc" style="width:50px; height:36px; border:1px solid #e2e8f0; border-radius:6px; cursor:pointer; padding:2px;">
-                <span style="font-size:0.82rem; color:#64748b;">Color para identificar la materia</span>
+            <div class="inline-row">
+                <input type="color" id="fieldColor" value="#7dd3fc" class="color-input">
+                <span class="muted">Color para identificar la materia</span>
             </div>
         </div>
         <div class="form-group">
@@ -101,9 +101,9 @@
 
 <!-- Modal eliminar -->
 <div class="modal-overlay" id="deleteOverlay">
-    <div class="modal" style="max-width:380px">
+    <div class="modal modal-small">
         <h3>Eliminar materia</h3>
-        <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>? Se eliminarán también sus unidades y entradas.</p>
+        <p class="muted">¿Eliminar <strong id="deleteName"></strong>? Se eliminarán también sus unidades y entradas.</p>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
             <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
@@ -112,6 +112,7 @@
 </div>
 
 <script src="js/auth.js"></script>
+<script src="js/comun.js"></script>
 <script src="js/materias.js"></script>
 </body>
 </html>

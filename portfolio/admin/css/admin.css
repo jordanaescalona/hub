@@ -330,3 +330,99 @@ tr:hover td { background: #f8fafc; }
 }
 .alert.error { background: #fef2f2; color: var(--danger); border: 1px solid #fca5a5; }
 .alert.show { display: block; }
+
+/* ── UTILIDADES ── */
+.muted { color: var(--text-muted); font-size: 0.85rem; }
+.modal-small { max-width: 380px; }
+.inline-row { display: flex; align-items: center; gap: 0.8rem; }
+.card-filters { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+.filter-select {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+}
+
+.color-dot {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.color-dot-sm { width: 10px; height: 10px; margin-right: 0.4rem; }
+
+.color-input {
+    width: 50px;
+    height: 36px;
+    padding: 2px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Selector de tecnologías (portfolio) */
+.tech-selector { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.tech-option {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.82rem;
+    cursor: pointer;
+}
+
+.tech-option input { display: none; }
+.tech-option.selected { background: #dbeafe; border-color: var(--accent); }
+
+/* Estado de los mensajes (portfolio) */
+.status-tag {
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: var(--text-muted);
+}
+
+.status-tag.new { background: #dbeafe; color: #1d4ed8; }
+
+.status-tag:empty { display: none; }
+
+.tech-selector-boxed {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    min-height: 50px;
+}
+
+.field-hint { display: block; margin-top: 0.3rem; font-size: 0.78rem; }
+.tech-icon-cell { font-size: 1.5rem; }
+.thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
+
+.image-preview { margin-top: 0.8rem; }
+.image-preview img {
+    max-width: 200px;
+    max-height: 150px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+tr.unread td { font-weight: 600; }
+
+.message-preview {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modal-email { margin-bottom: 1rem; }
+.modal-message { line-height: 1.7; white-space: pre-wrap; }

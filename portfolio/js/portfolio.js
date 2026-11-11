@@ -1,4 +1,5 @@
 let allTechnologies = [];
+let allCertifications = [];
 
 async function loadTechnologies() {
     try {
@@ -65,12 +66,12 @@ async function loadCertifications() {
     if (!grid) return;
     try {
         const res = await fetch(`${API}/api/certifications`);
-        const certifications = await res.json();
-        if (certifications.length === 0) {
+        allCertifications = await res.json();
+        if (allCertifications.length === 0) {
             grid.innerHTML = `<div class="loading-p">Próximamente habrá certificaciones acá.</div>`;
             return;
         }
-        grid.innerHTML = certifications.map(c => `
+        grid.innerHTML = allCertifications.map(c => `
             <div class="cert-card-p" onclick="openCertModal(${c.id})">
                 ${c.image_url
                     ? `<img src="${c.image_url}" alt="${c.name}">`
@@ -84,7 +85,6 @@ async function loadCertifications() {
                 </div>
             </div>
         `).join('');
-        window._certifications = certifications;
     } catch (err) {
         grid.innerHTML = `<div class="loading-p">Error al cargar las certificaciones.</div>`;
     }
@@ -92,7 +92,7 @@ async function loadCertifications() {
 
 // ── MODAL CERTIFICACIÓN ───────────────────────────────────────
 function openCertModal(id) {
-    const c = window._certifications.find(c => c.id === id);
+    const c = allCertifications.find(c => c.id === id);
     if (!c) return;
     const img = document.getElementById('certModalImage');
     const placeholder = document.getElementById('certModalPlaceholder');

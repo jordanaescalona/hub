@@ -52,7 +52,7 @@
                     </thead>
                     <tbody id="certificacionesTable">
                         <tr>
-                            <td colspan="5" class="empty-state">Cargando...</td>
+                            <td colspan="6" class="empty-state">Cargando...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -87,14 +87,13 @@
                     onclick="uploadImage()">📁 Subir imagen</button>
                 <input type="file" id="fileInput" accept="image/*" style="display:none"
                     onchange="handleImageUpload(event)">
-                <div id="imagePreview" style="margin-top:0.8rem; display:none;">
-                    <img id="previewImg" src="" alt="Preview"
-                        style="max-width:200px; max-height:150px; border-radius:8px; border:1px solid #e2e8f0; object-fit:cover;">
+                <div id="imagePreview" class="image-preview" style="display:none">
+                    <img id="previewImg" src="" alt="Vista previa">
                 </div>
             </div>
             <div class="form-group">
                 <label>Tecnologías relacionadas</label>
-                <div id="techSelector" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.5rem;"></div>
+                <div id="techSelector" class="tech-selector"></div>
             </div>
             <div class="form-group" style="display:flex; align-items:center; gap:0.5rem;">
                 <label style="margin:0">Orden</label>
@@ -109,9 +108,9 @@
 
     <!-- Modal eliminar -->
     <div class="modal-overlay" id="deleteOverlay">
-        <div class="modal" style="max-width:380px">
+        <div class="modal modal-small">
             <h3>Eliminar certificación</h3>
-            <p style="color:#64748b; font-size:0.9rem">¿Eliminar <strong id="deleteName"></strong>?</p>
+            <p class="muted">¿Eliminar <strong id="deleteName"></strong>?</p>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
                 <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
@@ -120,6 +119,7 @@
     </div>
 
     <script src="js/auth.js"></script>
+    <script src="js/comun.js"></script>
     <script src="js/certificaciones.js"></script>
 </body>
 

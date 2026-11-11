@@ -1,7 +1,6 @@
 requireAuth();
 
 let editingId = null;
-let deletingId = null;
 let allMaterias = [];
 let allUnidades = [];
 
@@ -9,12 +8,9 @@ async function loadMaterias() {
     const res = await authFetch(`${API}/api/subjects`);
     allMaterias = await res.json();
 
-    const filter = document.getElementById('filterMateria');
-    const select = document.getElementById('fieldMateria');
-
-    const options = allMaterias.map(m => `<option value="${m.id}">${m.name} — ${PERIODS[m.period] || m.period}</option>`).join('');
-    filter.innerHTML = `<option value="">Todas las materias</option>` + options;
-    select.innerHTML = options;
+    const options = materiaOptions(allMaterias);
+    document.getElementById('filterMateria').innerHTML = `<option value="">Todas las materias</option>` + options;
+    document.getElementById('fieldMateria').innerHTML = options;
 }
 
 async function loadUnidades() {
@@ -37,13 +33,13 @@ async function loadUnidades() {
                 <tr>
                     <td><strong>${u.name}</strong></td>
                     <td>
-                        ${materia ? `<span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:${materia.color || '#7dd3fc'}; margin-right:0.4rem;"></span>${materia.name}` : '—'}
+                        ${materia ? `<span class="color-dot color-dot-sm" style="background:${materia.color || '#7dd3fc'}"></span>${materia.name}` : '—'}
                     </td>
-                    <td style="color:#64748b; font-size:0.82rem">${u.description || '—'}</td>
+                    <td class="muted">${u.description || '—'}</td>
                     <td>${u.order}</td>
                     <td class="actions">
                         <button class="btn btn-secondary btn-sm" onclick="openModal(${u.id})">Editar</button>
-                        <button class="btn btn-danger btn-sm" onclick="openDelete(${u.id}, '${u.name.replace(/'/g, "\\'")}')">Eliminar</button>
+                        <button class="btn btn-danger btn-sm" onclick="openDelete(${u.id})">Eliminar</button>
                     </td>
                 </tr>
             `;
@@ -54,64 +50,41 @@ async function loadUnidades() {
     }
 }
 
-async function openModal(id = null) {
+function openModal(id = null) {
     editingId = id;
+    const u = allUnidades.find(u => u.id === id);
     document.getElementById('modalTitle').textContent = id ? 'Editar unidad' : 'Nueva unidad';
-    document.getElementById('modalOverlay').classList.add('show');
-
-    if (id) {
-        const u = allUnidades.find(u => u.id === id);
-        document.getElementById('fieldMateria').value = u.subject_id;
-        document.getElementById('fieldName').value = u.name;
-        document.getElementById('fieldDescription').value = u.description || '';
-        document.getElementById('fieldOrder').value = u.order;
-    } else {
-        document.getElementById('fieldName').value = '';
-        document.getElementById('fieldDescription').value = '';
-        document.getElementById('fieldOrder').value = 0;
-    }
+    if (u) document.getElementById('fieldMateria').value = u.subject_id;
+    document.getElementById('fieldName').value = u?.name || '';
+    document.getElementById('fieldDescription').value = u?.description || '';
+    document.getElementById('fieldOrder').value = u?.order || 0;
+    openOverlay('modalOverlay');
 }
 
 function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('show');
+    closeOverlay('modalOverlay');
     editingId = null;
 }
 
 async function save() {
-    const subject_id = document.getElementById('fieldMateria').value;
-    const name = document.getElementById('fieldName').value.trim();
-    const description = document.getElementById('fieldDescription').value.trim();
-    const order = document.getElementById('fieldOrder').value || 0;
+    const data = {
+        subject_id: document.getElementById('fieldMateria').value,
+        name: document.getElementById('fieldName').value.trim(),
+        description: document.getElementById('fieldDescription').value.trim(),
+        order: document.getElementById('fieldOrder').value || 0
+    };
 
-    if (!subject_id || !name) { alert('Materia y nombre son obligatorios'); return; }
+    if (!data.subject_id || !data.name) { alert('Materia y nombre son obligatorios'); return; }
 
-    const url = editingId ? `${API}/api/units/${editingId}` : `${API}/api/units`;
-    const method = editingId ? 'PUT' : 'POST';
-
-    await authFetch(url, {
-        method,
-        body: JSON.stringify({ subject_id, name, description, order })
-    });
-
-    closeModal();
-    loadUnidades();
+    if (await saveResource('/api/units', editingId, data)) {
+        closeModal();
+        loadUnidades();
+    }
 }
 
-function openDelete(id, name) {
-    deletingId = id;
-    document.getElementById('deleteName').textContent = name;
-    document.getElementById('deleteOverlay').classList.add('show');
-}
-
-function closeDelete() {
-    document.getElementById('deleteOverlay').classList.remove('show');
-    deletingId = null;
-}
-
-async function confirmDelete() {
-    await authFetch(`${API}/api/units/${deletingId}`, { method: 'DELETE' });
-    closeDelete();
-    loadUnidades();
+function openDelete(id) {
+    const u = allUnidades.find(u => u.id === id);
+    askDelete(u.name, `/api/units/${id}`, loadUnidades);
 }
 
 (async () => {

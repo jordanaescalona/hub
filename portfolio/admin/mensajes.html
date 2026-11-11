@@ -33,7 +33,7 @@
         <div class="card">
             <div class="card-header">
                 <h2>Mensajes recibidos</h2>
-                <span id="unreadBadge" style="background:#dbeafe; color:#1d4ed8; padding:0.2rem 0.8rem; border-radius:20px; font-size:0.82rem; font-weight:600;"></span>
+                <span id="unreadBadge" class="status-tag new"></span>
             </div>
             <table>
                 <thead>
@@ -58,8 +58,8 @@
 <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
         <h3 id="modalName"></h3>
-        <p style="color:#64748b; font-size:0.82rem; margin-bottom:1rem" id="modalEmail"></p>
-        <p style="line-height:1.7" id="modalMessage"></p>
+        <p class="muted modal-email" id="modalEmail"></p>
+        <p class="modal-message" id="modalMessage"></p>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
             <button class="btn btn-primary" id="markReadBtn">Marcar como leído</button>
@@ -68,6 +68,7 @@
 </div>
 
 <script src="js/auth.js"></script>
+<script src="js/comun.js"></script>
 <script src="js/mensajes.js"></script>
 </body>
 </html>
