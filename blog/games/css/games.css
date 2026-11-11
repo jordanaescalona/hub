@@ -1,0 +1,41 @@
+/*
+ * Estilos de las tarjetas de juegos.
+ * Se usan en la portada de juegos y en el apartado Juegos del blog.
+ * Toman los colores de blog.css (--bg-card, --border, --accent); los valores
+ * después de la coma son de respaldo por si alguna variable no existe.
+ */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.game-card {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: var(--bg-card, #1a1d24);
+    border: 1px solid var(--border, #2a2f3a);
+    color: inherit;
+    text-decoration: none;
+    transition: transform .15s, border-color .15s;
+}
+
+a.game-card:hover,
+a.game-card:focus-visible {
+    transform: translateY(-4px);
+    border-color: var(--accent, #6ea8fe);
+}
+
+.game-emoji { font-size: 2rem; line-height: 1; }
+.game-title { margin: 0; font-size: 1.2rem; }
+.game-desc  { margin: 0; opacity: .8; line-height: 1.5; }
+.game-meta  { font-size: .85rem; opacity: .65; margin-top: auto; }
+.game-play  { color: var(--accent, #6ea8fe); font-weight: 600; }
+
+.game-card--soon { opacity: .5; }
+
+/* Portada de juegos */
+.games-page { padding: 2rem 0 4rem; }
