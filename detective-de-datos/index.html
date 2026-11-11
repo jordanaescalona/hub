@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Detective de Datos · Probabilidad y Estadística</title>
+<meta name="description" content="Un juego de casos para aprender probabilidad y estadística investigando datos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#221d18; --desk2:#2e2720; --paper:#f7f1e1; --paper2:#efe6cf; --ink:#2b2118; --muted:#6f6353;
+  --manila:#e3c98b; --manila2:#d2b571; --red:#b3261e; --blue:#1f4e79; --green:#2f6b3a; --line:#cdbf9f;
+  --type:'Special Elite','Courier New',Courier,monospace;
+  --body:'Iowan Old Style','Palatino Linotype',Georgia,serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,var(--desk2),var(--desk));color:var(--paper);
+  font-family:var(--body);font-size:17px;line-height:1.55;min-height:100vh}
+header{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between;
+  max-width:980px;margin:0 auto;padding:22px 20px 8px}
+header h1{font-family:var(--type);font-weight:400;font-size:1.7rem;margin:0;letter-spacing:.5px;cursor:pointer}
+header h1 span{color:var(--manila)}
+#score{font-family:var(--type);font-size:.95rem;color:var(--manila)}
+.hright{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.blog{font-family:var(--type);font-size:.9rem;color:var(--ink);background:var(--manila);text-decoration:none;
+  padding:6px 12px;border-radius:3px;box-shadow:0 3px 8px rgba(0,0,0,.35)}
+.blog:hover,.blog:focus-visible{background:var(--paper)}
+main{max-width:980px;margin:0 auto;padding:10px 20px 60px}
+.intro{max-width:680px;color:#e6dcc6;margin:6px 0 26px}
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:26px 18px}
+.folder{position:relative;text-align:left;background:linear-gradient(var(--manila),var(--manila2));color:var(--ink);
+  border:0;border-radius:3px 8px 8px 8px;padding:18px 16px 16px;min-height:150px;cursor:pointer;font-family:var(--body);
+  font-size:1rem;box-shadow:0 6px 14px rgba(0,0,0,.45);transition:transform .15s;display:flex;flex-direction:column;gap:6px}
+.folder::before{content:"";position:absolute;top:-12px;left:0;width:92px;height:13px;background:var(--manila);border-radius:6px 10px 0 0}
+.folder:hover,.folder:focus-visible{transform:translateY(-4px) rotate(-.6deg)}
+.folder .num{font-family:var(--type);font-size:.8rem;color:#6b5527;letter-spacing:1px;text-transform:uppercase}
+.folder strong{font-family:var(--type);font-weight:400;font-size:1.15rem;line-height:1.25}
+.folder .tema{font-size:.85rem;color:#5c4a22;margin-top:auto}
+.stamp{font-family:var(--type);color:var(--red);border:3px double var(--red);border-radius:4px;padding:2px 8px;
+  transform:rotate(-8deg);display:inline-block;letter-spacing:1px;text-transform:uppercase;opacity:.85}
+.folder .stamp{position:absolute;right:10px;top:10px;font-size:.8rem;background:rgba(227,201,139,.6)}
+.stamp.lost{color:var(--muted);border-color:var(--muted)}
+.final{background:var(--paper);color:var(--ink);padding:18px 22px;border-radius:6px;margin-bottom:26px;font-family:var(--type)}
+.grp{font-family:var(--type);font-weight:400;font-size:1.15rem;color:var(--manila);margin:34px 0 24px;border-bottom:1px solid #4a4034;padding-bottom:6px}
+.grp small{color:#a99a7c;font-size:.8rem;margin-left:8px}
+.tools{margin-top:34px;font-size:.85rem}
+.linkbtn{background:none;border:0;color:#bfae8a;text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+.file{background:var(--paper);color:var(--ink);border-radius:4px;padding:26px clamp(16px,4vw,40px) 34px;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);background-image:linear-gradient(transparent 95%,rgba(0,0,0,.025) 95%);background-size:100% 30px}
+.file .linkbtn{color:var(--blue)}
+.tag{font-family:var(--type);font-size:.8rem;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-top:14px}
+.file h2{font-family:var(--type);font-weight:400;font-size:1.8rem;margin:2px 0 12px;line-height:1.2}
+.file h3{font-family:var(--type);font-weight:400;font-size:1.05rem;text-transform:uppercase;letter-spacing:1px;
+  border-bottom:1px solid var(--line);padding-bottom:4px;margin:28px 0 12px}
+.brief{max-width:66ch}
+.q{font-weight:bold;max-width:66ch}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.btn{font-family:var(--type);font-size:.92rem;background:var(--ink);color:var(--paper);border:0;border-radius:3px;padding:8px 14px;cursor:pointer}
+.btn:hover{background:#4a3a2b}.btn:disabled{opacity:.4;cursor:default}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.opt{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--paper2);border:1.5px solid var(--line);
+  border-radius:4px;padding:11px 14px;margin:8px 0;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.bad{text-decoration:line-through;opacity:.55;cursor:default}
+.opt.good{border-color:var(--green);background:#dfeeda;cursor:default}
+#fb{min-height:1.5em;color:var(--red);margin-top:8px;max-width:66ch}
+.muted{color:var(--muted);font-size:.9rem}
+svg{width:100%;height:auto;display:block;max-width:640px;font-family:var(--body)}
+svg text{fill:var(--ink);font-size:13px}
+details{margin:12px 0;max-width:66ch}
+summary{cursor:pointer;font-family:var(--type);font-size:.9rem;color:var(--blue)}
+table{border-collapse:collapse;margin:10px 0;font-variant-numeric:tabular-nums}
+td,th{border:1px solid var(--line);padding:5px 12px;text-align:right}
+th{background:var(--paper2);font-weight:normal;font-family:var(--type);font-size:.85rem}
+td:first-child,th:first-child{text-align:left}
+pre{background:#262019;color:#f0e6cf;padding:14px 16px;border-radius:4px;overflow:auto;font-size:.85rem;line-height:1.5;
+  font-family:ui-monospace,Consolas,'Courier New',monospace}
+.sol{border-top:2px dashed var(--line);margin-top:30px;padding-top:6px}
+.sol .head{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:18px}
+.sol .stamp{font-size:1.25rem}
+.pts{font-family:var(--type)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.88rem;margin:8px 0}
+.legend i{display:inline-block;width:11px;height:11px;margin-right:5px;border-radius:2px;vertical-align:-1px}
+label.chk{display:inline-flex;gap:8px;align-items:center;cursor:pointer}
+input[type=range]{width:min(320px,100%);accent-color:var(--ink)}
+.big{font-family:var(--type);font-size:1.15rem}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="logo">Detective <span>de Datos</span></h1>
+  <div class="hright"><div id="score"></div><a class="blog" href="https://blog.jordanaescalona.com.ar/">← Volver al blog</a></div>
+</header>
+<main id="app"></main>
+
+<script>
+"use strict";
+/* ---------- utilidades ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const R=Math.random;
+const randn=()=>{let u=0;while(!u)u=R();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*R())};
+const randint=(a,b)=>a+Math.floor(R()*(b-a+1));
+const mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
+const quant=(a,q)=>{const s=[...a].sort((x,y)=>x-y),p=(s.length-1)*q,i=Math.floor(p);return s[i]+(s[Math.min(i+1,s.length-1)]-s[i])*(p-i)};
+const median=a=>quant(a,.5);
+const corr=(x,y)=>{const mx=mean(x),my=mean(y);let n=0,a=0,b=0;x.forEach((v,i)=>{n+=(v-mx)*(y[i]-my);a+=(v-mx)**2;b+=(y[i]-my)**2});return n/Math.sqrt(a*b)};
+const fmt=(n,d=0)=>n.toLocaleString('es-AR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const erf=x=>{const s=Math.sign(x);x=Math.abs(x);const t=1/(1+.3275911*x);return s*(1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x))};
+const Phi=z=>.5*(1+erf(z/Math.SQRT2));
+const binom=(n,p)=>{let k=0;for(let i=0;i<n;i++)if(R()<p)k++;return k};
+const lin=(d0,d1,r0,r1)=>v=>r0+(v-d0)/(d1-d0)*(r1-r0);
+const sd=a=>{const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1))};
+const pc=p=>fmt(100*p,p<.01?2:1);
+const binPmf=(n,p)=>{const P=[];let c=1;for(let k=0;k<=n;k++){P.push(c*p**k*(1-p)**(n-k));c=c*(n-k)/(k+1)}return P};
+const poiPmf=(l,m)=>{const P=[];let v=Math.exp(-l);for(let k=0;k<=m;k++){P.push(v);v=v*l/(k+1)}return P};
+const tail=(P,k)=>Math.max(0,1-P.slice(0,k).reduce((s,x)=>s+x,0));
+const pmfChart=(P,k,xl)=>{const mx=Math.max(...P),n=P.length,x=lin(-.7,n-.3,30,580),y=lin(0,mx,140,12),w=Math.min(22,440/n);
+ return `<svg viewBox="0 0 600 180" role="img" aria-label="Distribución de probabilidad">${P.map((p,i)=>`<rect x="${x(i)-w/2}" y="${y(p)}" width="${w}" height="${140-y(p)}" fill="${i>=k?RED:GREY}" opacity=".8"/><text x="${x(i)}" y="157" text-anchor="middle">${i}</text>`).join('')}<line x1="30" x2="580" y1="140" y2="140" stroke="${INK}"/><text x="305" y="176" text-anchor="middle">${xl}</text></svg>`};
+const INK='#2b2118',RED='#b3261e',BLUE='#1f4e79',GREY='#8d7f6a';
+
+/* ---------- progreso ---------- */
+const KEY='detective-de-datos-v1';
+let st={best:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.best)st=s}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const total=()=>Object.values(st.best).reduce((s,x)=>s+x,0);
+const rank=t=>{const f=t/(CASES.length*100);return f>=.85?'Leyenda de los Datos':f>=.55?'Detective Senior':f>=.25?'Detective Junior':'Cadete'};
+function paintScore(){ $('#score').textContent=`Puntaje ${total()} / ${CASES.length*100} · Rango: ${rank(total())}` }
+
+/* ---------- casos ---------- */
+const CASES=[
+/* 1 */{
+ id:'moneda', title:'La moneda del bar', tema:'Proporciones · intervalo de confianza', oneShot:true,
+ setup:()=>({p:[.5,.64,.36][randint(0,2)],h:0,t:0,left:300,last:[]}),
+ brief:()=>`<p>En el bar de la esquina, el Tano resuelve quién paga la ronda tirando <em>su</em> moneda. Los parroquianos sospechan que está cargada. Te la prestan un rato: podés tirarla hasta <strong>300 veces</strong> antes de que el Tano vuelva del baño.</p>`,
+ hint:`La franja azul es el intervalo de confianza del 95%: el rango donde razonablemente puede estar la proporción real de caras. Si el 0,5 (moneda justa) queda afuera de la franja, tenés evidencia de trampa. Con pocas tiradas la franja es enorme: no alcanza para acusar a nadie.`,
+ evidence(el,d){
+  el.innerHTML=`<div class="row"><button class="btn" data-n="1">Tirar 1</button><button class="btn" data-n="10">Tirar 10</button><button class="btn" data-n="50">Tirar 50</button><span class="muted" id="left"></span></div><div id="out"></div>`;
+  const draw=()=>{
+   const n=d.h+d.t,p=n?d.h/n:0,x=lin(0,1,30,570);let ic='',txt='';
+   if(n>=10){const e=1.96*Math.sqrt(p*(1-p)/n),lo=Math.max(0,p-e),hi=Math.min(1,p+e);
+    ic=`<rect x="${x(lo)}" y="42" width="${Math.max(2,x(hi)-x(lo))}" height="16" fill="${BLUE}" opacity=".3"/><circle cx="${x(p)}" cy="50" r="6" fill="${BLUE}"/>`;
+    txt=` · IC 95%: [${fmt(lo,2)} ; ${fmt(hi,2)}]`}
+   $('#left').textContent=`Te quedan ${d.left} tiradas`;
+   $('#out',el).innerHTML=`<p class="big">Caras: ${d.h} · Cecas: ${d.t}${n?` · Proporción de caras: ${fmt(p,2)}`:''}${txt}</p>
+   <p class="muted">Últimas tiradas: ${d.last.slice(-24).map(v=>v?'●':'○').join(' ')||'—'} &nbsp;(● cara, ○ ceca)</p>
+   <svg viewBox="0 0 600 90" role="img" aria-label="Proporción de caras con su intervalo de confianza"><line x1="30" x2="570" y1="50" y2="50" stroke="${INK}"/>
+   ${[0,.25,.5,.75,1].map(v=>`<line x1="${x(v)}" x2="${x(v)}" y1="45" y2="55" stroke="${INK}"/><text x="${x(v)}" y="76" text-anchor="middle">${fmt(v,2)}</text>`).join('')}
+   <line x1="${x(.5)}" x2="${x(.5)}" y1="22" y2="62" stroke="${RED}" stroke-dasharray="4 3"/><text x="${x(.5)}" y="16" text-anchor="middle" style="fill:${RED}">moneda justa</text>${ic}</svg>`;
+   el.querySelectorAll('[data-n]').forEach(b=>b.disabled=d.left<+b.dataset.n);
+  };
+  el.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{for(let i=0;i<+b.dataset.n&&d.left>0;i++){const c=R()<d.p;c?d.h++:d.t++;d.last.push(c);d.left--}draw()});
+  draw();
+ },
+ gate:d=>d.h+d.t<20?'Con menos de 20 tiradas no podés acusar a nadie. Juntá más evidencia.':null,
+ question:()=>'¿Cuál es tu veredicto sobre la moneda?',
+ options:d=>[
+  {t:'Está cargada a favor de cara',ok:d.p>.5},
+  {t:'Está cargada a favor de ceca',ok:d.p<.5},
+  {t:'No hay evidencia de trampa: se comporta como una moneda justa',ok:d.p===.5}],
+ explain(d){const n=d.h+d.t,p=d.h/n,e=1.96*Math.sqrt(p*(1-p)/n);
+  return `<p>La moneda ${d.p===.5?'era <strong>justa</strong> (probabilidad de cara 0,50)':`estaba <strong>cargada</strong>: la probabilidad real de cara era ${fmt(d.p,2)}`}. Vos tiraste ${n} veces y obtuviste ${fmt(p,2)} de caras, con un intervalo de ${fmt(p-e,2)} a ${fmt(p+e,2)}.</p>
+  <p>En términos de la clase 9: la proporción de caras de tu muestra es una <strong>estimación puntual</strong>; la franja azul es la <strong>estimación por intervalos</strong>, que además te dice cuánta confianza merece ese número. La idea de fondo: una proporción observada nunca es exactamente la real, y el margen de error se achica con la raíz de n. Con 20 tiradas el margen ronda ±0,22; con 300, ±0,06. Por eso una diferencia de 0,14 no se ve con pocas tiradas y es clarísima con muchas.</p>
+  <p>Dos detalles finos. "No hay evidencia de trampa" no es lo mismo que "probé que es justa". Y aunque la moneda sea justa, 1 de cada 20 veces el intervalo del 95% deja al 0,5 afuera por pura mala suerte: eso es el error de tipo I.</p>`},
+ py:d=>`from scipy.stats import binomtest
+
+r = binomtest(k=${d.h}, n=${d.h+d.t}, p=0.5)
+print(r.pvalue)                    # chico (< 0.05) => evidencia contra "es justa"
+print(r.proportion_ci(0.95))       # intervalo de confianza de la proporción`
+},
+/* 2 */{
+ id:'sueldo', title:'El aviso del sueldo promedio', tema:'Media vs. mediana',
+ setup(){const emp=Array.from({length:14},()=>randint(95,145)*10),boss=randint(140,180)*100,all=[...emp,boss];
+  return {emp,boss,all,m:mean(all),md:median(all),inc:true}},
+ brief:d=>`<p>Una empresa publica: <em>"Sumate al equipo. Sueldo promedio: $${fmt(Math.round(d.m)*1000)}"</em>. Una amiga está por renunciar a su trabajo para entrar ahí y te pide que revises el número. Conseguiste la planilla completa: 14 empleados y el dueño.</p>`,
+ hint:`Destildá al dueño y mirá cuál de las dos líneas se mueve y cuál casi no. La media reparte el total entre todos; la mediana es el valor del que está justo en el medio de la fila.`,
+ evidence(el,d){
+  el.innerHTML=`<label class="chk"><input type="checkbox" id="inc" checked> Incluir al dueño en el cálculo</label><div id="out"></div>`;
+  const draw=()=>{const a=d.inc?d.all:d.emp,m=mean(a),md=median(a),mx=Math.max(...a)*1.08,x=lin(0,mx,30,580);
+   const ticks=d.inc?[0,4000,8000,12000,16000]:[0,400,800,1200,1600];
+   $('#out',el).innerHTML=`<svg viewBox="0 0 600 150" role="img" aria-label="Sueldos de la empresa con media y mediana">
+   <line x1="30" x2="580" y1="100" y2="100" stroke="${INK}"/>
+   ${ticks.filter(t=>t<=mx).map(t=>`<line x1="${x(t)}" x2="${x(t)}" y1="100" y2="105" stroke="${INK}"/><text x="${x(t)}" y="122" text-anchor="middle">$${fmt(t/1000,1)} M</text>`).join('')}
+   ${a.map((v,i)=>`<circle cx="${x(v)}" cy="${88-(i%4)*9}" r="5" fill="${v===d.boss?INK:GREY}" opacity=".85"/>`).join('')}
+   <line x1="${x(m)}" x2="${x(m)}" y1="30" y2="100" stroke="${RED}" stroke-width="2"/><text x="${x(m)}" y="24" text-anchor="${x(m)>450?'end':'start'}" style="fill:${RED}">media</text>
+   <line x1="${x(md)}" x2="${x(md)}" y1="44" y2="100" stroke="${BLUE}" stroke-width="2" stroke-dasharray="5 3"/><text x="${x(md)}" y="40" text-anchor="${x(md)>80?'end':'start'}" style="fill:${BLUE}">mediana</text>
+   <text x="30" y="142" class="muted">Cada punto es una persona${d.inc?' (el punto oscuro es el dueño)':''}</text></svg>
+   <table><tr><th>Medida</th><th>Valor</th></tr><tr><td>Media</td><td>$${fmt(Math.round(m)*1000)}</td></tr><tr><td>Mediana</td><td>$${fmt(Math.round(md)*1000)}</td></tr></table>`};
+  $('#inc',el).onchange=e=>{d.inc=e.target.checked;draw()};draw();
+ },
+ question:()=>'Si tu amiga entra como empleada, ¿qué sueldo le conviene esperar?',
+ options:d=>[
+  {t:`Cerca de $${fmt(Math.round(d.m)*1000)}: es el promedio y la cuenta está bien hecha`,why:'La cuenta está bien hecha, sí. Pero fijate cuántos empleados cobran eso o más: ninguno. Un solo valor enorme arrastra la media.'},
+  {t:`Cerca de $${fmt(Math.round(d.md)*1000)}: la mediana describe mejor al empleado típico`,ok:true},
+  {t:'No se puede saber: la planilla está adulterada',why:'Los datos son reales. Lo engañoso es la medida elegida para resumirlos, no la planilla.'},
+  {t:`Un punto intermedio, unos $${fmt(Math.round((d.m+d.md)/2)*1000)}`,why:'Promediar media y mediana no significa nada. Mirá el gráfico: ¿hay alguien que cobre eso?'}],
+ explain:d=>`<p>El aviso no miente en la cuenta, miente en la elección. La media suma todo y reparte: el sueldo del dueño ($${fmt(d.boss*1000)}) solo pesa más que varios empleados juntos y arrastra el promedio a un valor que <strong>nadie</strong> cobra. La mediana ordena a todos en fila y mira al del medio, así que un valor extremo no la mueve.</p>
+ <p>Regla práctica: con distribuciones asimétricas (sueldos, alquileres, precios de casas, tiempos de espera) reportá la mediana, o las dos. Si media y mediana difieren mucho, eso ya te está avisando que hay asimetría o valores extremos.</p>`,
+ py:d=>`import pandas as pd
+
+sueldos = pd.Series([${d.all.map(v=>v*1000).join(', ')}])
+sueldos.mean()      # ${Math.round(d.m*1000)}
+sueldos.median()    # ${Math.round(d.md*1000)}
+sueldos.skew()      # positivo y grande: cola larga a la derecha`
+},
+/* 3 */{
+ id:'intruso', title:'El intruso en la planilla', tema:'Cuartiles · RIC · valores atípicos',
+ setup(){for(;;){const base=Array.from({length:21},()=>500+randn()*4),q1=quant(base,.25),q3=quant(base,.75),i=q3-q1;
+  const all=[...base,q3+1.15*i,q3+2.6*i,q1-1.1*i].map(v=>Math.round(v*10)/10);
+  const Q1=quant(all,.25),Q3=quant(all,.75),I=Q3-Q1,lo=Q1-1.5*I,hi=Q3+1.5*I,[a,b,c]=all.slice(-3),o=all.slice(0,-3);
+  if(a<hi-.3&&b>hi+1&&c>lo+.3&&o.every(v=>v>lo&&v<hi))return{all,o,a,b,c,Q1,Q3,I,lo,hi}}},
+ brief:()=>`<p>Una panadería pesa cada mañana las bolsas de harina de 500 g que le llegan. Bromatología sospecha que una de las 24 mediciones de hoy es un error de la balanza. El protocolo dice: un dato es atípico si cae fuera de <strong>[Q1 − 1,5·RIC ; Q3 + 1,5·RIC]</strong>. Hay tres mediciones bajo sospecha: A, B y C.</p>`,
+ hint:`RIC = Q3 − Q1. Calculá los dos límites con los cuartiles de la tabla y fijate cuál de los tres sospechosos queda afuera. Que un punto esté lejos a simple vista no alcanza: el criterio es la cuenta.`,
+ evidence(el,d){const mn=Math.min(...d.all)-2,mx=Math.max(...d.all)+2,x=lin(mn,mx,30,580),S=[[d.a,'A'],[d.b,'B'],[d.c,'C']];
+  const tk=[];for(let t=Math.ceil(mn/5)*5;t<=mx;t+=5)tk.push(t);
+  el.innerHTML=`<svg viewBox="0 0 600 120" role="img" aria-label="Pesos de las bolsas de harina"><line x1="30" x2="580" y1="80" y2="80" stroke="${INK}"/>
+  ${tk.map(t=>`<line x1="${x(t)}" x2="${x(t)}" y1="80" y2="85" stroke="${INK}"/><text x="${x(t)}" y="102" text-anchor="middle">${t} g</text>`).join('')}
+  ${d.o.map((v,i)=>`<circle cx="${x(v)}" cy="${68-(i%3)*10}" r="5" fill="${GREY}" opacity=".8"/>`).join('')}
+  ${S.map(([v,l])=>`<circle cx="${x(v)}" cy="68" r="6.5" fill="${RED}"/><text x="${x(v)}" y="34" text-anchor="middle" style="font-weight:bold;fill:${RED}">${l}</text><line x1="${x(v)}" x2="${x(v)}" y1="38" y2="60" stroke="${RED}"/>`).join('')}</svg>
+  <table><tr><th>Dato</th><th>Valor</th></tr><tr><td>Q1 (percentil 25)</td><td>${fmt(d.Q1,2)} g</td></tr><tr><td>Q3 (percentil 75)</td><td>${fmt(d.Q3,2)} g</td></tr>
+  <tr><td>Sospechoso A</td><td>${fmt(d.a,1)} g</td></tr><tr><td>Sospechoso B</td><td>${fmt(d.b,1)} g</td></tr><tr><td>Sospechoso C</td><td>${fmt(d.c,1)} g</td></tr></table>`},
+ question:()=>'Según el protocolo, ¿qué medición es atípica?',
+ options:d=>[
+  {t:'La medición A',why:`Hacé la cuenta del límite superior: Q3 + 1,5·RIC. A está lejos del montón, pero queda adentro.`},
+  {t:'La medición B',ok:true},
+  {t:'La medición C',why:`Hacé la cuenta del límite inferior: Q1 − 1,5·RIC. C es la más baja, pero no cruza el límite.`},
+  {t:'Ninguna: las tres están dentro de los límites',why:'Una de las tres sí cruza un límite. Revisá el superior.'}],
+ explain(d){const x=lin(Math.min(...d.all)-2,Math.max(...d.all)+2,30,580);
+  return `<p>RIC = ${fmt(d.Q3,2)} − ${fmt(d.Q1,2)} = ${fmt(d.I,2)}. Límites: inferior ${fmt(d.lo,2)} g, superior ${fmt(d.hi,2)} g. Solo B (${fmt(d.b,1)} g) queda afuera. A y C son valores altos y bajos, pero esperables.</p>
+  <svg viewBox="0 0 600 80" role="img" aria-label="Diagrama de caja de los pesos"><rect x="${x(d.Q1)}" y="22" width="${x(d.Q3)-x(d.Q1)}" height="30" fill="#d9ccae" stroke="${INK}"/>
+  <line x1="${x(median(d.all))}" x2="${x(median(d.all))}" y1="22" y2="52" stroke="${INK}" stroke-width="2"/>
+  <line x1="${x(d.c)}" x2="${x(d.Q1)}" y1="37" y2="37" stroke="${INK}"/><line x1="${x(d.Q3)}" x2="${x(d.a)}" y1="37" y2="37" stroke="${INK}"/>
+  <line x1="${x(d.hi)}" x2="${x(d.hi)}" y1="10" y2="64" stroke="${RED}" stroke-dasharray="4 3"/><text x="${x(d.hi)}" y="76" text-anchor="middle" style="fill:${RED}">límite sup.</text>
+  <line x1="${x(d.lo)}" x2="${x(d.lo)}" y1="10" y2="64" stroke="${RED}" stroke-dasharray="4 3"/><text x="${x(d.lo)}" y="76" text-anchor="middle" style="fill:${RED}">límite inf.</text>
+  <circle cx="${x(d.b)}" cy="37" r="5" fill="${RED}"/><text x="${x(d.b)}" y="26" text-anchor="middle" style="fill:${RED}">B</text></svg>
+  <p>Eso mismo dibuja un boxplot: la caja va de Q1 a Q3, los bigotes llegan hasta el último dato dentro de los límites y lo que queda afuera se marca como punto suelto. Ojo con el paso siguiente: atípico no significa "borrar". Significa "investigar": puede ser un error de carga o el dato más interesante de la tabla.</p>`},
+ py:d=>esc(`import pandas as pd
+
+s = pd.Series(pesos)
+q1, q3 = s.quantile([0.25, 0.75])
+ric = q3 - q1              # rango intercuartílico
+atipicos = s[(s < q1 - 1.5*ric) | (s > q3 + 1.5*ric)]
+s.plot.box()     # el boxplot marca esos mismos puntos`)
+},
+/* 4 */{
+ id:'billetes', title:'El detector de billetes falsos', tema:'Probabilidad condicional · Bayes',
+ setup:()=>({sim:null}),
+ brief:()=>`<p>Un supermercado compró un detector de billetes falsos. El fabricante garantiza: detecta el <strong>95%</strong> de los billetes falsos y solo da falsa alarma con el <strong>5%</strong> de los verdaderos. Se estima que <strong>1 de cada 100</strong> billetes en circulación es falso. Ayer sonó la alarma con el billete de una jubilada y el gerente la trató de estafadora.</p>`,
+ hint:`No mires solo los billetes falsos. Contá todas las veces que sonó la alarma y preguntate cuántas de esas alarmas vinieron de billetes verdaderos, que son muchísimos más.`,
+ evidence(el,d){
+  el.innerHTML=`<div class="row"><button class="btn" id="go">Pasar 2.000 billetes por el detector</button></div><div id="out"><p class="muted">Todavía no hay datos.</p></div>`;
+  $('#go',el).onclick=()=>{let tp=0,fn=0,fp=0,tn=0;for(let i=0;i<2000;i++){if(R()<.01)R()<.95?tp++:fn++;else R()<.05?fp++:tn++}
+   d.sim={tp,fn,fp,tn};const cols=['#b3261e','#2b2118','#e08a1e','#d9ccae'],cells=[];[tp,fn,fp,tn].forEach((n,k)=>{for(let i=0;i<n;i++)cells.push(k)});
+   $('#out',el).innerHTML=`<svg viewBox="0 0 560 175" role="img" aria-label="Resultado de 2000 billetes">${cells.map((k,i)=>`<rect x="${(i%80)*7}" y="${Math.floor(i/80)*7}" width="6" height="6" fill="${cols[k]}"/>`).join('')}</svg>
+   <div class="legend"><span><i style="background:${cols[0]}"></i>Falso, sonó la alarma: ${tp}</span><span><i style="background:${cols[1]}"></i>Falso, no sonó: ${fn}</span><span><i style="background:${cols[2]}"></i>Verdadero, sonó la alarma: ${fp}</span><span><i style="background:${cols[3]}"></i>Verdadero, no sonó: ${fmt(tn)}</span></div>`};
+ },
+ gate:d=>d.sim?null:'Primero pasá los billetes por el detector y mirá qué sale.',
+ question:()=>'Suena la alarma con un billete cualquiera. ¿Qué probabilidad hay de que sea realmente falso?',
+ options:()=>[
+  {t:'95%: es lo que garantiza el fabricante',why:'El 95% responde otra pregunta: "si el billete es falso, ¿suena?". Acá sabemos que sonó y queremos saber si es falso. Son condicionales distintas.'},
+  {t:'Alrededor de 50%',why:'Contá en tu simulación: alarmas por billetes falsos contra el total de alarmas. Da bastante menos que la mitad.'},
+  {t:'Alrededor de 16%',ok:true},
+  {t:'5%',why:'El 5% es la tasa de falsas alarmas entre los billetes verdaderos, no la probabilidad de que un billete con alarma sea falso.'}],
+ explain(d){const s=d.sim,al=s.tp+s.fp;
+  return `<p>En tu simulación sonaron ${al} alarmas y solo ${s.tp} eran de billetes falsos: ${fmt(100*s.tp/al,1)}%. El valor teórico sale de Bayes:</p>
+  <p class="big">P(falso | alarma) = (0,95 × 0,01) / (0,95 × 0,01 + 0,05 × 0,99) ≈ 0,161</p>
+  <p>El detector no anda mal. Lo que pasa es que los billetes verdaderos son 99 de cada 100, así que su 5% de falsas alarmas es un montón de billetes, mucho más que los pocos falsos que existen. Ignorar eso se llama <strong>falacia de la tasa base</strong>, y es el mismo razonamiento que hay detrás de un test médico positivo para una enfermedad rara o de un filtro de spam. La jubilada, con 84% de probabilidad, era inocente.</p>`},
+ py:()=>`p_falso = 0.01      # tasa base (prior)
+sens    = 0.95      # P(alarma | falso)
+fp      = 0.05      # P(alarma | verdadero)
+
+p_alarma = sens*p_falso + fp*(1 - p_falso)
+sens*p_falso / p_alarma        # 0.161 -> P(falso | alarma)`
+},
+/* 5 */{
+ id:'helado', title:'El helado bajo sospecha', tema:'Correlación vs. causalidad',
+ setup(){const t=Array.from({length:40},()=>8+R()*27),h=t.map(v=>Math.round(40+9*v+randn()*35)),r=t.map(v=>Math.max(0,Math.round(-1+.32*v+randn()*1.6)));
+  return{t,h,r,rho:corr(h,r),col:false}},
+ brief:d=>`<p>Un concejal de la costa presenta un proyecto para prohibir la venta de helado en la playa. Su argumento: en 40 semanas de datos, cuando se vende más helado hay más rescates de guardavidas. La correlación es de <strong>${fmt(d.rho,2)}</strong>. "Los números no mienten", dice.</p>`,
+ hint:`Activá el color por temperatura. Si los puntos se ordenan de fríos a calientes siguiendo la misma diagonal, hay algo que mueve a las dos variables al mismo tiempo.`,
+ evidence(el,d){
+  el.innerHTML=`<label class="chk"><input type="checkbox" id="col"> Colorear cada semana según su temperatura media</label><div id="out"></div>`;
+  const hx=Math.max(...d.h)*1.05,ry=Math.max(...d.r)+1,x=lin(0,hx,50,580),y=lin(0,ry,230,15);
+  const c=v=>{const k=(v-8)/27;return `rgb(${Math.round(43+154*k)},${Math.round(108-60*k)},${Math.round(176-128*k)})`};
+  const draw=()=>{$('#out',el).innerHTML=`<svg viewBox="0 0 600 275" role="img" aria-label="Helados vendidos contra rescates"><line x1="50" x2="580" y1="230" y2="230" stroke="${INK}"/><line x1="50" x2="50" y1="15" y2="230" stroke="${INK}"/>
+   ${[0,100,200,300].filter(v=>v<hx).map(v=>`<text x="${x(v)}" y="248" text-anchor="middle">${v}</text>`).join('')}
+   ${[0,4,8,12].filter(v=>v<ry).map(v=>`<text x="42" y="${y(v)+4}" text-anchor="end">${v}</text>`).join('')}
+   <text x="315" y="268" text-anchor="middle">Helados vendidos por semana</text><text x="14" y="122" text-anchor="middle" transform="rotate(-90 14 122)">Rescates</text>
+   ${d.h.map((v,i)=>`<circle cx="${x(v)}" cy="${y(d.r[i])}" r="6" fill="${d.col?c(d.t[i]):GREY}" opacity=".85"/>`).join('')}</svg>
+   ${d.col?`<div class="legend"><span><i style="background:${c(8)}"></i>semana fría (8 °C)</span><span><i style="background:${c(21)}"></i>templada</span><span><i style="background:${c(35)}"></i>semana de calor (35 °C)</span></div>`:''}`};
+  $('#col',el).onchange=e=>{d.col=e.target.checked;draw()};draw();
+ },
+ question:()=>'¿Qué le respondés al concejal?',
+ options:()=>[
+  {t:'Tiene razón: con una correlación tan alta, el helado causa los rescates',why:'Una correlación alta dice que las dos variables se mueven juntas, no que una empuje a la otra. Buscá qué más cambia de una semana a otra.'},
+  {t:'El calor es una tercera variable que hace subir las dos cosas a la vez',ok:true},
+  {t:'Es pura casualidad: entre estos datos no hay ninguna relación real',why:'La relación existe y se repetiría el verano que viene. El problema no es que sea azar, es que no es causal.'},
+  {t:'Es al revés: los rescates hacen que la gente compre más helado',why:'Invertir la flecha no lo arregla: tampoco hay un mecanismo razonable. Fijate qué pasa con la temperatura.'}],
+ explain:d=>`<p>Las semanas de calor llenan la playa: más gente compra helado y más gente se mete al mar. La temperatura es una <strong>variable de confusión</strong>: causa las dos cosas y fabrica una correlación de ${fmt(d.rho,2)} entre dos variables que no se tocan entre sí. Prohibir el helado no bajaría ni un rescate.</p>
+ <p>La prueba que haría una analista: comparar semanas de temperatura parecida. Si dentro de cada franja de temperatura la relación helado–rescates desaparece, el culpable era el calor. Cada vez que veas "A se correlaciona con B", preguntá tres cosas: ¿puede ser al revés?, ¿hay una tercera variable?, ¿puede ser azar por pocos datos?</p>`,
+ py:()=>`import pandas as pd
+
+df[["helados", "rescates", "temp"]].corr()
+
+# ¿Sigue la relación si comparo semanas de temperatura parecida?
+df["franja"] = pd.cut(df["temp"], bins=[0, 15, 22, 28, 40])
+df.groupby("franja", observed=True).apply(
+    lambda g: g["helados"].corr(g["rescates"]))`
+},
+/* 6 */{
+ id:'encuesta', title:'La encuesta del gimnasio', tema:'Muestreo · sesgo de selección',
+ setup(){const pop=Array.from({length:2000},(_,i)=>{const g=i<300;return{g,h:Math.max(0,g?6+randn()*1.5:1.5+randn()*1.2)}});
+  return{pop,gym:pop.filter(p=>p.g),truth:mean(pop.map(p=>p.h)),runs:[[],[],[]]}},
+ brief:()=>`<p>El municipio quiere saber cuántas horas por semana hace actividad física la gente del barrio (2.000 vecinos) para decidir si construye un polideportivo. Una consultora encuestó a <strong>200 personas en la puerta de un gimnasio</strong> y entregó su informe: "promedio de 6 horas semanales; con 200 casos el resultado es confiable". Vos tenés acceso al padrón completo para repetir la encuesta de distintas maneras.</p>`,
+ hint:`Repetí cada método varias veces. Fijate en dos cosas distintas: qué tan juntos caen los puntos de un mismo método (precisión) y qué tan cerca caen del valor real (exactitud).`,
+ evidence(el,d){
+  const M=[['200 en la puerta del gimnasio',RED],['30 al azar del padrón',GREY],['200 al azar del padrón',BLUE]];
+  el.innerHTML=`<div class="row">${M.map((m,i)=>`<button class="btn" data-m="${i}">Encuestar ${m[0]}</button>`).join('')}</div><div id="out"></div>`;
+  const x=lin(0,8,40,580);
+  const draw=()=>{$('#out',el).innerHTML=`<svg viewBox="0 0 600 215" role="img" aria-label="Promedios obtenidos por cada método de encuesta">
+   ${M.map((m,i)=>`<text x="40" y="${28+i*52}" style="fill:${m[1]}">${m[0]}</text><line x1="40" x2="580" y1="${52+i*52}" y2="${52+i*52}" stroke="#cdbf9f"/>
+   ${d.runs[i].map((v,j)=>`<circle cx="${x(v)}" cy="${46+i*52-(j%3)*5}" r="4.5" fill="${m[1]}" opacity=".7"/>`).join('')}`).join('')}
+   <line x1="${x(d.truth)}" x2="${x(d.truth)}" y1="12" y2="172" stroke="${INK}" stroke-dasharray="4 3"/>
+   <line x1="40" x2="580" y1="172" y2="172" stroke="${INK}"/>${[0,2,4,6,8].map(v=>`<text x="${x(v)}" y="190" text-anchor="middle">${v} h</text>`).join('')}
+   <text x="${x(d.truth)+6}" y="208">valor real del padrón: ${fmt(d.truth,1)} h</text></svg><p class="muted">Cada punto es el promedio que dio una encuesta completa.</p>`};
+  el.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const i=+b.dataset.m,src=i===0?d.gym:d.pop,n=i===1?30:200;
+   d.runs[i].push(mean(shuffle(src).slice(0,n).map(p=>p.h)));draw()});
+  draw();
+ },
+ gate:d=>d.runs.every(r=>r.length)?null:'Probá los tres métodos de encuesta al menos una vez antes de opinar.',
+ question:()=>'¿Cuál es el problema del informe de la consultora?',
+ options:()=>[
+  {t:'Faltaron casos: encuestando 2.000 personas en el gimnasio se arregla',why:'Mirá los puntos rojos: ya caen todos juntitos. Más casos del mismo lugar te dan el mismo número equivocado, con más decimales.'},
+  {t:'Sesgo de selección: la muestra salió de un lugar donde la gente se parece entre sí y no al barrio',ok:true},
+  {t:'Ninguno: 200 casos es una muestra grande y por eso es confiable',why:'Compará los rojos con los azules: los dos son de 200 casos y dan resultados muy distintos. El tamaño no era el problema.'},
+  {t:'Tendrían que haber usado la mediana en lugar del promedio',why:'La mediana de la gente del gimnasio también daría cerca de 6 horas. El problema está antes de elegir la medida: en a quién le preguntaron.'}],
+ explain:d=>`<p>La encuesta del gimnasio es <strong>precisa pero inexacta</strong>: siempre da cerca de 6 horas, y el valor real es ${fmt(d.truth,1)}. Las 30 al azar hacen lo contrario: se desparraman bastante, pero alrededor del valor correcto. Las 200 al azar logran las dos cosas.</p>
+ <p>Agrandar la muestra reduce el error aleatorio (la dispersión), nunca el sesgo. Si la forma de elegir a quién preguntarle depende de lo que querés medir, el resultado nace torcido y ningún tamaño lo endereza. Pasa lo mismo con las encuestas en redes sociales, con las reseñas online (opina el que está muy contento o muy enojado) y con cualquier dataset donde no sabés cómo llegaron las filas hasta ahí.</p>`,
+ py:()=>`# Muestra aleatoria: todos los vecinos tienen la misma chance de salir
+df.sample(n=200, random_state=42)["horas"].mean()
+
+# Muestra sesgada: solo los que van al gimnasio
+df[df["va_al_gimnasio"]].sample(n=200)["horas"].mean()
+
+df["horas"].mean()     # valor real, para comparar`
+},
+/* 7 */{
+ id:'tornillos', title:'La máquina B', tema:'Distribución normal · regla empírica',
+ setup(){const s=Array.from({length:1000},()=>50+randn()*.66);return{s,out:s.filter(v=>v<49||v>51).length,k:1}},
+ brief:d=>`<p>Una fábrica hace tornillos de 50 mm. Una máquina bien calibrada produce largos con distribución normal, media <strong>μ = 50 mm</strong> y desvío <strong>σ = 0,5 mm</strong>. El control de calidad descarta todo lo que salga del rango 49–51 mm, es decir, μ ± 2σ. Ayer la máquina B hizo 1.000 tornillos y se descartaron <strong>${d.out}</strong>. El encargado dice que "siempre se descarta alguno, es normal".</p>`,
+ hint:`Mové el deslizador hasta k = 2 para ver qué porcentaje de piezas debería caer dentro de μ ± 2σ en una máquina sana. Lo que falta para llegar a 100% es el descarte esperado. Compará con el descarte real.`,
+ evidence(el,d){
+  el.innerHTML=`<p><label>Rango μ ± kσ, con k = <strong id="kv"></strong><br><input type="range" id="k" min="0.5" max="3" step="0.1" value="1"></label></p><div id="curve"></div>
+  <p class="muted" style="margin-top:18px">Producción real de la máquina B (barras) contra lo esperado para una máquina calibrada (línea):</p><div id="hist"></div>`;
+  const x=lin(-3.6,3.6,30,570),pdf=z=>Math.exp(-z*z/2),y=lin(0,1,130,15);
+  const path=(a,b)=>{let p='';for(let z=a;z<=b+1e-9;z+=.05)p+=`${p?'L':'M'}${x(z).toFixed(1)},${y(pdf(z)).toFixed(1)}`;return p};
+  const draw=()=>{$('#kv',el).textContent=fmt(d.k,1);
+   $('#curve',el).innerHTML=`<svg viewBox="0 0 600 160" role="img" aria-label="Curva normal con el área dentro de k desvíos">
+   <path d="${path(-d.k,d.k)}L${x(d.k)},130L${x(-d.k)},130Z" fill="${BLUE}" opacity=".3"/><path d="${path(-3.6,3.6)}" fill="none" stroke="${INK}" stroke-width="1.5"/>
+   <line x1="30" x2="570" y1="130" y2="130" stroke="${INK}"/>${[-3,-2,-1,0,1,2,3].map(z=>`<text x="${x(z)}" y="148" text-anchor="middle">${fmt(50+z*.5,1)}</text>`).join('')}
+   <text x="300" y="100" text-anchor="middle" style="font-size:16px;font-weight:bold">${fmt(100*(2*Phi(d.k)-1),1)}% adentro</text></svg>`};
+  $('#k',el).oninput=e=>{d.k=+e.target.value;draw()};draw();
+  const bins=Array(24).fill(0);d.s.forEach(v=>{const i=Math.floor((v-47.6)/.2);if(i>=0&&i<24)bins[i]++});
+  const hx=lin(47.6,52.4,30,570),hy=lin(0,170,150,10);let exp='';
+  for(let v=47.6;v<=52.4;v+=.05)exp+=`${exp?'L':'M'}${hx(v).toFixed(1)},${hy(1000*.2*Math.exp(-(((v-50)/.5)**2)/2)/(.5*Math.sqrt(2*Math.PI))).toFixed(1)}`;
+  $('#hist',el).innerHTML=`<svg viewBox="0 0 600 180" role="img" aria-label="Histograma de la máquina B">
+  ${bins.map((n,i)=>{const v=47.6+i*.2,o=v<49-1e-9||v>=51-1e-9;return `<rect x="${hx(v)+1}" y="${hy(n)}" width="${hx(v+.2)-hx(v)-2}" height="${150-hy(n)}" fill="${o?RED:GREY}" opacity=".75"/>`}).join('')}
+  <path d="${exp}" fill="none" stroke="${INK}" stroke-width="1.5"/><line x1="30" x2="570" y1="150" y2="150" stroke="${INK}"/>
+  ${[48,49,50,51,52].map(v=>`<text x="${hx(v)}" y="168" text-anchor="middle">${v} mm</text>`).join('')}</svg>
+  <div class="legend"><span><i style="background:${GREY}"></i>dentro de tolerancia</span><span><i style="background:${RED}"></i>descartados</span></div>`;
+ },
+ question:d=>`¿${d.out} descartes sobre 1.000 es lo esperable?`,
+ options:d=>[
+  {t:'Sí: en una distribución normal siempre quedan piezas fuera del rango',why:'Que siempre haya alguna es cierto. La pregunta es cuántas: calculá el descarte esperado con k = 2 y compará.'},
+  {t:`No: se esperaban unos 46 descartes (4,6%) y hubo ${d.out}. La máquina está descalibrada`,ok:true},
+  {t:'No se puede saber sin volver a medir los 1.000 tornillos',why:'Ya tenés todo: el modelo de la máquina sana te dice cuánto descarte esperar, y el conteo real te dice cuánto hubo.'}],
+ explain:d=>`<p>La regla empírica de la normal: dentro de μ ± 1σ cae el 68,3% de los datos; dentro de ± 2σ, el 95,4%; dentro de ± 3σ, el 99,7%. Una máquina sana descarta entonces el 4,6%: unos 46 tornillos cada 1.000. La máquina B descartó ${d.out}, casi el triple.</p>
+ <p>Con la normal estandarizada se ve igual: z = (x − μ) / σ. El límite de 51 mm corresponde a z = (51 − 50) / 0,5 = 2, y la tabla de z dice que por fuera de ±2 queda el 4,6%.</p><p>El histograma muestra qué pasó: el centro sigue en 50 mm, pero las barras son más bajas en el medio y más anchas en las colas que la curva esperada. No se corrió la media, <strong>creció el desvío</strong> (de 0,5 a unos 0,66 mm). Así funciona el control estadístico de procesos: se define un modelo de lo que es "normal" y se dispara una alerta cuando los datos se alejan demasiado de ese modelo.</p>`,
+ py:()=>esc(`from scipy.stats import norm
+
+# Descarte esperado con una máquina sana (fuera de mu ± 2 sigma)
+1 - (norm.cdf(51, loc=50, scale=0.5) - norm.cdf(49, loc=50, scale=0.5))   # 0.0455
+
+# Descarte real y desvío de la máquina B
+((s < 49) | (s > 51)).mean()
+s.std()`)
+},
+/* 8 */{
+ id:'ab', title:'El botón verde', tema:'Test de hipótesis · p-valor',
+ setup(){const a=randint(10,13);return{a,b:a+5,sim:null}},
+ brief:d=>`<p>Una tienda online probó dos versiones de su botón de compra. Durante un día, 100 visitantes vieron el botón azul de siempre (A) y otros 100, uno verde (B). Compraron <strong>${d.a}</strong> con el azul y <strong>${d.b}</strong> con el verde. El equipo de marketing ya redactó el anuncio: "el botón verde aumenta las ventas un ${Math.round(500/d.a)}%". Antes de rediseñar todo el sitio, te piden una segunda opinión.</p>`,
+ hint:`Simulá un mundo donde los dos botones rinden exactamente igual y mirá qué diferencias aparecen solo por azar. Si una diferencia de 5 compras sale seguido en ese mundo, tus datos no distinguen entre "el verde es mejor" y "tuvimos suerte".`,
+ evidence(el,d){
+  el.innerHTML=`<table><tr><th>Versión</th><th>Visitantes</th><th>Compras</th><th>Conversión</th></tr><tr><td>A (azul)</td><td>100</td><td>${d.a}</td><td>${d.a}%</td></tr><tr><td>B (verde)</td><td>100</td><td>${d.b}</td><td>${d.b}%</td></tr></table>
+  <div class="row"><button class="btn" id="go">Simular 2.000 experimentos donde los botones rinden igual</button></div><div id="out"></div>`;
+  $('#go',el).onclick=()=>{const p=(d.a+d.b)/200,c={};let ge=0;for(let i=0;i<2000;i++){const df=binom(100,p)-binom(100,p);c[df]=(c[df]||0)+1;if(df>=5)ge++}
+   d.sim=ge/2000;const mx=Math.max(...Object.values(c)),x=lin(-16,16,30,570),y=lin(0,mx,150,12);let bars='';
+   for(let k=-15;k<=15;k++)if(c[k])bars+=`<rect x="${x(k-.42)}" y="${y(c[k])}" width="${x(.84)-x(0)}" height="${150-y(c[k])}" fill="${k>=5?RED:GREY}" opacity=".8"/>`;
+   $('#out',el).innerHTML=`<svg viewBox="0 0 600 185" role="img" aria-label="Diferencias obtenidas por azar">${bars}<line x1="30" x2="570" y1="150" y2="150" stroke="${INK}"/>
+   ${[-15,-10,-5,0,5,10,15].map(k=>`<text x="${x(k)}" y="168" text-anchor="middle">${k>0?'+':''}${k}</text>`).join('')}
+   <text x="300" y="183" text-anchor="middle">Diferencia de compras (B − A) cuando no hay ninguna diferencia real</text></svg>
+   <p class="big">En ${fmt(100*d.sim,1)}% de los experimentos, B le ganó a A por 5 compras o más solo por azar.</p>`};
+ },
+ gate:d=>d.sim==null?'Corré la simulación antes de dar tu opinión.':null,
+ question:()=>'¿Qué le recomendás a la tienda?',
+ options:()=>[
+  {t:'Implementar el botón verde: los datos muestran que convierte más',why:'Convirtió más en esta muestra. Mirá tu simulación: ¿qué tan seguido aparece esa misma ventaja cuando los botones son idénticos?'},
+  {t:'Seguir el experimento: con estos datos la diferencia puede ser puro azar',ok:true},
+  {t:'Descartar el verde: quedó demostrado que los dos botones rinden igual',why:'No encontrar evidencia de diferencia no demuestra que sean iguales. Con 100 visitas por grupo, el experimento es demasiado chico para ver un efecto así.'}],
+ explain:d=>`<p>Lo que simulaste es un test de hipótesis hecho a mano. La <strong>hipótesis nula (H0)</strong> dice "los botones rinden igual"; la <strong>alternativa (H1)</strong>, unilateral derecha, dice "el verde rinde más". El <strong>p-valor</strong> es la probabilidad de ver una diferencia como la observada, o mayor, si la nula fuera cierta: en tu simulación dio ${fmt(d.sim,2)}. La convención es desconfiar de la nula recién cuando ese valor baja de 0,05. Acá está muy lejos: una ventaja de 5 compras aparece por azar aproximadamente 1 de cada ${Math.round(1/d.sim)} veces.</p>
+ <p>Eso no prueba que el verde sea igual ni peor: dice que 100 visitas por grupo no alcanzan para saberlo. Si la mejora fuera real y de ese tamaño, harían falta alrededor de 800 visitas por versión para detectarla con buena probabilidad. La recomendación profesional es dejar el experimento corriendo, no elegir un ganador.</p><p>Los dos errores posibles: anunciar que el verde es mejor cuando no lo es sería un <strong>error de tipo I</strong> (rechazar H0 siendo verdadera); descartarlo cuando sí era mejor, un <strong>error de tipo II</strong> (no rechazar H0 siendo falsa).</p>`,
+ py:d=>esc(`import numpy as np
+
+rng = np.random.default_rng(42)
+a, b, n = ${d.a}, ${d.b}, 100
+p = (a + b) / (2 * n)                    # tasa común bajo la hipótesis nula
+
+dif = rng.binomial(n, p, 10_000) - rng.binomial(n, p, 10_000)
+(dif >= b - a).mean()                    # p-valor a una cola
+
+# Lo mismo con una prueba clásica:
+# from statsmodels.stats.proportion import proportions_ztest
+# proportions_ztest([b, a], [n, n], alternative="larger")`)
+}
+,/* 9 */{
+ id:'envasadoras', title:'Las dos envasadoras', 
+ setup(){const A=Array.from({length:30},()=>50+randn()*2.2),B=Array.from({length:30},()=>1000+randn()*14);
+  return{A,B,mA:mean(A),mB:mean(B),sA:sd(A),sB:sd(B),rel:false}},
+ brief:d=>`<p>Una fábrica de condimentos tiene dos envasadoras: la A llena frascos de 50 g de pimentón y la B, bolsas de 1 kg de sal. El jefe de planta pesó 30 envases de cada una y ya decidió: <em>"La B tiene un desvío estándar de ${fmt(d.sB,1)} g y la A de apenas ${fmt(d.sA,1)} g. La B es un desastre, hay que cambiarla"</em>. Cambiarla cuesta una fortuna y te piden que revises la decisión.</p>`,
+ hint:`Un desvío de 2 g no significa lo mismo en un frasco de 50 g que en una bolsa de 1.000 g. Dividí cada desvío por la media de su máquina: eso es el coeficiente de variación.`,
+ evidence(el,d){
+  el.innerHTML=`<label class="chk"><input type="checkbox" id="rel"> Mostrar cada envase como % de diferencia respecto de la media de su máquina</label><div id="out"></div>
+  <table><tr><th>Máquina</th><th>Media</th><th>Desvío estándar</th></tr><tr><td>A (frascos de 50 g)</td><td>${fmt(d.mA,1)} g</td><td>${fmt(d.sA,1)} g</td></tr><tr><td>B (bolsas de 1.000 g)</td><td>${fmt(d.mB,1)} g</td><td>${fmt(d.sB,1)} g</td></tr></table>`;
+  const draw=()=>{const x=d.rel?lin(-14,14,40,580):lin(0,1100,40,580),tk=d.rel?[-10,-5,0,5,10]:[0,250,500,750,1000];
+   const row=(a,m,yy,c)=>a.map((v,i)=>`<circle cx="${x(d.rel?100*(v-m)/m:v)}" cy="${yy-(i%3)*7}" r="4.5" fill="${c}" opacity=".7"/>`).join('');
+   $('#out',el).innerHTML=`<svg viewBox="0 0 600 150" role="img" aria-label="Pesos de los envases de cada máquina"><text x="40" y="18" style="fill:${RED}">Máquina A</text>${row(d.A,d.mA,48,RED)}
+   <text x="40" y="72" style="fill:${BLUE}">Máquina B</text>${row(d.B,d.mB,102,BLUE)}<line x1="40" x2="580" y1="112" y2="112" stroke="${INK}"/>
+   ${tk.map(t=>`<line x1="${x(t)}" x2="${x(t)}" y1="112" y2="117" stroke="${INK}"/><text x="${x(t)}" y="134" text-anchor="middle">${d.rel?(t>0?'+':'')+t+'%':fmt(t)+' g'}</text>`).join('')}</svg>`};
+  $('#rel',el).onchange=e=>{d.rel=e.target.checked;draw()};draw();
+ },
+ question:()=>'¿Cuál de las dos máquinas trabaja con mayor variabilidad relativa?',
+ options:d=>[
+  {t:`La B: su desvío (${fmt(d.sB,1)} g) es mucho mayor que el de la A (${fmt(d.sA,1)} g)`,why:'Comparar desvíos en gramos entre un frasco de 50 g y una bolsa de 1.000 g no es justo. ¿Qué proporción de su media representa cada desvío?'},
+  {t:'La A: su desvío es chico en gramos, pero grande en proporción a lo que envasa',ok:true},
+  {t:'Ninguna: las dos promedian lo que deben, así que son igual de buenas',why:'La media habla del centro, no de la dispersión. Dos máquinas pueden promediar perfecto y aun así una ser mucho más despareja.'},
+  {t:'No se pueden comparar: envasan productos y pesos distintos',why:'Justamente para eso existe una medida de dispersión relativa, sin unidades. Probá dividir cada desvío por su media.'}],
+ explain:d=>`<p>El desvío estándar es una medida de dispersión <strong>absoluta</strong>: está en gramos y depende de la magnitud de lo que medís. Para comparar conjuntos de magnitudes distintas se usa una medida <strong>relativa</strong>, el coeficiente de variación: CV = desvío / media.</p>
+ <p class="big">CV de A = ${fmt(d.sA,1)} / ${fmt(d.mA,1)} = ${fmt(100*d.sA/d.mA,1)}% &nbsp;·&nbsp; CV de B = ${fmt(d.sB,1)} / ${fmt(d.mB,1)} = ${fmt(100*d.sB/d.mB,1)}%</p>
+ <p>La A es unas ${fmt((d.sA/d.mA)/(d.sB/d.mB),0)} veces más despareja que la B. Un frasco de pimentón puede salir con 4 o 5% de menos; una bolsa de sal, con suerte 1,5%. Si hay que cambiar una máquina, es la A. El CV también sirve para comparar variables con unidades distintas (pesos contra alturas, sueldos en pesos contra sueldos en dólares) y para juzgar qué tan representativa es la media: cuanto más bajo, más homogéneos los datos.</p>`,
+ py:()=>`import pandas as pd
+
+cv = df.groupby("maquina")["peso"].agg(["mean", "std"])
+cv["cv_%"] = 100 * cv["std"] / cv["mean"]
+cv`
+},
+/* 10 */{
+ id:'pizzeria', title:'La franquicia de pizzas',
+ setup(){const x=[2,6,8,8,12,16,20,20,22,26].map(v=>v+randint(-1,1)),y=x.map(v=>Math.round(60+5*v+randn()*12)),mx=mean(x),my=mean(y);
+  let n=0,q=0;x.forEach((v,i)=>{n+=(v-mx)*(y[i]-my);q+=(v-mx)**2});const b=n/q,a=my-b*mx,x0=24,yh=Math.round(a+b*x0);
+  return{x,y,a,b,r:corr(x,y),x0,yh,prom:Math.round(yh*1.35),ua:100,ub:2,fit:false}},
+ brief:d=>`<p>Una cadena de pizzerías tiene 10 locales, todos cerca de sedes universitarias. Un vendedor de franquicias le ofrece a tu tía un local nuevo junto a una sede de <strong>${d.x0} mil estudiantes</strong> y le promete ventas de <strong>$${d.prom} millones por mes</strong>, "por lo que venden los otros locales". Antes de que firme, conseguiste los datos reales de los 10 locales.</p>`,
+ hint:`Las líneas rojas son los residuos: lo que le erra la recta a cada local. La mejor recta es la que hace mínima la suma de esos errores al cuadrado. Cuando la tengas, reemplazá x por ${24} en la ecuación.`,
+ evidence(el,d){
+  el.innerHTML=`<div id="out"></div><p><label>Ordenada al origen, a = <strong id="av"></strong><br><input type="range" id="a" min="0" max="150" step="1" value="100"></label></p>
+  <p><label>Pendiente, b = <strong id="bv"></strong><br><input type="range" id="b" min="0" max="10" step="0.1" value="2"></label></p>
+  <div class="row"><button class="btn" id="fit">Ajustar por mínimos cuadrados</button></div><div id="info"></div>`;
+  const x=lin(0,30,50,580),y=lin(0,260,230,12);
+  const draw=()=>{const f=v=>d.ua+d.ub*v,sse=d.x.reduce((s,v,i)=>s+(d.y[i]-f(v))**2,0);
+   $('#av',el).textContent=fmt(d.ua,1);$('#bv',el).textContent=fmt(d.ub,2);
+   $('#out',el).innerHTML=`<svg viewBox="0 0 600 275" role="img" aria-label="Ventas contra población estudiantil"><line x1="50" x2="580" y1="230" y2="230" stroke="${INK}"/><line x1="50" x2="50" y1="12" y2="230" stroke="${INK}"/>
+   ${[0,5,10,15,20,25,30].map(v=>`<text x="${x(v)}" y="248" text-anchor="middle">${v}</text>`).join('')}${[0,50,100,150,200,250].map(v=>`<text x="42" y="${y(v)+4}" text-anchor="end">${v}</text>`).join('')}
+   <text x="315" y="268" text-anchor="middle">Estudiantes en la sede (miles)</text><text x="14" y="122" text-anchor="middle" transform="rotate(-90 14 122)">Ventas ($ millones/mes)</text>
+   <line x1="${x(d.x0)}" x2="${x(d.x0)}" y1="12" y2="230" stroke="${BLUE}" stroke-dasharray="4 3"/><text x="${x(d.x0)-5}" y="24" text-anchor="end" style="fill:${BLUE}">local nuevo</text>
+   ${d.x.map((v,i)=>`<line x1="${x(v)}" x2="${x(v)}" y1="${y(d.y[i])}" y2="${y(Math.max(0,Math.min(260,f(v))))}" stroke="${RED}" opacity=".6"/>`).join('')}
+   <line x1="${x(0)}" y1="${y(f(0))}" x2="${x(30)}" y2="${y(f(30))}" stroke="${INK}" stroke-width="1.5"/>
+   ${d.x.map((v,i)=>`<circle cx="${x(v)}" cy="${y(d.y[i])}" r="6" fill="${GREY}"/>`).join('')}</svg>`;
+   $('#info',el).innerHTML=`<p class="big">ŷ = ${fmt(d.ua,1)} + ${fmt(d.ub,2)} · x &nbsp;·&nbsp; Suma de errores al cuadrado: ${fmt(sse)}</p>${d.fit?`<p class="muted">Esa es la recta de mínimos cuadrados: ninguna otra da una suma menor. Coeficiente de correlación r = ${fmt(d.r,2)} · Coeficiente de determinación r² = ${fmt(d.r*d.r,2)}</p>`:''}`};
+  $('#a',el).oninput=e=>{d.ua=+e.target.value;d.fit=false;draw()};$('#b',el).oninput=e=>{d.ub=+e.target.value;d.fit=false;draw()};
+  $('#fit',el).onclick=()=>{d.ua=d.a;d.ub=d.b;d.fit=d.used=true;$('#a',el).value=d.a;$('#b',el).value=d.b;draw()};draw();
+ },
+ gate:d=>d.used?null:'Primero encontrá la recta que mejor ajusta: probá a mano con los deslizadores y después usá el botón.',
+ question:d=>`¿Qué venta mensual es razonable esperar para una sede de ${d.x0} mil estudiantes?`,
+ options:d=>[
+  {t:`Unos $${d.yh} millones`,ok:true},
+  {t:`Unos $${d.prom} millones, como promete el vendedor`,why:`Ubicá x = ${d.x0} en el gráfico y mirá a qué altura pasa la recta. La promesa queda muy por encima de lo que venden locales parecidos.`},
+  {t:`Unos $${Math.round(d.b*d.x0)} millones: la pendiente por la cantidad de estudiantes`,why:'Te faltó la ordenada al origen. La ecuación completa es ŷ = a + b · x.'},
+  {t:`Unos $${Math.round(mean(d.y))} millones: el promedio de los 10 locales`,why:'El promedio ignora lo que sabés del local nuevo. Con una relación tan marcada, la cantidad de estudiantes mejora mucho la predicción.'}],
+ explain:d=>`<p>La recta de mínimos cuadrados es ŷ = ${fmt(d.a,1)} + ${fmt(d.b,2)} · x. Para x = ${d.x0}: ŷ = ${fmt(d.a,1)} + ${fmt(d.b,2)} · ${d.x0} ≈ <strong>$${d.yh} millones</strong>. El vendedor prometía $${d.prom}: un 35% más de lo que respaldan los datos.</p>
+ <p>Cómo se lee cada número: la <strong>pendiente</strong> dice que por cada mil estudiantes más, las ventas suben unos $${fmt(d.b,1)} millones. El <strong>r = ${fmt(d.r,2)}</strong> indica una relación lineal directa y fuerte. El <strong>r² = ${fmt(d.r*d.r,2)}</strong> dice que el ${fmt(100*d.r*d.r,0)}% de la variación de las ventas entre locales se explica por la población estudiantil; el resto depende de otras cosas (ubicación, competencia, atención).</p>
+ <p>Dos cuidados. La predicción es un valor esperado, no una garantía: los locales reales quedan por arriba y por abajo de la recta (eso mide el error estándar de estimación). Y la recta vale dentro del rango observado, de ${Math.min(...d.x)} a ${Math.max(...d.x)} mil estudiantes: usarla para una sede de 80 mil sería extrapolar a ciegas.</p>`,
+ py:d=>`from scipy.stats import linregress
+
+x = [${d.x.join(', ')}]      # miles de estudiantes
+y = [${d.y.join(', ')}]      # ventas, $ millones/mes
+
+m = linregress(x, y)
+m.intercept, m.slope          # a, b
+m.rvalue, m.rvalue**2         # r, r²
+m.intercept + m.slope * ${d.x0}     # predicción para el local nuevo`
+},
+/* 11 */{
+ id:'venn', title:'Los beneficios que no cierran',
+ setup(){for(;;){const N=400,A=[280,300,320][randint(0,2)],B=[140,150,160][randint(0,2)],I=randint(11,13)*10,U=A+B-I;
+  if(new Set([N-U,N-A,I]).size===3)return{N,A,B,I,U,shown:false}}},
+ brief:d=>`<p>Recursos Humanos de una empresa de <strong>${d.N} empleados</strong> informa al directorio: <em>"${d.A} empleados tienen cobertura médica integral y ${d.B} participan del plan de utilidades. En total, ${d.A+d.B} empleados reciben algún beneficio"</em>. El directorio festeja. El sindicato dice que hay gente que no recibe nada. Y vos notás que ${d.A+d.B} es más que ${d.N}.</p>`,
+ hint:`Si sumás los dos grupos, a los empleados que están en ambos programas los contás dos veces. Hay que restarlos una vez. Y "ninguno" es el complemento de "al menos uno".`,
+ evidence(el,d){
+  el.innerHTML=`<div class="row"><button class="btn" id="go">Cruzar los legajos de los dos programas</button></div><div id="out"></div>`;
+  const draw=()=>{$('#out',el).innerHTML=`<svg viewBox="0 0 600 240" role="img" aria-label="Diagrama de Venn de los dos beneficios"><rect x="20" y="10" width="560" height="220" fill="none" stroke="${INK}"/><text x="32" y="30">Ω: ${d.N} empleados</text>
+   <circle cx="250" cy="125" r="92" fill="${BLUE}" opacity=".22" stroke="${BLUE}"/><circle cx="375" cy="125" r="70" fill="${RED}" opacity=".22" stroke="${RED}"/>
+   <text x="200" y="118" text-anchor="middle" style="fill:${BLUE}">A: cobertura</text><text x="200" y="138" text-anchor="middle" style="fill:${BLUE}">${d.A} en total</text>
+   <text x="405" y="118" text-anchor="middle" style="fill:${RED}">B: utilidades</text><text x="405" y="138" text-anchor="middle" style="fill:${RED}">${d.B} en total</text>
+   <text x="322" y="130" text-anchor="middle" style="font-weight:bold;font-size:15px">${d.shown?d.I:'?'}</text><text x="520" y="215" text-anchor="middle">ninguno: ?</text></svg>
+   ${d.shown?`<p class="big">${d.I} empleados figuran en los dos programas a la vez.</p>`:''}`};
+  $('#go',el).onclick=()=>{d.shown=true;draw()};draw();
+ },
+ gate:d=>d.shown?null:'Te falta un dato clave: cruzá los legajos para saber cuántos están en ambos programas.',
+ question:()=>'Si elegís un empleado al azar, ¿qué probabilidad hay de que no reciba ningún beneficio?',
+ options:d=>[
+  {t:`${fmt(100*(d.N-d.U)/d.N,1)}%`,ok:true},
+  {t:'0%: hay más beneficios otorgados que empleados',why:'Hay más beneficios que empleados porque muchos tienen los dos. Eso no garantiza que todos tengan al menos uno.'},
+  {t:`${fmt(100*(d.N-d.A)/d.N,1)}%`,why:'Ese es el porcentaje sin cobertura médica. Algunos de esos empleados sí participan del plan de utilidades.'},
+  {t:`${fmt(100*d.I/d.N,1)}%`,why:'Esa es P(A ∩ B): la probabilidad de tener los dos beneficios, no la de no tener ninguno.'}],
+ explain:d=>`<p>RR.HH. sumó dos eventos que <strong>no son mutuamente excluyentes</strong>: un empleado puede estar en A y en B a la vez, y al sumar lo contaron dos veces. La regla general de la suma lo corrige:</p>
+ <p class="big">P(A ∪ B) = P(A) + P(B) − P(A ∩ B) = ${d.A}/${d.N} + ${d.B}/${d.N} − ${d.I}/${d.N} = ${d.U}/${d.N} = ${fmt(d.U/d.N,3)}</p>
+ <p>Con al menos un beneficio hay ${d.U} empleados, no ${d.A+d.B}. Por complemento, P(ninguno) = 1 − ${fmt(d.U/d.N,3)} = ${fmt(1-d.U/d.N,3)}: son ${d.N-d.U} personas sin nada. El sindicato tenía razón. La suma directa P(A) + P(B) solo vale cuando los eventos son mutuamente excluyentes, es decir, cuando la intersección está vacía.</p>`,
+ py:()=>`# df tiene una fila por empleado y dos columnas booleanas
+p_union = (df["cobertura"] | df["utilidades"]).mean()     # P(A ∪ B)
+p_ambos = (df["cobertura"] & df["utilidades"]).mean()     # P(A ∩ B)
+1 - p_union                                               # P(ninguno)
+
+pd.crosstab(df["cobertura"], df["utilidades"])            # la tabla completa`
+},
+/* 12 */{
+ id:'parcial', title:'El parcial de verdadero o falso',
+ setup:()=>({k:randint(15,17),p:.7,t:10}),
+ brief:d=>`<p>El parcial tenía 20 preguntas de verdadero o falso. Un alumno que no fue a ninguna clase sacó <strong>${d.k} de 20</strong> y la profesora sospecha que se copió. Él se defiende: <em>"No estudié nada, contesté todo al azar y tuve suerte"</em>. Si eso es cierto, cada pregunta fue una prueba de Bernoulli con p = 0,5 y la cantidad de aciertos sigue una distribución binomial con n = 20.</p>`,
+ hint:`Poné p en 0,50 (contestar al azar) y llevá k hasta la nota del alumno. Las barras rojas suman la probabilidad de sacar esa nota o una mejor.`,
+ evidence(el,d){
+  el.innerHTML=`<p><label>Probabilidad de acertar cada pregunta, p = <strong id="pv"></strong><br><input type="range" id="p" min="0.1" max="0.9" step="0.05" value="0.7"></label></p>
+  <p><label>Aciertos mínimos, k = <strong id="tv"></strong><br><input type="range" id="t" min="0" max="20" step="1" value="10"></label></p><div id="out"></div>`;
+  const draw=()=>{const P=binPmf(20,d.p);$('#pv',el).textContent=fmt(d.p,2);$('#tv',el).textContent=d.t;
+   $('#out',el).innerHTML=pmfChart(P,d.t,'Cantidad de aciertos sobre 20')+`<p class="big">P(X ≥ ${d.t}) = ${pc(tail(P,d.t))}%</p><p class="muted">Esperanza n·p = ${fmt(20*d.p,1)} aciertos · Desvío √(n·p·q) = ${fmt(Math.sqrt(20*d.p*(1-d.p)),2)}</p>`};
+  $('#p',el).oninput=e=>{d.p=Math.round(e.target.value*100)/100;draw()};$('#t',el).oninput=e=>{d.t=+e.target.value;draw()};draw();
+ },
+ question:d=>`Si de verdad contestó al azar, ¿qué probabilidad tenía de sacar ${d.k} o más?`,
+ options:d=>[
+  {t:`Cerca de ${pc(tail(binPmf(20,.5),d.k))}%`,ok:true},
+  {t:'50%: cada pregunta es una moneda',why:'El 50% es la probabilidad de acertar una pregunta. La pregunta es por acertar muchas a la vez: usá el explorador con p = 0,50.'},
+  {t:`${d.k*5}%: es su porcentaje de aciertos`,why:'Ese es el resultado que obtuvo, no la probabilidad de obtenerlo. Son dos cosas distintas.'},
+  {t:'0%: es imposible',why:'Improbable no es imposible: toda cantidad de aciertos entre 0 y 20 tiene probabilidad mayor que cero.'}],
+ explain(d){const P=binPmf(20,.5),q=tail(binPmf(20,.7),d.k);
+  return `<p>Con n = 20 y p = 0,5, la fórmula binomial P(X = x) = C(n, x) · pˣ · qⁿ⁻ˣ da P(X ≥ ${d.k}) = ${pc(tail(P,d.k))}%. Adivinando se esperan n·p = 10 aciertos con un desvío de 2,24; sacar ${d.k} es quedar ${fmt((d.k-10)/2.236,1)} desvíos por encima de lo esperado.</p>
+  <p>Eso vuelve muy poco creíble el "contesté todo al azar". Pero no prueba la copia: si el alumno sabía algo y acertaba cada pregunta con p = 0,7, sacar ${d.k} o más tenía ${pc(q)}% de probabilidad. La estadística descarta explicaciones, no elige al culpable.</p>
+  <p>Para reconocer una binomial: cantidad fija de pruebas (n), dos resultados posibles en cada una, la misma p en todas y pruebas independientes entre sí.</p>`},
+ py:d=>`from scipy.stats import binom
+
+binom.sf(${d.k-1}, n=20, p=0.5)      # P(X >= ${d.k}) contestando al azar
+binom.pmf(${d.k}, n=20, p=0.5)     # P(X = ${d.k}) exactamente
+binom.mean(20, 0.5), binom.std(20, 0.5)`
+},
+/* 13 */{
+ id:'esquina', title:'La esquina de los choques',
+ setup:()=>({k:randint(6,7),l:4,t:3}),
+ brief:d=>`<p>En una esquina del barrio hubo, históricamente, un promedio de <strong>2 choques por mes</strong>. El mes pasado el municipio cambió el sentido de una de las calles y hubo <strong>${d.k}</strong>. Los vecinos culpan al cambio. El municipio responde: <em>"Los choques vienen en rachas, fue mala suerte"</em>. La cantidad de eventos poco frecuentes en un intervalo de tiempo se modela con la distribución de Poisson; acá, con λ = 2.</p>`,
+ hint:`Poné λ en 2 (el promedio histórico) y llevá k hasta la cantidad de choques del mes pasado. Mirá qué tan chica es la zona roja.`,
+ evidence(el,d){
+  el.innerHTML=`<p><label>Promedio de choques por mes, λ = <strong id="lv"></strong><br><input type="range" id="l" min="0.5" max="8" step="0.5" value="4"></label></p>
+  <p><label>Choques mínimos, k = <strong id="tv"></strong><br><input type="range" id="t" min="0" max="16" step="1" value="3"></label></p><div id="out"></div>`;
+  const draw=()=>{const P=poiPmf(d.l,16);$('#lv',el).textContent=fmt(d.l,1);$('#tv',el).textContent=d.t;
+   $('#out',el).innerHTML=pmfChart(P,d.t,'Choques en un mes')+`<p class="big">P(X ≥ ${d.t}) = ${pc(tail(P,d.t))}%</p><p class="muted">En Poisson la esperanza y la varianza valen lo mismo: λ = ${fmt(d.l,1)} · Desvío √λ = ${fmt(Math.sqrt(d.l),2)}</p>`};
+  $('#l',el).oninput=e=>{d.l=+e.target.value;draw()};$('#t',el).oninput=e=>{d.t=+e.target.value;draw()};draw();
+ },
+ question:d=>`Si nada hubiera cambiado (λ = 2), ¿qué probabilidad había de ver ${d.k} choques o más en un mes?`,
+ options:d=>[
+  {t:`Cerca de ${pc(tail(poiPmf(2,16),d.k))}%`,ok:true},
+  {t:`Alrededor de ${Math.round(200/d.k)}%: el promedio es 2 y hubo ${d.k}`,why:'Dividir el promedio por lo observado no es una probabilidad. Usá el explorador con λ = 2.'},
+  {t:'50%: puede pasar o puede no pasar',why:'Que haya dos resultados posibles no los vuelve igual de probables. Mirá cuánto pesa la zona roja con λ = 2.'},
+  {t:'0%: con un promedio de 2 no puede haber tantos',why:'El promedio no es un techo. Poisson le asigna probabilidad a cualquier cantidad, aunque sea chiquita.'}],
+ explain(d){const p=tail(poiPmf(2,16),d.k);
+  return `<p>Con λ = 2, la fórmula de Poisson P(X = x) = e<sup>−λ</sup> · λˣ / x! da P(X ≥ ${d.k}) = ${pc(p)}%: un mes así se esperaría una vez cada ${Math.round(1/p/12)} años. "Fue mala suerte" es una explicación posible, pero muy floja. Hay motivo estadístico para revisar el cambio de sentido.</p>
+  <p>Igual que en el caso del parcial, esto no prueba la causa. Un solo mes es poca evidencia, y ese mes pudo haber llovido más o haber tenido un corte en otra avenida. Lo que hace el número es justificar que se investigue.</p>
+  <p>Binomial o Poisson: usás binomial cuando contás éxitos sobre una cantidad fija de pruebas (n y p conocidos). Usás Poisson cuando contás eventos poco frecuentes en un intervalo continuo de tiempo o espacio y lo único que conocés es la tasa promedio λ. Por eso se la llama la distribución de los "casos raros".</p>`},
+ py:d=>`from scipy.stats import poisson
+
+poisson.sf(${d.k-1}, mu=2)       # P(X >= ${d.k}) con lambda = 2
+poisson.pmf(${d.k}, mu=2)      # P(X = ${d.k}) exactamente
+poisson.mean(2), poisson.var(2)   # esperanza = varianza = lambda`
+}];
+
+/* ---------- orden según la cursada ---------- */
+const GROUPS=[
+ ['Expediente 1 · Estadística descriptiva','Clases 1 a 3',['encuesta','sueldo','envasadoras','intruso']],
+ ['Expediente 2 · El lenguaje del azar','Clases 4 a 6',['helado','pizzeria','venn','tornillos']],
+ ['Expediente 3 · Decisiones en base a datos','Clases 8 y 9',['parcial','esquina','moneda','ab']],
+ ['Expediente extra · Fuera de programa','Para ir más allá',['billetes']]];
+const TEMA={encuesta:'Clase 1 · Población, muestra y representatividad',sueldo:'Clase 2 · Media y mediana',envasadoras:'Clase 3 · Desvío estándar y coeficiente de variación',
+ intruso:'Clase 3 · Cuartiles, RIC y boxplot',helado:'Clase 4 · Correlación',pizzeria:'Clase 4 · Regresión lineal simple',venn:'Clase 5 · Probabilidad de la unión',
+ tornillos:'Clase 6 · Distribución normal y z',parcial:'Clase 8 · Distribución binomial',esquina:'Clase 8 · Distribución de Poisson',moneda:'Clase 9 · Estimación por intervalos',
+ ab:'Clase 9 · Prueba de hipótesis',billetes:'Extra · Probabilidad condicional y Bayes'};
+const ORDER=GROUPS.flatMap(g=>g[2]);
+CASES.sort((a,b)=>ORDER.indexOf(a.id)-ORDER.indexOf(b.id));CASES.forEach(c=>c.tema=TEMA[c.id]);
+
+
+/* ---------- pantallas ---------- */
+const app=$('#app');
+function home(){
+ paintScore();const done=CASES.filter(c=>st.best[c.id]>0).length;
+ app.innerHTML=`<p class="intro">${CASES.length} casos para investigar, ordenados como las clases de Probabilidad y Estadística. En cada uno juntás evidencia, das tu veredicto y te llevás la explicación con el código en Python. Acertar a la primera vale 100 puntos; cada error resta 50.</p>
+ ${done===CASES.length?`<div class="final">Archivo completo. Rango alcanzado: ${rank(total())} con ${total()} puntos. Podés reabrir cualquier caso: los datos cambian cada vez.</div>`:''}
+ ${GROUPS.map(g=>`<h2 class="grp">${g[0]} <small>${g[1]}</small></h2><div class="board">${g[2].map(id=>{const i=CASES.findIndex(c=>c.id===id),c=CASES[i];return `<button class="folder" data-i="${i}"><span class="num">Caso ${String(i+1).padStart(2,'0')}</span><strong>${c.title}</strong><span class="tema">${c.tema}</span>${st.best[c.id]>0?`<span class="stamp">Resuelto · ${st.best[c.id]}</span>`:st.best[c.id]===0?`<span class="stamp lost">Reabrir</span>`:''}</button>`}).join('')}</div>`).join('')}
+ <p class="tools"><button class="linkbtn" id="reset">Borrar mi progreso</button></p>`;
+ app.querySelectorAll('.folder').forEach(b=>b.onclick=()=>openCase(+b.dataset.i));
+ const r=$('#reset');r.onclick=()=>{if(r.dataset.sure){st={best:{}};save();home()}else{r.dataset.sure=1;r.textContent='¿Borrar todo? Tocá de nuevo para confirmar'}};
+ window.scrollTo(0,0);
+}
+function openCase(i){
+ const c=CASES[i],d=c.setup();let wrongs=0,over=false;
+ app.innerHTML=`<article class="file"><button class="linkbtn" id="back">← Volver al tablero</button>
+ <div class="tag">Caso ${String(i+1).padStart(2,'0')} · ${c.tema}</div><h2>${c.title}</h2><div class="brief">${c.brief(d)}</div>
+ <h3>Evidencia</h3><div id="ev"></div><details><summary>Pedir una pista</summary><p>${c.hint}</p></details>
+ <h3>Tu veredicto</h3><p class="q">${c.question(d)}</p><div id="opts"></div><div id="fb" role="status"></div><div id="sol"></div></article>`;
+ $('#back').onclick=home;c.evidence($('#ev'),d);
+ const finish=win=>{over=true;const pts=win?Math.max(0,100-50*wrongs):0;st.best[c.id]=Math.max(st.best[c.id]||0,pts);save();paintScore();
+  app.querySelectorAll('.opt').forEach(b=>b.disabled=true);$('#fb').textContent='';
+  $('#sol').innerHTML=`<div class="sol"><div class="head"><span class="stamp ${win?'':'lost'}">${win?'Caso resuelto':'Caso perdido'}</span><span class="pts">+${pts} puntos</span></div>
+  <h3>Qué pasó</h3><div class="brief">${c.explain(d)}</div><h3>Así se hace en Python</h3><pre><code>${c.py(d)}</code></pre>
+  <div class="row">${i<CASES.length-1?`<button class="btn" id="next">Siguiente caso →</button>`:''}<button class="btn alt" id="again">Reabrir con datos nuevos</button><button class="btn alt" id="home2">Volver al tablero</button></div></div>`;
+  if($('#next'))$('#next').onclick=()=>openCase(i+1);$('#again').onclick=()=>openCase(i);$('#home2').onclick=home;
+  $('#sol').scrollIntoView&&$('#sol').scrollIntoView({behavior:'smooth',block:'start'})};
+ shuffle(c.options(d)).forEach(o=>{const b=document.createElement('button');b.className='opt';b.textContent=o.t;b.dataset.ok=o.ok?1:'';
+  b.onclick=()=>{if(over)return;const g=c.gate&&c.gate(d);if(g){$('#fb').textContent=g;return}
+   const ok=c.oneShot?c.options(d).find(x=>x.t===o.t).ok:o.ok;
+   if(ok){b.classList.add('good');finish(true)}
+   else{b.classList.add('bad');b.disabled=true;wrongs++;if(c.oneShot||wrongs>=2)finish(false);else $('#fb').textContent=o.why}};
+  $('#opts').appendChild(b)});
+ window.scrollTo(0,0);
+}
+$('#logo').onclick=home;
+window.__cases=CASES;
+home();
+</script>
+</body>
+</html>
